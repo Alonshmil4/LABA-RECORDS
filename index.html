@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LABA RECORDS — קורל ביסמוט</title>
+    <meta
+      name="description"
+      content="LABA RECORDS — מרחב יצירה והפקה מוזיקלית של קורל ביסמוט. הפקה, עיבוד, הקלטה, עריכה ומיקס."
+    />
+    <meta name="theme-color" content="#f7fbf7" />
+    <link rel="icon" href="./assets/logo-clean.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">דלג/י לתוכן</a>
+
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <button class="icon-button burger" type="button" aria-label="פתח/סגור תפריט" aria-expanded="false" data-menu-button>
+          <span class="burger-lines" aria-hidden="true"></span>
+        </button>
+
+        <a class="brand brand--soft-editorial" href="#home" aria-label="LABA RECORDS — דף הבית">
+          <span class="brand-lockup">
+            <span class="brand-name">LABA RECORDS</span>
+            <span class="brand-by">BY CORAL BISMUTH</span>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="ניווט ראשי" data-nav>
+          <a href="#testimonials">מה אומרים עליי</a>
+          <a href="#faq">שאלות</a>
+          <a href="#gallery">קצת על האולפן</a>
+          <a class="nav-mobile-only" href="#productions">הפקות</a>
+          <a class="nav-mobile-only" href="#process">התהליך</a>
+          <a class="nav-mobile-only" href="#about">היי</a>
+        </nav>
+
+        <div class="header-cta">
+          <div class="header-cta-cluster">
+            <a class="nav-link-cta nav-desktop-only" href="#about">היי</a>
+            <a class="nav-link-cta nav-desktop-only" href="#process">התהליך</a>
+            <a class="nav-link-cta nav-desktop-only" href="#productions">הפקות</a>
+            <button class="button button-primary" type="button" data-open-booking>
+              לקביעת סשן
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="content">
+      <aside class="hero-social-rail" aria-label="רשתות חברתיות">
+        <a class="hero-social-btn" href="https://www.instagram.com/coralbismuth/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8C2 4.6 4.6 2 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+        </a>
+        <a class="hero-social-btn" href="https://open.spotify.com/artist/4HHSTY3bNxoprZF3vJ8gLE?si=lWr7LWfZQYanjMnyPogtVw" target="_blank" rel="noopener" aria-label="Spotify">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m4.3 14.4c-.2 0-.4-.1-.6-.2-1.6-.9-3.6-1.4-5.7-1.4-.9 0-1.8.1-2.7.2h-.1c-.4 0-.7-.3-.8-.7 0-.4.3-.8.7-.9 1-.1 2-.2 3-.2 2.4 0 4.7.6 6.5 1.6.4.2.5.7.3 1.1-.1.3-.4.5-.6.5m.9-3.3c-.3 0-.5-.1-.7-.2-1.8-1.1-4.3-1.7-7.1-1.7-1.1 0-2.1.1-3.1.3-.5.1-1-.2-1.1-.7-.1-.5.2-1 .7-1.1 1.1-.2 2.3-.3 3.5-.3 3.2 0 6.1.7 8.2 2 .4.3.6.9.3 1.3-.2.3-.5.4-.7.4m1-3.5c-.2 0-.4-.1-.6-.2C15.1 8.4 11.8 7.6 8 7.6c-1.3 0-2.6.1-3.8.4-.6.1-1.1-.3-1.2-.9-.1-.6.3-1.1.9-1.2 1.4-.3 2.8-.4 4.1-.4 4.2 0 7.9.9 10.5 2.5.5.3.7 1 .4 1.5-.2.4-.6.6-1 .6z"/>
+          </svg>
+        </a>
+        <a class="hero-social-btn" href="https://www.youtube.com/@corali1994" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.9 3.6 12 3.6 12 3.6s-7.9 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.5.5 9.4.5 9.4.5s7.9 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.5 31.5 0 0 0 .5-5.8 31.5 31.5 0 0 0-.5-5.8zM9.6 15.5v-7l6.4 3.5-6.4 3.5z"/></svg>
+        </a>
+        <a class="hero-social-btn" href="https://www.tiktok.com/@coralbismuth" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.75 3c.18 1.5 1.08 2.76 2.46 3.43.7.35 1.47.52 2.27.53v2.97a8.2 8.2 0 0 1-4.63-1.4v7.06A6.58 6.58 0 1 1 10.28 9v3.04a3.57 3.57 0 1 0 3.55 3.57V3h2.92z"/></svg>
+        </a>
+        <a class="hero-social-btn" href="https://www.facebook.com/CoralBismuthPage" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-4h2V9.5C10 7.57 11.57 6 13.5 6H16v4h-2c-.55 0-1 .45-1 1v2h3v4h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+        </a>
+        <a class="hero-social-btn hero-social-btn--apple" href="https://music.apple.com/il/artist/coral-bismuth/1322500040" target="_blank" rel="noopener" aria-label="Apple Music">
+          <svg class="apple-music-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path
+              fill="currentColor"
+              d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258c.762-1.109.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"
+            />
+          </svg>
+        </a>
+      </aside>
+      <section class="hero" id="home" aria-label="פתיח">
+        <div class="hero-media">
+          <video
+            class="hero-video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            poster="./assets/hero.png"
+            aria-hidden="true"
+          >
+            <source src="./assets/hero.mp4" type="video/mp4" />
+          </video>
+          <div class="hero-video-fallback" aria-hidden="true"></div>
+          <div class="hero-overlay"></div>
+          <div class="hero-grain"></div>
+        </div>
+
+        <div class="container hero-inner">
+          <p class="kicker">LABA RECORDS — By Coral Bismuth</p>
+          <h1 class="hero-title">
+            כשהלב נפתח זה יוצא לבד
+          </h1>
+          <p class="hero-subtitle">
+            אני יודעת מה זה לשים את הלב בידיים של מישהו אחר, <br />
+            ולהפוך אותו לשיר.<br />
+            באולפן שלי עושים את זה ביחד.<br />
+            רוצה לצלול איתי למסע?
+          </p>
+
+          <div class="hero-meta" aria-label="תגיות שירות">
+            <span class="pill">הפקה</span>
+            <span class="pill">הקלטה</span>
+            <span class="pill">עריכה</span>
+            <span class="pill">מיקס</span>
+            <span class="pill">מרחב תרפיה (ויש פה כלב)</span>
+            <span class="pill">אולפן אינדי רך</span>
+            <span class="pill">מושב אודים, השרון, חצי שעה מת"א</span>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="section" id="about" aria-label="על קורל ביסמוט">
+        <div class="section-video-bg" aria-hidden="true">
+          <video class="section-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+            <source src="./assets/yam-about.mp4" type="video/mp4" />
+          </video>
+          <div class="section-video-overlay" aria-hidden="true"></div>
+        </div>
+        <div class="container">
+          <div class="about-text-only">
+            <h2 class="section-title">קצת עליי — קורל ביסמוט</h2>
+            <p class="lead">
+              היי :)
+            </p>
+            <p class="muted">
+              כאן נשים את הטקסט האמיתי: מה האולפן בשבילך, מה את מצליחה לייצר כל פעם מחדש, מה האני מאמין שלך, ואיך את גורמת לאמנים לצאת עם שיר שמרגיש שלהם — רק יותר חד, יותר אמיתי, יותר “זה”.
+            </p>
+
+            <div class="hero-actions">
+              <button class="button button-primary" type="button" data-open-booking>
+                כל שיר מתחיל בכוס קקאו
+              </button>
+              <a class="button button-primary" href="#productions">הפקות שלי</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="productions" aria-label="הפקות לדוגמה">
+        <div class="section-video-bg" aria-hidden="true">
+          <video class="section-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+            <source src="./assets/productions-bg.mp4" type="video/mp4" />
+          </video>
+          <div class="section-video-overlay" aria-hidden="true"></div>
+        </div>
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title">שירים שיצאו מכאן</h2>
+            <p class="section-subtitle">בחירה ראשונית: השירים (בדמו) שתופסים מקום בעמוד הזה. נעדכן ללינקים אמיתיים כשיהיו.</p>
+          </div>
+
+          <div class="split-two">
+            <div class="tracks">
+              <article class="track">
+                <div class="track-cover" aria-label="נגן Spotify לשיר לא בשליטתי">
+                  <iframe
+                    src="https://open.spotify.com/embed/track/6UlXv9cuQvMcGOyz106dsm?utm_source=generator&theme=0"
+                    width="100%"
+                    height="152"
+                    frameborder="0"
+                    allowfullscreen=""
+                    loading="lazy"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    title="SHAYA - לא בשליטתי"
+                  ></iframe>
+                </div>
+                <div class="track-left">
+                  <div class="track-title">לא בשליטתי</div>
+                  <div class="track-meta">SHAYA</div>
+                </div>
+                <div class="track-actions">
+                  <a
+                    class="track-icon-btn track-icon-btn--youtube"
+                    href="https://youtu.be/bnQtM7dRsn4?si=QlG-qj7BolMvovTW"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="YouTube - לא בשליטתי של SHAYA"
+                  >
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.9 3.6 12 3.6 12 3.6s-7.9 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.5.5 9.4.5 9.4.5s7.9 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.5 31.5 0 0 0 .5-5.8 31.5 31.5 0 0 0-.5-5.8zM9.6 15.5v-7l6.4 3.5-6.4 3.5z"/></svg>
+                  </a>
+                  <a
+                    class="track-icon-btn track-icon-btn--apple"
+                    href="https://music.apple.com/il/song/%D7%9C%D7%90-%D7%91%D7%A9%D7%9C%D7%99%D7%98%D7%AA%D7%99/1823883585"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Apple Music - לא בשליטתי של SHAYA"
+                  >
+                    <svg class="apple-music-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                      <path
+                        fill="currentColor"
+                        d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258c.762-1.109.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+              <article class="track">
+                <div class="track-cover" aria-label="נגן Spotify לשיר רגיעה מנטלית">
+                  <iframe
+                    src="https://open.spotify.com/embed/track/4Pc1nn7R95MOtSk7oLXqIY?utm_source=generator&theme=0"
+                    width="100%"
+                    height="152"
+                    frameborder="0"
+                    allowfullscreen=""
+                    loading="lazy"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    title="עילי כהן - רגיעה מנטלית"
+                  ></iframe>
+                </div>
+                <div class="track-left">
+                  <div class="track-title">רגיעה מנטלית</div>
+                  <div class="track-meta">עילי כהן</div>
+                </div>
+                <div class="track-actions">
+                  <a
+                    class="track-icon-btn track-icon-btn--youtube"
+                    href="https://www.youtube.com/watch?v=2nS4t2ynwRk&list=RD2nS4t2ynwRk&start_radio=1"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="YouTube - רגיעה מנטלית של עילי כהן"
+                  >
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.9 3.6 12 3.6 12 3.6s-7.9 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.5.5 9.4.5 9.4.5s7.9 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.5 31.5 0 0 0 .5-5.8 31.5 31.5 0 0 0-.5-5.8zM9.6 15.5v-7l6.4 3.5-6.4 3.5z"/></svg>
+                  </a>
+                  <a
+                    class="track-icon-btn track-icon-btn--apple"
+                    href="https://music.apple.com/il/song/%D7%A8%D7%92%D7%99%D7%A2%D7%94-%D7%9E%D7%A0%D7%98%D7%9C%D7%99%D7%AA/1835704143"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Apple Music - רגיעה מנטלית של עילי כהן"
+                  >
+                    <svg class="apple-music-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                      <path
+                        fill="currentColor"
+                        d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258c.762-1.109.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+              <article class="track">
+                <div class="track-left">
+                  <div class="track-title">דמיינו</div>
+                  <div class="track-meta">ג'ון לנון</div>
+                </div>
+                <div class="track-actions">
+                  <a class="track-icon-btn track-icon-btn--youtube" href="#" aria-disabled="true" aria-label="YouTube">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.9 3.6 12 3.6 12 3.6s-7.9 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.5.5 9.4.5 9.4.5s7.9 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.5 31.5 0 0 0 .5-5.8 31.5 31.5 0 0 0-.5-5.8zM9.6 15.5v-7l6.4 3.5-6.4 3.5z"/></svg>
+                  </a>
+                  <a class="track-icon-btn track-icon-btn--apple" href="#" aria-disabled="true" aria-label="Apple Music">
+                    <svg class="apple-music-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                      <path
+                        fill="currentColor"
+                        d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258c.762-1.109.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+              <article class="track">
+                <div class="track-left">
+                  <div class="track-title">אבוד בסופרמרקט</div>
+                  <div class="track-meta">הקלאש</div>
+                </div>
+                <div class="track-actions">
+                  <a class="track-icon-btn track-icon-btn--youtube" href="#" aria-disabled="true" aria-label="YouTube">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.9 3.6 12 3.6 12 3.6s-7.9 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.5.5 9.4.5 9.4.5s7.9 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.5 31.5 0 0 0 .5-5.8 31.5 31.5 0 0 0-.5-5.8zM9.6 15.5v-7l6.4 3.5-6.4 3.5z"/></svg>
+                  </a>
+                  <a class="track-icon-btn track-icon-btn--apple" href="#" aria-disabled="true" aria-label="Apple Music">
+                    <svg class="apple-music-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                      <path
+                        fill="currentColor"
+                        d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258c.762-1.109.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+              <article class="track">
+                <div class="track-left">
+                  <div class="track-title">עיר מפלץ</div>
+                  <div class="track-meta">אהוד בנאי</div>
+                </div>
+                <div class="track-actions">
+                  <a class="track-icon-btn track-icon-btn--youtube" href="#" aria-disabled="true" aria-label="YouTube">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.9 3.6 12 3.6 12 3.6s-7.9 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.5.5 9.4.5 9.4.5s7.9 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.5 31.5 0 0 0 .5-5.8 31.5 31.5 0 0 0-.5-5.8zM9.6 15.5v-7l6.4 3.5-6.4 3.5z"/></svg>
+                  </a>
+                  <a class="track-icon-btn track-icon-btn--apple" href="#" aria-disabled="true" aria-label="Apple Music">
+                    <svg class="apple-music-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                      <path
+                        fill="currentColor"
+                        d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258c.762-1.109.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="section-foot split">
+            <button class="button button-primary" type="button" data-open-booking>לקביעת סשן</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="testimonials" aria-label="מה אומרים עליי">
+        <div class="section-video-bg" aria-hidden="true">
+          <video class="section-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+            <source src="./assets/testimonials-bg.mp4" type="video/mp4" />
+          </video>
+          <div class="section-video-overlay" aria-hidden="true"></div>
+        </div>
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title">מה אומרים עליי</h2>
+          </div>
+
+          <div class="testimonials-carousel" data-testimonials-carousel aria-label="קרוסלת המלצות">
+            <button class="carousel-nav-v" type="button" data-testimonials-prev aria-label="המלצה קודמת">‹</button>
+            <div class="testimonials-track" data-testimonials-track>
+              <div class="testimonials-slide">
+                <figure class="planter-card planter-1">
+                  <blockquote class="planter-quote">“ווף ווף ווף!”</blockquote>
+                  <figcaption class="planter-by">— קיקו</figcaption>
+                </figure>
+              </div>
+              <div class="testimonials-slide">
+                <figure class="planter-card planter-2">
+                  <blockquote class="planter-quote">“קראת את ספר הקקי הגדול?”</blockquote>
+                  <figcaption class="planter-by">— גידי גוב</figcaption>
+                </figure>
+              </div>
+              <div class="testimonials-slide">
+                <figure class="planter-card planter-3">
+                  <blockquote class="planter-quote">“וואלה היא פצצתית”</blockquote>
+                  <figcaption class="planter-by">— איציק פצצתי</figcaption>
+                </figure>
+              </div>
+              <div class="testimonials-slide">
+                <figure class="planter-card planter-4">
+                  <blockquote class="planter-quote">“תבואי מהודו עם חבר”</blockquote>
+                  <figcaption class="planter-by">— אסף שנהב</figcaption>
+                </figure>
+              </div>
+              <div class="testimonials-slide">
+                <figure class="planter-card planter-5">
+                  <blockquote class="planter-quote">“אני גונב אותה לכרבולים לפעמים”</blockquote>
+                  <figcaption class="planter-by">— אלון שמילוביץ</figcaption>
+                </figure>
+              </div>
+              <div class="testimonials-slide">
+                <figure class="planter-card planter-6">
+                  <blockquote class="planter-quote">“באולפן שלה יכולתי לעשות הכל, גם להחליף שם.”</blockquote>
+                  <figcaption class="planter-by">— רוברט צימרמן</figcaption>
+                </figure>
+              </div>
+            </div>
+            <button class="carousel-nav-v" type="button" data-testimonials-next aria-label="המלצה הבאה">›</button>
+          </div>
+
+          <div class="section-foot">
+            <button class="button button-primary" type="button" data-open-booking>לקביעת סשן</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="process" aria-label="התהליך שלי">
+        <div class="section-video-bg" aria-hidden="true">
+          <video class="section-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+            <source src="./assets/matana-bg-2.mp4" type="video/mp4" />
+          </video>
+          <div class="section-video-overlay" aria-hidden="true"></div>
+        </div>
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title">התהליך</h2>
+            <p class="section-subtitle">מה עושים, איך עושים, מה כולל — עם מרחב לנשום באמצע.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="step-card">
+              <div class="step-num">01</div>
+              <h3 class="step-title">היכרות וכיוון</h3>
+              <p class="muted">מגדירים יחד מה השיר צריך להרגיש, לא רק איך הוא צריך להישמע.</p>
+            </div>
+            <div class="step-card">
+              <div class="step-num">02</div>
+              <h3 class="step-title">הפקה והקלטה</h3>
+              <p class="muted">בונים עולם סביב הווקאל/הסיפור — שכבה־שכבה, בלי להעמיס.</p>
+            </div>
+            <div class="step-card">
+              <div class="step-num">03</div>
+              <h3 class="step-title">עריכה ומיקס</h3>
+              <p class="muted">פוליש עדין שמרים את השיר, אבל משאיר אותו אנושי.</p>
+            </div>
+          </div>
+
+          <div class="media-row" aria-label="עוד מהמרחב">
+            <img src="./assets/gallery-10.png" alt="חלל האולפן" loading="lazy" />
+            <img src="./assets/gallery-02.png" alt="עמדת עבודה" loading="lazy" />
+            <img src="./assets/gallery-09.png" alt="חלון, עצים ואור" loading="lazy" />
+          </div>
+
+          <div class="section-foot">
+            <button class="button button-primary" type="button" data-open-booking>מתחילים</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq" aria-label="שאלות תשובות">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title">שאלות תשובות</h2>
+          </div>
+
+          <div class="accordion" data-accordion>
+            <details class="qa" open>
+              <summary>כמה זמן לוקח להפיק שיר?</summary>
+              <div class="qa-body">תלוי בשיר ובשלב שבו הוא מגיע. לרוב נבנה יחד תכנית קצרה כבר בשיחה הראשונה.</div>
+            </details>
+            <details class="qa">
+              <summary>אפשר לבוא רק למיקס/עריכה?</summary>
+              <div class="qa-body">כן. אפשר להצטרף בכל שלב — מהקלטה ועד מיקס סופי.</div>
+            </details>
+            <details class="qa">
+              <summary>מה להביא לסשן ראשון?</summary>
+              <div class="qa-body">דמו/סקיצה אם יש, השראות (2–3 שירים), ואת הסיפור שלך על השיר.</div>
+            </details>
+            <details class="qa">
+              <summary>יש חניה? ואיפה האולפן?</summary>
+              <div class="qa-body">כאן נשים כתובת/הנחיות הגעה כשיהיו מוכנות לפרסום.</div>
+            </details>
+            <details class="qa">
+              <summary>למי הסטודיו מתאים</summary>
+              <div class="qa-body">למי שמחפשים תהליך יצירתי-רגיש: ווקאל שמרגיש אמיתי, סאונד נקי, ואווירה שעוזרת להוריד הגנות ולתת לשיר לצאת.</div>
+            </details>
+            <details class="qa">
+              <summary>איך נראה סשן אצלי?</summary>
+              <div class="qa-body">מתחילים בשיחה קצרה לכיוון, עוברים לעבודה פרקטית (הקלטה/עריכה/מיקס לפי השלב), ובאמצע יש רגעים של נשימה וחיבור למהות של השיר.</div>
+            </details>
+            <details class="qa">
+              <summary>למה אמנים נפתחים פה</summary>
+              <div class="qa-body">כי יש מקום לבן אדם, לא רק לטכניקה. אנחנו עובדים בקצב שלך, עם פידבק עדין, ועם כלים שמאפשרים לשחרר ולהעז לשמוע את הגרסה הכי אמיתית.</div>
+            </details>
+          </div>
+
+          <div class="section-foot">
+            <button class="button button-primary" type="button" data-open-booking>הכי כיף לשבת ולדבר</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="gallery" aria-label="קצת על האולפן">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title">קצת על האולפן</h2>
+            <p class="section-subtitle">כאן נשים סרטונים מהאולפן (כולל מה שבן צילם) וגם חומרים כמו הפרסומת של אלפורו.</p>
+          </div>
+
+          <div class="gallery-carousel" data-gallery-carousel aria-label="גלריה">
+            <button class="carousel-nav prev" type="button" data-carousel-prev aria-label="תמונה קודמת">‹</button>
+            <div class="carousel-track" data-carousel-track>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-02.png" alt="האולפן — חלל עבודה ואור טבעי" loading="lazy" />
+              </figure>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-03.png" alt="האולפן — פינה חמה" loading="lazy" />
+              </figure>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-06.png" alt="האולפן — ציוד וצמחים" loading="lazy" />
+              </figure>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-05.png" alt="קורל באולפן" loading="lazy" />
+              </figure>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-11.png" alt="קורל בטבע עם גיטרה" loading="lazy" />
+              </figure>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-10.png" alt="האולפן — חלל עם כלים" loading="lazy" />
+              </figure>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-07.png" alt="האולפן — ספה וכלים על הקיר" loading="lazy" />
+              </figure>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-08.png" alt="האולפן — חלל עבודה וחלון" loading="lazy" />
+              </figure>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-12.png" alt="נוף ירוק בחוץ" loading="lazy" />
+              </figure>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-13.png" alt="דק חוץ ונוף" loading="lazy" />
+              </figure>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-04.png" alt="האולפן — אור בוקר" loading="lazy" />
+              </figure>
+              <figure class="carousel-slide">
+                <img src="./assets/gallery-09.png" alt="האולפן — צילום נוסף" loading="lazy" />
+              </figure>
+            </div>
+            <button class="carousel-nav next" type="button" data-carousel-next aria-label="תמונה הבאה">›</button>
+          </div>
+
+          <div class="section-foot split">
+            <button class="button button-primary" type="button" data-open-booking>לקביעת סשן</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="floating-social" aria-label="קיצורי דרך">
+      <a
+        class="instagram-float"
+        href="https://www.instagram.com/coralbismuth/"
+        target="_blank"
+        rel="noopener"
+        aria-label="Instagram"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8C2 4.6 4.6 2 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+        </svg>
+      </a>
+      <a
+        class="whatsapp-float"
+        href="https://wa.me/972546345836"
+        target="_blank"
+        rel="noopener"
+        aria-label="WhatsApp"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 2a10 10 0 0 0-8.69 14.95L2 22l5.2-1.36A10 10 0 1 0 12 2zm0 18.18c-1.55 0-3.07-.4-4.41-1.16l-.31-.18-3.08.81.82-3-.2-.32A8.17 8.17 0 1 1 12 20.18zm4.48-6.13c-.25-.13-1.47-.72-1.7-.8-.23-.08-.4-.13-.57.12-.16.24-.64.8-.78.96-.14.16-.28.18-.53.06-.25-.12-1.04-.38-1.98-1.2-.73-.64-1.23-1.44-1.37-1.68-.14-.24-.02-.37.1-.49.11-.11.25-.29.37-.43.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.47-.4-.41-.56-.42h-.48c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.58 4.12 3.62.58.25 1.03.39 1.39.5.58.18 1.12.15 1.55.09.47-.07 1.45-.59 1.65-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.47-.29z"
+          />
+        </svg>
+      </a>
+    </div>
+
+    <footer class="footer" aria-label="כותרת תחתונה">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <div class="brand-foot">LABA RECORDS</div>
+          <div class="muted">© <span data-year></span> קורל ביסמוט</div>
+        </div>
+        <div class="footer-links">
+          <a href="#testimonials">מה אומרים עליי</a>
+          <a href="#productions">הפקות</a>
+          <a href="#process">התהליך</a>
+          <a href="#faq">שאלות</a>
+        </div>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/coralbismuth/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.youtube.com/@corali1994" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://open.spotify.com/artist/4HHSTY3bNxoprZF3vJ8gLE?si=lWr7LWfZQYanjMnyPogtVw" target="_blank" rel="noopener">Spotify</a>
+          <a href="https://www.facebook.com/CoralBismuthPage" target="_blank" rel="noopener">Facebook</a>
+          <a href="https://music.apple.com/il/artist/coral-bismuth/1322500040" target="_blank" rel="noopener">Apple Music</a>
+        </div>
+      </div>
+    </footer>
+
+    <dialog class="modal" data-booking-modal aria-label="לקביעת סשן">
+      <form class="modal-card" method="dialog">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title">לקביעת סשן</div>
+            <div class="muted">השאירו פרטים ואחזור אליכם. (כרגע דמו — נחבר לוואטסאפ/מייל אחר כך)</div>
+          </div>
+          <button class="icon-button" type="submit" formnovalidate value="cancel" aria-label="סגור">
+            ✕
+          </button>
+        </div>
+
+        <div class="form-grid">
+          <label class="field">
+            <span>שם</span>
+            <input name="name" autocomplete="name" placeholder="איך קוראים לך?" required />
+          </label>
+          <label class="field">
+            <span>טלפון</span>
+            <input name="phone" inputmode="tel" autocomplete="tel" placeholder="050-0000000" required />
+          </label>
+          <label class="field field-span-2">
+            <span>מה בא לך לעשות?</span>
+            <select name="service" required>
+              <option value="" selected disabled>בחר/י שירות</option>
+              <option>הפקה</option>
+              <option>הקלטה</option>
+              <option>עריכה</option>
+              <option>מיקס</option>
+              <option>ייעוץ/הכוונה</option>
+            </select>
+          </label>
+          <label class="field field-span-2">
+            <span>הודעה</span>
+            <textarea name="message" rows="4" placeholder="קישור לדמו, קצת על הפרויקט, דדליין…"></textarea>
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button class="button button-primary" value="confirm">שליחה (דמו)</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./main.js" defer></script>
+  </body>
+</html>
