@@ -862,6 +862,18 @@ textarea {
   .section-video-bg video.section-video {
     display: none;
   }
+
+  #faq.section {
+    background-color: #7a66a8 !important;
+    background-image: url("./assets/paper-purple-crumpled.png") !important;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+  }
+
+  #faq.section .section-video-overlay {
+    background: transparent;
+  }
 }
 
 /* Readability overrides for video-backed sections */
@@ -1388,12 +1400,17 @@ textarea {
 }
 
 #faq.section {
-  background-color: #7a66a8 !important;
-  background-image: url("./assets/paper-purple-crumpled.png") !important;
-  background-size: 100% 100% !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-blend-mode: normal !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Darken FAQ video slightly so accordion text stays readable */
+#faq.section .section-video-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(20, 28, 22, 0.38),
+    rgba(60, 48, 92, 0.52)
+  );
 }
 
 #gallery.section {
