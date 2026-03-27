@@ -264,7 +264,7 @@ textarea {
   text-decoration: none;
   color: rgba(16, 18, 18, 0.95);
   min-width: 0;
-  max-width: min(520px, 84vw);
+  max-width: min(650px, 88vw);
   grid-area: logo;
   justify-self: center;
   position: relative;
@@ -324,7 +324,7 @@ textarea {
 .brand--soft-editorial .brand-name {
   font-family: "The Music", "Cyclope", "SuperIndie", "OutOfTune", "Carmela", "Heebo", system-ui, sans-serif;
   font-weight: 400;
-  font-size: clamp(18px, 2.1vw, 26px);
+  font-size: clamp(22.5px, 2.625vw, 32.5px);
   letter-spacing: 0.05em;
   line-height: 1.06;
 }
@@ -332,7 +332,7 @@ textarea {
 .brand--soft-editorial .brand-by {
   font-family: "The Music", "Cyclope", "SuperIndie", "OutOfTune", "Carmela", "Heebo", system-ui, sans-serif;
   font-weight: 400;
-  font-size: clamp(11px, 1.15vw, 14px);
+  font-size: clamp(13.75px, 1.44vw, 17.5px);
   letter-spacing: 0.1em;
   line-height: 1.1;
 }
@@ -2491,12 +2491,12 @@ textarea {
   }
 
   .brand--soft-editorial .brand-name {
-    font-size: clamp(14px, 4.2vw, 17px);
+    font-size: clamp(17.5px, 5.25vw, 21.25px);
     letter-spacing: 0.05em;
   }
 
   .brand--soft-editorial .brand-by {
-    font-size: clamp(9px, 2.85vw, 11.5px);
+    font-size: clamp(11.25px, 3.56vw, 14.5px);
     letter-spacing: 0.1em;
   }
   .header-cta .button {

@@ -27,3 +27,4 @@ python -m http.server 5500
 - לינקים לרשתות (Instagram וכו׳)
 - טקסט “עליי” ו‑FAQ מלא (10+ שאלות)
 
+"# LABA-RECORDS" 
