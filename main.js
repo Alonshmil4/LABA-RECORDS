@@ -130,6 +130,7 @@ function wireTestimonialsCarousel() {
 }
 
 function wireAdminBuilder() {
+  try {
   const params = new URLSearchParams(window.location.search);
   const isAdminMode = params.get("admin") === "1" || localStorage.getItem("laba_admin_enabled") === "1";
   const ADMIN_CONTENT_VERSION = "v3";
@@ -211,7 +212,7 @@ function wireAdminBuilder() {
 
   editables.forEach((el, idx) => {
     const key = `editable-${idx}`;
-    el.setAttribute("contenteditable", "plaintext-only");
+    el.contentEditable = "true";
     el.setAttribute("spellcheck", "false");
     el.classList.add("admin-editable");
     el.addEventListener("input", () => {
@@ -279,6 +280,9 @@ function wireAdminBuilder() {
       input.value = "";
     }
   });
+  } catch (err) {
+    console.error("[LABA] wireAdminBuilder failed", err);
+  }
 }
 
 function wireScrollReveal() {
