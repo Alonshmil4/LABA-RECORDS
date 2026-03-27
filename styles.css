@@ -1910,6 +1910,11 @@ textarea {
   gap: 8px;
 }
 
+/* Icon-only rows (no Spotify embed): center YouTube + Apple */
+#productions.section .track:not(:has(.track-cover)) {
+  justify-content: center;
+}
+
 @media (max-width: 760px) {
   /* Mobile: anchor to the right; minimal zoom; slightly lower framing */
   #productions.section .section-video-bg video.section-video {
@@ -1949,6 +1954,11 @@ textarea {
     align-items: center;
     gap: 8px;
     margin-top: 2px;
+  }
+
+  #productions.section .track:not(:has(.track-cover)) .track-actions {
+    justify-content: center;
+    margin-top: 0;
   }
 
   #productions.section .track-left {
