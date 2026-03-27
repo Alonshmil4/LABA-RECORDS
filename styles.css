@@ -847,6 +847,11 @@ textarea {
   object-position: center 64%;
 }
 
+/* Productions: nudge framing slightly lower than center */
+#productions.section .section-video-bg video.section-video {
+  object-position: center 58%;
+}
+
 .section-video-overlay {
   position: absolute;
   inset: 0;
@@ -1889,10 +1894,11 @@ textarea {
 }
 
 @media (max-width: 760px) {
-  /* Mobile framing tweak: show more right side of productions video */
+  /* Mobile: anchor to the right; minimal zoom; slightly lower framing */
   #productions.section .section-video-bg video.section-video {
-    transform: scale(1.02);
-    object-position: 80% center;
+    transform: scale(1);
+    transform-origin: right center;
+    object-position: right 58%;
   }
 
   .track {
