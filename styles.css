@@ -1916,11 +1916,11 @@ textarea {
 }
 
 @media (max-width: 760px) {
-  /* Mobile: anchor to the right; minimal zoom; slightly lower framing */
+  /* Mobile: tree-leaning frame, nudged slightly right of pure left */
   #productions.section .section-video-bg video.section-video {
     transform: scale(1);
-    transform-origin: right center;
-    object-position: right 58%;
+    transform-origin: 28% center;
+    object-position: 28% 58%;
   }
 
   .track {
