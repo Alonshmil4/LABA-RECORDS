@@ -45,12 +45,19 @@
 
         <div class="header-cta">
           <div class="header-cta-cluster">
-            <a class="nav-link-cta nav-desktop-only" href="#about">היי</a>
-            <a class="nav-link-cta nav-desktop-only" href="#process">התהליך</a>
-            <a class="nav-link-cta nav-desktop-only" href="#productions">הפקות</a>
-            <button class="button button-primary" type="button" data-open-booking>
-              לקביעת סשן
-            </button>
+            <div class="header-cta-links">
+              <a class="nav-link-cta nav-desktop-only" href="#about">היי</a>
+              <a class="nav-link-cta nav-desktop-only" href="#process">התהליך</a>
+              <a class="nav-link-cta nav-desktop-only" href="#productions">הפקות</a>
+            </div>
+            <div class="header-cta-booking">
+              <button class="button button-primary" type="button" data-open-booking>
+                לקביעת סשן
+              </button>
+              <span class="brand-address brand-address--under-cta" lang="he" dir="rtl">
+                <span class="brand-address-star" aria-hidden="true">*</span> מושב אודים, השרון
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -102,24 +109,29 @@
 
         <div class="container hero-inner">
           <p class="kicker">LABA RECORDS — By Coral Bismuth</p>
-          <h1 class="hero-title">
-            כשהלב נפתח זה יוצא לבד
-          </h1>
-          <p class="hero-subtitle">
-            באולפן ההקלטות שלי, בתוך הטבע, זה קורה כל יום.<br />
-            אני יודעת מה זה לשים את הנשמה בידיים של מישהו,<br />
-            ולהפוך אותה לשיר.<br />
-            רוצה לצאת איתי למסע?
-          </p>
+          <div class="hero-headlines">
+            <h1 class="hero-title">
+              כשהלב נפתח זה יוצא לבד
+            </h1>
+            <p class="hero-subtitle">
+              כשיש לך אולפן הקלטות בטבע, זה קורה כל יום.<br />
+              אני יודעת איך זה לשים נשמה בידיים אחרות, ולהוציא שיר. רוצה לצאת למסע?
+            </p>
+          </div>
 
-          <div class="hero-meta" aria-label="תגיות שירות">
-            <span class="pill">הפקה</span>
-            <span class="pill">הקלטה</span>
-            <span class="pill">עריכה</span>
-            <span class="pill">מיקס</span>
-            <span class="pill">מרחב תרפיה (ויש פה כלב)</span>
-            <span class="pill">אולפן אינדי רך</span>
-            <span class="pill">מושב אודים, השרון, חצי שעה מת"א</span>
+          <div class="hero-meta" data-hero-meta aria-label="תגיות שירות">
+            <div class="hero-meta-row">
+              <span class="pill">הפקה</span>
+              <span class="pill">הקלטה</span>
+              <span class="pill">עריכה</span>
+              <span class="pill">מיקס</span>
+              <span class="pill">סשן חד-פעמי</span>
+            </div>
+            <div class="hero-meta-row">
+              <span class="pill">מרחב תרפיה (ויש פה כלב🐕)</span>
+              <span class="pill">אולפן אינדי רך 🍂</span>
+              <span class="pill">מושב אודים, השרון, חצי שעה מת"א 📍</span>
+            </div>
           </div>
 
         </div>
@@ -146,7 +158,7 @@
               <button class="button button-primary" type="button" data-open-booking>
                 כל שיר מתחיל בכוס קקאו
               </button>
-              <a class="button button-primary" href="#productions">הפקות שלי</a>
+              <a class="button" href="#productions">הפקות שלי</a>
             </div>
           </div>
         </div>
@@ -177,13 +189,15 @@
           </div>
 
           <div class="split-two">
-            <div class="tracks">
+            <div class="tracks-carousel" data-tracks-carousel aria-label="שירים שיצאו מכאן">
+              <button class="tracks-carousel-nav" type="button" data-tracks-prev aria-label="שיר קודם">‹</button>
+              <div class="tracks" data-tracks-track>
               <article class="track">
                 <div class="track-cover" aria-label="נגן Spotify לשיר לא בשליטתי">
                   <iframe
                     src="https://open.spotify.com/embed/track/6UlXv9cuQvMcGOyz106dsm?utm_source=generator&theme=0"
                     width="100%"
-                    height="152"
+                    height="260"
                     frameborder="0"
                     allowfullscreen=""
                     loading="lazy"
@@ -222,7 +236,7 @@
                   <iframe
                     src="https://open.spotify.com/embed/track/4Pc1nn7R95MOtSk7oLXqIY?utm_source=generator&theme=0"
                     width="100%"
-                    height="152"
+                    height="260"
                     frameborder="0"
                     allowfullscreen=""
                     loading="lazy"
@@ -261,7 +275,7 @@
                   <iframe
                     src="https://open.spotify.com/embed/track/1sVIF9kGVsyztSEnRQkEG9?utm_source=generator&theme=0"
                     width="100%"
-                    height="152"
+                    height="260"
                     frameborder="0"
                     allowfullscreen=""
                     loading="lazy"
@@ -300,7 +314,7 @@
                   <iframe
                     src="https://open.spotify.com/embed/track/01YcgEnWYyUNetTbJ8FYaw?utm_source=generator&theme=0"
                     width="100%"
-                    height="152"
+                    height="260"
                     frameborder="0"
                     allowfullscreen=""
                     loading="lazy"
@@ -339,7 +353,7 @@
                   <iframe
                     src="https://open.spotify.com/embed/track/16CVaNZu2ZT7XFqvK1pF9b?utm_source=generator&theme=0"
                     width="100%"
-                    height="152"
+                    height="260"
                     frameborder="0"
                     allowfullscreen=""
                     loading="lazy"
@@ -374,11 +388,26 @@
                 </div>
               </article>
               <article class="track">
-                <div class="track-actions">
-                  <a class="track-icon-btn track-icon-btn--youtube" href="#" aria-disabled="true" aria-label="YouTube">
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.9 3.6 12 3.6 12 3.6s-7.9 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.5.5 9.4.5 9.4.5s7.9 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.5 31.5 0 0 0 .5-5.8 31.5 31.5 0 0 0-.5-5.8zM9.6 15.5v-7l6.4 3.5-6.4 3.5z"/></svg>
-                  </a>
-                  <a class="track-icon-btn track-icon-btn--apple" href="#" aria-disabled="true" aria-label="Apple Music">
+                <div class="track-cover" aria-label="נגן Spotify לשיר קרקעית">
+                  <iframe
+                    src="https://open.spotify.com/embed/track/0fDfgdpsL6r5z6Uqhkmjyf?utm_source=generator&theme=0"
+                    width="100%"
+                    height="260"
+                    frameborder="0"
+                    allowfullscreen=""
+                    loading="lazy"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    title="גל חריטן - קרקעית"
+                  ></iframe>
+                </div>
+                <div class="track-actions track-actions--apple-only">
+                  <a
+                    class="track-icon-btn track-icon-btn--apple"
+                    href="https://music.apple.com/il/song/%D7%A7%D7%A8%D7%A7%D7%A2%D7%99%D7%AA/1783094297"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Apple Music"
+                  >
                     <svg class="apple-music-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                       <path
                         fill="currentColor"
@@ -388,6 +417,8 @@
                   </a>
                 </div>
               </article>
+              </div>
+              <button class="tracks-carousel-nav" type="button" data-tracks-next aria-label="שיר הבא">›</button>
             </div>
           </div>
 
@@ -639,6 +670,7 @@
         <div class="footer-brand">
           <div class="brand-foot">LABA RECORDS</div>
           <div class="muted">© <span data-year></span> קורל ביסמוט</div>
+          <div class="muted footer-credit">© אלון שמילוביץ</div>
         </div>
         <div class="footer-links">
           <a href="#testimonials">מה אומרים עליי</a>

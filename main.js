@@ -8,10 +8,19 @@ const bookingModal = $("[data-booking-modal]");
 const yearEl = $("[data-year]");
 const heroMedia = $(".hero-media");
 const heroVideo = $(".hero-video");
+const heroMeta = $("[data-hero-meta]");
 
 function setScrolledHeader() {
   if (!header) return;
   header.classList.toggle("scrolled", window.scrollY > 6);
+}
+
+function setHeroMetaPillsRevealed() {
+  if (!heroMeta) return;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion || window.scrollY > 40) {
+    heroMeta.classList.add("is-pills-revealed");
+  }
 }
 
 function setMenuOpen(isOpen) {
@@ -127,6 +136,33 @@ function wireTestimonialsCarousel() {
   next.addEventListener("click", () => {
     track.scrollBy({ left: getStep(), behavior: "smooth" });
   });
+}
+
+function wireTracksCarousel() {
+  const root = $("[data-tracks-carousel]");
+  if (!root) return;
+  const track = $("[data-tracks-track]", root);
+  const prev = $("[data-tracks-prev]", root);
+  const next = $("[data-tracks-next]", root);
+  if (!track || !prev || !next) return;
+
+  const getGap = () => {
+    const raw = getComputedStyle(track).gap || "12px";
+    const n = parseFloat(raw);
+    return Number.isFinite(n) ? n : 12;
+  };
+
+  /* One “page” = full scrollport width + flex gap (matches CSS flex + scroll-snap) */
+  const getStep = () => track.clientWidth + getGap();
+
+  const scrollByStep = (dir) => {
+    const step = getStep();
+    const target = track.scrollLeft + dir * step;
+    track.scrollTo({ left: target, behavior: "smooth" });
+  };
+
+  prev.addEventListener("click", () => scrollByStep(-1));
+  next.addEventListener("click", () => scrollByStep(1));
 }
 
 function wireAdminBuilder() {
@@ -318,7 +354,9 @@ function wireScrollReveal() {
 }
 
 window.addEventListener("scroll", setScrolledHeader, { passive: true });
+window.addEventListener("scroll", setHeroMetaPillsRevealed, { passive: true });
 setScrolledHeader();
+setHeroMetaPillsRevealed();
 wireMenu();
 wireBooking();
 wireAccordionSingleOpen();
@@ -326,6 +364,7 @@ wireDisabledLinks();
 wireScrollReveal();
 wireGalleryCarousel();
 wireTestimonialsCarousel();
+wireTracksCarousel();
 wireAdminBuilder();
 
 if (yearEl) yearEl.textContent = String(new Date().getFullYear());
