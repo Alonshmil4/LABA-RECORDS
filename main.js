@@ -12,7 +12,16 @@ const heroMeta = $("[data-hero-meta]");
 
 function setScrolledHeader() {
   if (!header) return;
-  header.classList.toggle("scrolled", window.scrollY > 6);
+  const scrolled = window.scrollY > 6;
+  header.classList.toggle("scrolled", scrolled);
+  if (
+    !scrolled &&
+    nav &&
+    header.classList.contains("logo-only") &&
+    window.matchMedia("(max-width: 760px)").matches
+  ) {
+    setMenuOpen(false);
+  }
 }
 
 function setHeroMetaPillsRevealed() {
@@ -23,28 +32,26 @@ function setHeroMetaPillsRevealed() {
   }
 }
 
-/** Hero tags: full list stays in [data-hero-tags-source] for SEO; viewport is decorative. */
-function initHeroTagsRotator() {
+/** Mobile only: rotate service-tag chunks every 1.5s; desktop keeps static row in HTML. */
+function initHeroTagsMobileRotator() {
   const meta = document.querySelector("[data-hero-meta]");
   if (!meta) return;
   const source = meta.querySelector("[data-hero-tags-source]");
-  const viewport = meta.querySelector("[data-hero-tags-viewport]");
-  if (!source || !viewport) return;
+  const rotor = meta.querySelector("[data-hero-tags-mobile-rotor]");
+  if (!source || !rotor) return;
 
-  const tags = Array.from(source.querySelectorAll("li"), (li) => li.textContent.trim()).filter(Boolean);
+  const mql = window.matchMedia("(max-width: 760px)");
+  const ROTATE_MS = 1500;
+  let timerId = null;
+  let resizeTid = null;
+
+  const serviceItems = $$("li:not([data-hero-tag-location])", source);
+  const tags = serviceItems.map((li) => li.textContent.trim()).filter(Boolean);
   if (!tags.length) return;
-
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const ROTATE_MS = 8000;
-  const RESIZE_DEBOUNCE_MS = 220;
-
-  while (viewport.firstChild) {
-    viewport.removeChild(viewport.firstChild);
-  }
 
   function buildPillRow(chunk) {
     const row = document.createElement("div");
-    row.className = "hero-meta-row";
+    row.className = "hero-meta-row hero-meta-row--services hero-meta-row--mobile-rotor";
     chunk.forEach((text) => {
       const pill = document.createElement("span");
       pill.className = "pill";
@@ -56,9 +63,9 @@ function initHeroTagsRotator() {
 
   function chunkSize() {
     const w = window.innerWidth;
-    if (w < 480) return 3;
-    if (w < 768) return 4;
-    return 5;
+    if (w < 400) return 2;
+    if (w < 520) return 3;
+    return 3;
   }
 
   function toChunks(list) {
@@ -67,32 +74,7 @@ function initHeroTagsRotator() {
     for (let i = 0; i < list.length; i += n) {
       out.push(list.slice(i, i + n));
     }
-    return out;
-  }
-
-  if (reduceMotion) {
-    const wrap = document.createElement("div");
-    wrap.className = "hero-tags-static flex w-full flex-col items-center gap-2";
-    wrap.appendChild(buildPillRow(tags));
-    viewport.appendChild(wrap);
-    return;
-  }
-
-  const layers = [document.createElement("div"), document.createElement("div")];
-  layers.forEach((el) => {
-    el.className = "hero-tags-layer";
-    viewport.appendChild(el);
-  });
-
-  let chunks = toChunks(tags);
-  let index = 0;
-  let active = 0;
-  let timerId = null;
-  let resizeTid = null;
-
-  function renderInto(layer, chunk) {
-    layer.innerHTML = "";
-    layer.appendChild(buildPillRow(chunk));
+    return out.length ? out : [list];
   }
 
   function setLayerState(layer, visible) {
@@ -100,41 +82,70 @@ function initHeroTagsRotator() {
     layer.classList.toggle("is-hidden", !visible);
   }
 
-  function resetToFirstChunk() {
-    chunks = toChunks(tags);
-    if (!chunks.length) return;
-    index = 0;
-    active = 0;
-    renderInto(layers[0], chunks[0]);
-    layers[1].innerHTML = "";
-    void layers[0].offsetWidth;
-    setLayerState(layers[0], true);
-    setLayerState(layers[1], false);
-  }
-
-  function advance() {
-    if (chunks.length <= 1) return;
-    const nextIndex = (index + 1) % chunks.length;
-    const incoming = layers[1 - active];
-    const outgoing = layers[active];
-    renderInto(incoming, chunks[nextIndex]);
-    void incoming.offsetWidth;
-    setLayerState(incoming, true);
-    setLayerState(outgoing, false);
-    active = 1 - active;
-    index = nextIndex;
-  }
-
-  function stopTimer() {
+  function stop() {
     if (timerId != null) {
-      clearInterval(timerId);
+      window.clearInterval(timerId);
       timerId = null;
     }
+    rotor.replaceChildren();
   }
 
-  function startTimer() {
-    stopTimer();
-    if (chunks.length <= 1) return;
+  function start() {
+    stop();
+    if (!mql.matches) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const chunks = toChunks(tags);
+
+    if (reduceMotion || chunks.length <= 1) {
+      const layer = document.createElement("div");
+      layer.className = "hero-tags-mobile-layer is-visible";
+      layer.appendChild(buildPillRow(tags));
+      rotor.appendChild(layer);
+      return;
+    }
+
+    const layers = [document.createElement("div"), document.createElement("div")];
+    layers.forEach((el) => {
+      el.className = "hero-tags-mobile-layer";
+      rotor.appendChild(el);
+    });
+
+    let index = 0;
+    let active = 0;
+
+    function renderInto(layer, chunk) {
+      layer.replaceChildren();
+      layer.appendChild(buildPillRow(chunk));
+    }
+
+    function reset() {
+      const ch = toChunks(tags);
+      if (!ch.length) return;
+      index = 0;
+      active = 0;
+      renderInto(layers[0], ch[0]);
+      layers[1].replaceChildren();
+      void layers[0].offsetWidth;
+      setLayerState(layers[0], true);
+      setLayerState(layers[1], false);
+    }
+
+    function advance() {
+      const ch = toChunks(tags);
+      if (ch.length <= 1) return;
+      const nextIndex = (index + 1) % ch.length;
+      const incoming = layers[1 - active];
+      const outgoing = layers[active];
+      renderInto(incoming, ch[nextIndex]);
+      void incoming.offsetWidth;
+      setLayerState(incoming, true);
+      setLayerState(outgoing, false);
+      active = 1 - active;
+      index = nextIndex;
+    }
+
+    reset();
     timerId = window.setInterval(advance, ROTATE_MS);
   }
 
@@ -142,15 +153,17 @@ function initHeroTagsRotator() {
     if (resizeTid != null) window.clearTimeout(resizeTid);
     resizeTid = window.setTimeout(() => {
       resizeTid = null;
-      stopTimer();
-      resetToFirstChunk();
-      startTimer();
-    }, RESIZE_DEBOUNCE_MS);
+      start();
+    }, 200);
   }
 
-  resetToFirstChunk();
-  startTimer();
+  function onMqChange() {
+    start();
+  }
+
+  mql.addEventListener("change", onMqChange);
   window.addEventListener("resize", onResize, { passive: true });
+  start();
 }
 
 function setMenuOpen(isOpen) {
@@ -162,6 +175,13 @@ function setMenuOpen(isOpen) {
 function wireMenu() {
   if (!nav || !menuBtn) return;
   menuBtn.addEventListener("click", () => {
+    if (
+      header?.classList.contains("logo-only") &&
+      !header.classList.contains("scrolled") &&
+      window.matchMedia("(max-width: 760px)").matches
+    ) {
+      return;
+    }
     const isOpen = nav.classList.contains("is-open");
     setMenuOpen(!isOpen);
   });
@@ -487,7 +507,7 @@ window.addEventListener("scroll", setScrolledHeader, { passive: true });
 window.addEventListener("scroll", setHeroMetaPillsRevealed, { passive: true });
 setScrolledHeader();
 setHeroMetaPillsRevealed();
-initHeroTagsRotator();
+initHeroTagsMobileRotator();
 wireMenu();
 wireBooking();
 wireAccordionSingleOpen();

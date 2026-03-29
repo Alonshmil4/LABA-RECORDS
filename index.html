@@ -33,10 +33,10 @@
     <a class="skip-link" href="#content">דלג/י לתוכן</a>
 
     <header
-      class="site-header fixed inset-x-0 top-0 z-50"
+      class="site-header logo-only fixed inset-x-0 top-0 z-50"
       data-header
     >
-      <div class="container box-border pt-2 pb-1 md:pt-2.5 md:pb-1.5">
+      <div class="container box-border pt-0 pb-0">
         <div
           class="header-inner grid w-full min-w-0 max-w-full items-center rounded-[14px] border border-transparent bg-transparent shadow-none backdrop-blur-none transition-all duration-header ease-editorial motion-reduce:transition-none"
         >
@@ -50,32 +50,27 @@
             <span class="burger-lines" aria-hidden="true"></span>
           </button>
 
-          <a class="brand brand--soft-editorial" href="#home" aria-label="LABA RECORDS — דף הבית">
+          <a class="brand brand--minimal-indie" href="#home" aria-label="LABA RECORDS — דף הבית">
             <span class="brand-lockup">
-              <span class="brand-name tracking-[0.03em]">LABA RECORDS</span>
+              <span class="brand-name brand-name--retro tracking-[0.03em]">LABA RECORDS</span>
               <span class="brand-by tracking-[0.06em]">BY CORAL BISMUTH</span>
             </span>
           </a>
 
           <nav class="nav" aria-label="ניווט ראשי" data-nav>
-            <a href="#testimonials">מה אומרים עליי</a>
+            <a href="#about">היי</a>
+            <a href="#process">התהליך</a>
+            <a href="#productions">הפקות</a>
+            <a href="#testimonials">ציטוטים נבחרים</a>
             <a href="#faq">שאלות</a>
             <a href="#gallery">קצת על האולפן</a>
-            <a class="nav-mobile-only" href="#productions">הפקות</a>
-            <a class="nav-mobile-only" href="#process">התהליך</a>
-            <a class="nav-mobile-only" href="#about">היי</a>
           </nav>
 
           <div class="header-cta">
             <div class="header-cta-cluster">
-              <div class="header-cta-links">
-                <a class="nav-link-cta nav-desktop-only" href="#about">היי</a>
-                <a class="nav-link-cta nav-desktop-only" href="#process">התהליך</a>
-                <a class="nav-link-cta nav-desktop-only" href="#productions">הפקות</a>
-              </div>
               <div class="header-cta-booking">
                 <button
-                  class="button button-primary header-booking-cta text-sm font-semibold motion-reduce:transition-none"
+                  class="button button-primary header-booking-cta motion-reduce:transition-none"
                   type="button"
                   data-open-booking
                 >
@@ -89,6 +84,27 @@
           </div>
         </div>
       </div>
+
+      <!-- Desktop: fixed row to the visual right of centered logo; outside .header-inner (backdrop trap) -->
+      <aside class="header-floating-wing" aria-label="ניווט ראשי">
+        <div class="header-floating-wing__inner">
+          <button
+            class="button header-floating-wing-cta motion-reduce:transition-none"
+            type="button"
+            data-open-booking
+          >
+            לקביעת סשן
+          </button>
+          <nav class="header-floating-wing-nav" lang="he" dir="rtl" aria-label="קישורים מהירים">
+            <a href="#about">היי</a>
+            <a href="#process">התהליך</a>
+            <a href="#productions">הפקות</a>
+            <a href="#testimonials">ציטוטים נבחרים</a>
+            <a href="#faq">שאלות</a>
+            <a href="#gallery">קצת על האולפן</a>
+          </nav>
+        </div>
+      </aside>
     </header>
 
     <main id="content">
@@ -139,11 +155,12 @@
           <p class="kicker">LABA RECORDS — By Coral Bismuth</p>
           <div class="hero-headlines">
             <h1 class="hero-title">
-              כשהלב נפתח זה יוצא לבד
+              <span class="hero-title__primary">כשהלב נפתח זה יוצא לבד</span><br />
+              <span class="hero-title__secondary">אולפן הקלטות בין העצים</span>
             </h1>
             <p class="hero-subtitle">
-              כשיש לך אולפן הקלטות בטבע, זה קורה כל יום.<br />
-              אני יודעת איך זה לשים נשמה בידיים אחרות, ולהוציא שיר. רוצה לצאת למסע?
+              מכירה איך זה לשים את הלב בידיים של מישהו ולהפוך אותו לשיר.<br />
+              באולפן שלי עושים את זה ביחד.
             </p>
           </div>
 
@@ -154,32 +171,31 @@
               data-hero-tags-source
               aria-labelledby="hero-tags-heading"
             >
-              <li>הפקה</li>
-              <li>הקלטה</li>
-              <li>עריכה</li>
-              <li>מיקס</li>
+              <li>הפקה מוזיקלית</li>
+              <li>הקלטות</li>
               <li>סשן חד-פעמי</li>
-              <li>מרחב תרפיה (ויש פה כלב🐕)</li>
-              <li>אולפן אינדי רך 🍂</li>
-              <li>מושב אודים, השרון, חצי שעה מת"א 📍</li>
+              <li>עריכה</li>
+              <li>סטודיו להשכרה</li>
+              <li data-hero-tag-location>מושב אודים, השרון, חצי שעה מת"א</li>
             </ul>
             <div
-              class="hero-tags-viewport relative mx-auto w-full max-w-3xl min-h-[3rem] sm:min-h-[3.25rem] md:min-h-[3.5rem]"
+              class="hero-tags-viewport mx-auto flex w-full max-w-3xl flex-col items-center gap-2 px-2 text-center"
               data-hero-tags-viewport
               aria-hidden="true"
             >
-              <noscript>
-                <div class="hero-meta-row">
-                  <span class="pill">הפקה</span>
-                  <span class="pill">הקלטה</span>
-                  <span class="pill">עריכה</span>
-                  <span class="pill">מיקס</span>
+              <div class="hero-tags-desktop">
+                <div class="hero-meta-row hero-meta-row--services">
+                  <span class="pill">הפקה מוזיקלית</span>
+                  <span class="pill">הקלטות</span>
                   <span class="pill">סשן חד-פעמי</span>
-                  <span class="pill">מרחב תרפיה (ויש פה כלב🐕)</span>
-                  <span class="pill">אולפן אינדי רך 🍂</span>
-                  <span class="pill">מושב אודים, השרון, חצי שעה מת"א 📍</span>
+                  <span class="pill">עריכה</span>
+                  <span class="pill">סטודיו להשכרה</span>
                 </div>
-              </noscript>
+              </div>
+              <div class="hero-tags-mobile-wrap">
+                <div class="hero-tags-mobile-rotor" data-hero-tags-mobile-rotor aria-hidden="true"></div>
+              </div>
+              <p class="hero-meta-location">מושב אודים, השרון, חצי שעה מת"א📍</p>
             </div>
           </div>
 
@@ -477,7 +493,7 @@
         </div>
       </section>
 
-      <section class="section" id="testimonials" aria-label="מה אומרים עליי">
+      <section class="section" id="testimonials" aria-label="ציטוטים נבחרים">
         <div class="section-video-bg" aria-hidden="true">
           <video class="section-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
             <source src="./assets/testimonials-bg.mp4" type="video/mp4" />
@@ -486,7 +502,7 @@
         </div>
         <div class="container">
           <div class="section-head">
-            <h2 class="section-title">מה אומרים עליי</h2>
+            <h2 class="section-title">ציטוטים נבחרים</h2>
           </div>
 
           <div class="testimonials-carousel" data-testimonials-carousel aria-label="קרוסלת המלצות">
@@ -722,7 +738,7 @@
           <div class="muted footer-credit">© אלון שמילוביץ</div>
         </div>
         <div class="footer-links">
-          <a href="#testimonials">מה אומרים עליי</a>
+          <a href="#testimonials">ציטוטים נבחרים</a>
           <a href="#productions">הפקות</a>
           <a href="#process">התהליך</a>
           <a href="#faq">שאלות</a>
