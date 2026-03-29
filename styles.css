@@ -167,72 +167,61 @@ textarea {
   transform: translateY(0);
 }
 
+/* —— Site header: minimal floating bar over hero; glass only on scroll —— */
 .site-header {
-  position: fixed;
-  top: 0;
-  inset-inline: 0;
-  z-index: 50;
-  min-height: 92px;
+  min-height: 0;
   height: auto;
   background: transparent;
   border-bottom: 0;
+  pointer-events: none;
 }
 
-.site-header.scrolled {
-  background: transparent;
-}
-
-.site-header.scrolled .header-inner::before {
-  opacity: 0;
-  animation: none;
+.site-header > * {
+  pointer-events: auto;
 }
 
 .header-inner {
-  min-height: 64px;
-  height: auto;
-  padding-block: 8px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-areas: "cta logo nav";
   align-items: center;
-  gap: 14px;
+  gap: 10px 12px;
   position: relative;
-  z-index: 2; /* Keep all header elements in the same stacking layer */
-  margin-top: 14px;
-  padding-inline: 18px;
-  border-radius: 20px;
-  background: #dcc8b2;
-  border: 1px solid rgba(90, 66, 44, 0.24);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  box-shadow:
-    0 16px 34px rgba(18, 40, 22, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.68);
-  overflow: hidden;
+  z-index: 2;
   isolation: isolate;
+  min-height: 0;
+  margin-top: 0;
+  padding-block: 6px;
+  padding-inline: 10px;
+  transition:
+    background-color 320ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 320ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 320ms cubic-bezier(0.4, 0, 0.2, 1),
+    backdrop-filter 320ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Navbar color-flow animation inspired by the reference */
-.header-inner::before,
-.header-inner::after {
-  content: "";
-  position: absolute;
-  inset: -18% -8%;
-  pointer-events: none;
-  z-index: 0;
+@media (min-width: 761px) {
+  .header-inner {
+    padding-block: 7px;
+    padding-inline: 14px;
+    gap: 14px;
+  }
 }
 
-.header-inner::before {
-  background: none;
-  animation: none;
-  opacity: 0;
-  mix-blend-mode: normal;
+.site-header.scrolled .header-inner {
+  background: rgba(255, 248, 235, 0.58);
+  border-color: rgba(255, 255, 255, 0.42) !important;
+  box-shadow:
+    0 10px 36px rgba(18, 40, 22, 0.07),
+    0 1px 0 rgba(255, 255, 255, 0.55) inset;
+  backdrop-filter: blur(14px) saturate(1.12);
+  -webkit-backdrop-filter: blur(14px) saturate(1.12);
 }
 
-.header-inner::after {
-  background: none;
-  animation: none;
-  opacity: 0;
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header.scrolled .header-inner {
+    background: rgba(255, 248, 235, 0.92);
+  }
 }
 
 .header-inner > * {
@@ -240,44 +229,9 @@ textarea {
   z-index: 2;
 }
 
-@keyframes navDropFlow {
-  0% {
-    transform: translateY(-22px) translateX(-8px) scale(1.02);
-    filter: saturate(1.08);
-  }
-  35% {
-    transform: translateY(3px) translateX(7px) scale(1.035);
-    filter: saturate(1.2);
-  }
-  68% {
-    transform: translateY(11px) translateX(3px) scale(1.03);
-    filter: saturate(1.13);
-  }
-  100% {
-    transform: translateY(-10px) translateX(6px) scale(1.015);
-    filter: saturate(1.1);
-  }
-}
-
-@keyframes navShimmer {
-  0% {
-    transform: translateX(-4%);
-    opacity: 0.55;
-  }
-  50% {
-    transform: translateX(5%);
-    opacity: 0.9;
-  }
-  100% {
-    transform: translateX(-2%);
-    opacity: 0.6;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .header-inner::before,
-  .header-inner::after {
-    animation: none !important;
+  .header-inner {
+    transition: none !important;
   }
 }
 
@@ -369,15 +323,20 @@ textarea {
   white-space: nowrap;
 }
 
-/* Light/dark compatibility hooks for brand readability */
-.site-header {
-  --brand-ink: rgba(16, 18, 18, 0.95);
-  --brand-ink-soft: rgba(16, 18, 18, 0.68);
+/* Brand ink: light over hero, editorial dark on scrolled glass */
+.site-header:not(.scrolled) {
+  --brand-ink: rgba(255, 252, 246, 0.97);
+  --brand-ink-soft: rgba(255, 252, 246, 0.74);
+}
+
+.site-header.scrolled {
+  --brand-ink: rgba(22, 26, 24, 0.94);
+  --brand-ink-soft: rgba(22, 26, 24, 0.62);
 }
 
 .site-header.brand-on-dark {
-  --brand-ink: rgba(245, 247, 245, 0.96);
-  --brand-ink-soft: rgba(245, 247, 245, 0.78);
+  --brand-ink: rgba(255, 252, 246, 0.97);
+  --brand-ink-soft: rgba(255, 252, 246, 0.74);
 }
 
 .site-header .brand {
@@ -386,6 +345,21 @@ textarea {
 
 .site-header .brand-by {
   color: var(--brand-ink-soft);
+}
+
+.site-header:not(.scrolled) .brand {
+  text-shadow: 0 1px 22px rgba(0, 0, 0, 0.28);
+}
+
+/* Header-only: slightly tighter editorial lockup */
+.site-header .brand--soft-editorial .brand-name {
+  font-size: clamp(19px, 2.35vw, 28px);
+  letter-spacing: 0.03em;
+}
+
+.site-header .brand--soft-editorial .brand-by {
+  font-size: clamp(11px, 1.35vw, 15px);
+  letter-spacing: 0.06em;
 }
 
 /* Option 1 (chosen): Soft editorial — nav logo uses Record Struggle (both lines) */
@@ -465,20 +439,35 @@ textarea {
 
 .nav a {
   color: var(--muted);
-  font-weight: 650;
-  font-size: 16px;
-  padding: 8px 12px;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 6px 10px;
   border-radius: 999px;
   line-height: 1;
   display: inline-flex;
   align-items: center;
-  transition: background 160ms ease, color 160ms ease;
+  transition: background 200ms ease, color 200ms ease;
   white-space: nowrap;
 }
 
-.nav a:hover {
-  background: rgba(244, 227, 161, 0.22);
-  color: var(--text);
+@media (min-width: 761px) {
+  .site-header:not(.scrolled) .nav a {
+    color: rgba(255, 252, 246, 0.82);
+  }
+
+  .site-header:not(.scrolled) .nav a:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.98);
+  }
+
+  .site-header.scrolled .nav a {
+    color: var(--muted);
+  }
+
+  .site-header.scrolled .nav a:hover {
+    background: rgba(244, 227, 161, 0.2);
+    color: var(--text);
+  }
 }
 
 .header-cta {
@@ -489,7 +478,7 @@ textarea {
   position: relative;
   z-index: 3;
   align-items: center;
-  min-height: 64px;
+  min-height: 0;
   height: auto;
 }
 
@@ -501,20 +490,32 @@ textarea {
 }
 
 .nav-link-cta {
-  color: var(--muted);
   font-weight: 600;
-  font-size: 16px;
-  padding: 8px 9px;
+  font-size: 13px;
+  padding: 6px 8px;
   border-radius: 999px;
   line-height: 1;
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
-  transition: background 160ms ease, color 160ms ease;
+  transition: background 200ms ease, color 200ms ease;
 }
 
-.nav-link-cta:hover {
-  background: rgba(244, 227, 161, 0.38);
+.site-header:not(.scrolled) .nav-link-cta {
+  color: rgba(255, 252, 246, 0.78);
+}
+
+.site-header:not(.scrolled) .nav-link-cta:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.site-header.scrolled .nav-link-cta {
+  color: var(--muted);
+}
+
+.site-header.scrolled .nav-link-cta:hover {
+  background: rgba(244, 227, 161, 0.22);
   color: var(--text);
 }
 
@@ -535,11 +536,10 @@ textarea {
   line-height: 1;
 }
 
-/* Make the booking CTA visually stronger and easier to fit in the bar */
-.header-cta .button {
-  padding: 10px 15px;
-  font-size: 16px;
-  font-weight: 700;
+.header-cta .header-booking-cta {
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .icon-button {
@@ -563,7 +563,7 @@ textarea {
 }
 
 .burger-lines {
-  width: 18px;
+  width: 16px;
   height: 12px;
   position: relative;
   display: inline-block;
@@ -578,17 +578,46 @@ textarea {
   content: "";
   position: absolute;
   inset-inline-start: 0;
-  width: 18px;
-  height: 2px;
+  width: 16px;
+  height: 1.5px;
   border-radius: 999px;
   background: rgba(20, 28, 22, 0.85);
   transition: transform 160ms ease, top 160ms ease, opacity 120ms ease;
 }
 .burger-lines::before {
-  top: 2px;
+  top: 3px;
 }
 .burger-lines::after {
   top: 8px;
+}
+
+.site-header:not(.scrolled) .burger-lines::before,
+.site-header:not(.scrolled) .burger-lines::after {
+  background: rgba(255, 252, 246, 0.92);
+}
+
+.site-header:not(.scrolled) .icon-button.burger {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 252, 246, 0.95);
+}
+
+.site-header:not(.scrolled) .icon-button.burger:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.48);
+  transform: translateY(-1px);
+}
+
+.site-header.scrolled .icon-button.burger {
+  border-color: rgba(20, 28, 22, 0.1);
+  background: rgba(255, 255, 255, 0.48);
+  color: var(--text);
+}
+
+.site-header.scrolled .icon-button.burger:hover {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(20, 28, 22, 0.14);
+  transform: translateY(-1px);
 }
 
 /* All CTAs: white pill by default, orange + navy on hover */
@@ -620,19 +649,33 @@ a.button-primary:hover {
   color: var(--btn-ink);
 }
 
-/* After global button rules — navbar booking (palette: terracotta → sunshine) */
-.site-header .header-cta .button-primary {
-  background: #af5031;
-  border: 1px solid #092f33;
-  color: #e4cba9;
+/* Navbar booking CTA — quiet outline on hero, soft editorial fill when scrolled */
+.site-header:not(.scrolled) .header-booking-cta.button-primary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: rgba(255, 252, 246, 0.94);
   box-shadow: none;
 }
 
-.site-header .header-cta .button-primary:hover {
+.site-header:not(.scrolled) .header-booking-cta.button-primary:hover {
   transform: translateY(-1px);
-  background: #ea8913;
-  border-color: #092f33;
-  color: #092f33;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+}
+
+.site-header.scrolled .header-booking-cta.button-primary {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(20, 28, 22, 0.1);
+  color: rgba(20, 28, 22, 0.88);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset;
+}
+
+.site-header.scrolled .header-booking-cta.button-primary:hover {
+  transform: translateY(-1px);
+  background: rgba(20, 28, 22, 0.05);
+  border-color: rgba(20, 28, 22, 0.16);
+  color: var(--text);
 }
 
 .button:active,
@@ -640,6 +683,12 @@ a.button-primary:hover {
 a.button:active,
 a.button-primary:active {
   transform: translateY(0);
+}
+
+.site-header:not(.scrolled) .header-booking-cta:focus-visible,
+.site-header:not(.scrolled) .icon-button.burger:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.75);
+  outline-offset: 2px;
 }
 
 .button:focus-visible,
@@ -1433,17 +1482,102 @@ a.button-primary:active {
   max-width: 100%;
 }
 
+/* Full tag list for SEO / SR: never display:none — clip pattern via .sr-only (Tailwind) */
+.hero-tags-source {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .hero-meta.is-pills-revealed {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
 
-/* Hero service pills: ~60% glass vs previous 0.72 white */
+/* Rotating showcase: stacked layers, soft crossfade (no contain — can break abs. layer paint) */
+
+.hero-tags-layer {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  transition:
+    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-tags-layer.is-hidden {
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-tags-layer.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  z-index: 1;
+}
+
+/* Staggered tag entrance: RTL row = child 1 is rightmost → delays 1…n sweep right → left */
+@keyframes hero-tag-in-rtl {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.hero-tags-layer.is-hidden .hero-meta-row .pill {
+  animation: none !important;
+  opacity: 0;
+  transform: translateX(16px);
+}
+
+/* `both` = apply keyframe "from" during delay, then hold "to" (avoids stuck opacity:0 if animation is skipped) */
+.hero-tags-layer.is-visible .hero-meta-row .pill {
+  animation-name: hero-tag-in-rtl;
+  animation-duration: 0.62s;
+  animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+  animation-fill-mode: both;
+}
+
+.hero-tags-layer.is-visible .hero-meta-row .pill:nth-child(1) {
+  animation-delay: 0s;
+}
+.hero-tags-layer.is-visible .hero-meta-row .pill:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.hero-tags-layer.is-visible .hero-meta-row .pill:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.hero-tags-layer.is-visible .hero-meta-row .pill:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.hero-tags-layer.is-visible .hero-meta-row .pill:nth-child(5) {
+  animation-delay: 0.4s;
+}
+.hero-tags-layer.is-visible .hero-meta-row .pill:nth-child(6) {
+  animation-delay: 0.5s;
+}
+
+/* Hero tags: text only, no chip fill — reads on video like hero copy */
 .hero-meta .pill {
-  border: 1px solid rgba(110, 78, 45, 0.11);
-  background: rgba(255, 255, 255, 0.43);
-  color: rgba(20, 28, 22, 0.82);
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  padding: 2px 6px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 0, 0, 0.35);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1452,6 +1586,16 @@ a.button-primary:active {
     transform: none;
     pointer-events: auto;
     transition: none;
+  }
+
+  .hero-tags-layer {
+    transition: none;
+  }
+
+  .hero-tags-layer .hero-meta-row .pill {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -2879,16 +3023,17 @@ a.button-primary:active {
     grid-area: auto;
     display: none;
     position: fixed;
-    top: 92px;
+    top: calc(10px + env(safe-area-inset-top, 0px) + 52px);
     inset-inline: 12px;
     width: auto;
     max-width: none;
-    border-radius: 16px;
+    border-radius: 14px;
     padding: 10px;
-    background: #dcc8b2;
-    border: 1px solid rgba(90, 66, 44, 0.24);
-    backdrop-filter: none;
-    box-shadow: var(--shadow);
+    background: rgba(255, 248, 235, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(16px) saturate(1.1);
+    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+    box-shadow: 0 16px 40px rgba(18, 40, 22, 0.12);
     height: auto;
     max-height: min(70vh, 520px);
     flex-direction: column;
@@ -2906,19 +3051,25 @@ a.button-primary:active {
     justify-content: center;
     text-align: center;
     white-space: nowrap;
-    font-size: 17px;
+    font-size: 16px;
     padding: 8px 10px;
+    color: var(--text);
+  }
+  .nav a:hover {
+    background: rgba(244, 227, 161, 0.22);
+    color: var(--text);
   }
   .header-inner {
     grid-template-columns: auto 1fr auto;
     grid-template-areas: "cta logo burger";
-    min-height: 60px;
+    min-height: 0;
     height: auto;
-    padding-block: 6px;
-    margin-top: 10px;
+    padding-block: 5px;
+    padding-inline: 8px;
+    margin-top: 0;
   }
   .header-cta {
-    min-height: 52px;
+    min-height: 0;
     height: auto;
     align-items: center;
     grid-area: cta;
@@ -2962,8 +3113,9 @@ a.button-primary:active {
     text-align: center;
     max-width: min(220px, 100%);
   }
-  .header-cta .button {
-    padding: 9px 12px;
+  .header-cta .header-booking-cta {
+    padding: 6px 12px;
+    font-size: 12.5px;
   }
   .stat-row {
     grid-template-columns: 1fr;

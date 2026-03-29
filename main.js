@@ -23,6 +23,136 @@ function setHeroMetaPillsRevealed() {
   }
 }
 
+/** Hero tags: full list stays in [data-hero-tags-source] for SEO; viewport is decorative. */
+function initHeroTagsRotator() {
+  const meta = document.querySelector("[data-hero-meta]");
+  if (!meta) return;
+  const source = meta.querySelector("[data-hero-tags-source]");
+  const viewport = meta.querySelector("[data-hero-tags-viewport]");
+  if (!source || !viewport) return;
+
+  const tags = Array.from(source.querySelectorAll("li"), (li) => li.textContent.trim()).filter(Boolean);
+  if (!tags.length) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const ROTATE_MS = 8000;
+  const RESIZE_DEBOUNCE_MS = 220;
+
+  while (viewport.firstChild) {
+    viewport.removeChild(viewport.firstChild);
+  }
+
+  function buildPillRow(chunk) {
+    const row = document.createElement("div");
+    row.className = "hero-meta-row";
+    chunk.forEach((text) => {
+      const pill = document.createElement("span");
+      pill.className = "pill";
+      pill.textContent = text;
+      row.appendChild(pill);
+    });
+    return row;
+  }
+
+  function chunkSize() {
+    const w = window.innerWidth;
+    if (w < 480) return 3;
+    if (w < 768) return 4;
+    return 5;
+  }
+
+  function toChunks(list) {
+    const n = chunkSize();
+    const out = [];
+    for (let i = 0; i < list.length; i += n) {
+      out.push(list.slice(i, i + n));
+    }
+    return out;
+  }
+
+  if (reduceMotion) {
+    const wrap = document.createElement("div");
+    wrap.className = "hero-tags-static flex w-full flex-col items-center gap-2";
+    wrap.appendChild(buildPillRow(tags));
+    viewport.appendChild(wrap);
+    return;
+  }
+
+  const layers = [document.createElement("div"), document.createElement("div")];
+  layers.forEach((el) => {
+    el.className = "hero-tags-layer";
+    viewport.appendChild(el);
+  });
+
+  let chunks = toChunks(tags);
+  let index = 0;
+  let active = 0;
+  let timerId = null;
+  let resizeTid = null;
+
+  function renderInto(layer, chunk) {
+    layer.innerHTML = "";
+    layer.appendChild(buildPillRow(chunk));
+  }
+
+  function setLayerState(layer, visible) {
+    layer.classList.toggle("is-visible", visible);
+    layer.classList.toggle("is-hidden", !visible);
+  }
+
+  function resetToFirstChunk() {
+    chunks = toChunks(tags);
+    if (!chunks.length) return;
+    index = 0;
+    active = 0;
+    renderInto(layers[0], chunks[0]);
+    layers[1].innerHTML = "";
+    void layers[0].offsetWidth;
+    setLayerState(layers[0], true);
+    setLayerState(layers[1], false);
+  }
+
+  function advance() {
+    if (chunks.length <= 1) return;
+    const nextIndex = (index + 1) % chunks.length;
+    const incoming = layers[1 - active];
+    const outgoing = layers[active];
+    renderInto(incoming, chunks[nextIndex]);
+    void incoming.offsetWidth;
+    setLayerState(incoming, true);
+    setLayerState(outgoing, false);
+    active = 1 - active;
+    index = nextIndex;
+  }
+
+  function stopTimer() {
+    if (timerId != null) {
+      clearInterval(timerId);
+      timerId = null;
+    }
+  }
+
+  function startTimer() {
+    stopTimer();
+    if (chunks.length <= 1) return;
+    timerId = window.setInterval(advance, ROTATE_MS);
+  }
+
+  function onResize() {
+    if (resizeTid != null) window.clearTimeout(resizeTid);
+    resizeTid = window.setTimeout(() => {
+      resizeTid = null;
+      stopTimer();
+      resetToFirstChunk();
+      startTimer();
+    }, RESIZE_DEBOUNCE_MS);
+  }
+
+  resetToFirstChunk();
+  startTimer();
+  window.addEventListener("resize", onResize, { passive: true });
+}
+
 function setMenuOpen(isOpen) {
   if (!nav || !menuBtn) return;
   nav.classList.toggle("is-open", isOpen);
@@ -357,6 +487,7 @@ window.addEventListener("scroll", setScrolledHeader, { passive: true });
 window.addEventListener("scroll", setHeroMetaPillsRevealed, { passive: true });
 setScrolledHeader();
 setHeroMetaPillsRevealed();
+initHeroTagsRotator();
 wireMenu();
 wireBooking();
 wireAccordionSingleOpen();

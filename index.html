@@ -17,46 +17,74 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            transitionDuration: { header: "320ms" },
+            transitionTimingFunction: { editorial: "cubic-bezier(0.4, 0, 0.2, 1)" },
+          },
+        },
+      };
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">דלג/י לתוכן</a>
 
-    <header class="site-header" data-header>
-      <div class="container header-inner">
-        <button class="icon-button burger" type="button" aria-label="פתח/סגור תפריט" aria-expanded="false" data-menu-button>
-          <span class="burger-lines" aria-hidden="true"></span>
-        </button>
+    <header
+      class="site-header fixed inset-x-0 top-0 z-50"
+      data-header
+    >
+      <div class="container box-border pt-2 pb-1 md:pt-2.5 md:pb-1.5">
+        <div
+          class="header-inner grid w-full min-w-0 max-w-full items-center rounded-[14px] border border-transparent bg-transparent shadow-none backdrop-blur-none transition-all duration-header ease-editorial motion-reduce:transition-none"
+        >
+          <button
+            class="icon-button burger inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] border p-0 motion-reduce:transition-none"
+            type="button"
+            aria-label="פתח/סגור תפריט"
+            aria-expanded="false"
+            data-menu-button
+          >
+            <span class="burger-lines" aria-hidden="true"></span>
+          </button>
 
-        <a class="brand brand--soft-editorial" href="#home" aria-label="LABA RECORDS — דף הבית">
-          <span class="brand-lockup">
-            <span class="brand-name">LABA RECORDS</span>
-            <span class="brand-by">BY CORAL BISMUTH</span>
-          </span>
-        </a>
+          <a class="brand brand--soft-editorial" href="#home" aria-label="LABA RECORDS — דף הבית">
+            <span class="brand-lockup">
+              <span class="brand-name tracking-[0.03em]">LABA RECORDS</span>
+              <span class="brand-by tracking-[0.06em]">BY CORAL BISMUTH</span>
+            </span>
+          </a>
 
-        <nav class="nav" aria-label="ניווט ראשי" data-nav>
-          <a href="#testimonials">מה אומרים עליי</a>
-          <a href="#faq">שאלות</a>
-          <a href="#gallery">קצת על האולפן</a>
-          <a class="nav-mobile-only" href="#productions">הפקות</a>
-          <a class="nav-mobile-only" href="#process">התהליך</a>
-          <a class="nav-mobile-only" href="#about">היי</a>
-        </nav>
+          <nav class="nav" aria-label="ניווט ראשי" data-nav>
+            <a href="#testimonials">מה אומרים עליי</a>
+            <a href="#faq">שאלות</a>
+            <a href="#gallery">קצת על האולפן</a>
+            <a class="nav-mobile-only" href="#productions">הפקות</a>
+            <a class="nav-mobile-only" href="#process">התהליך</a>
+            <a class="nav-mobile-only" href="#about">היי</a>
+          </nav>
 
-        <div class="header-cta">
-          <div class="header-cta-cluster">
-            <div class="header-cta-links">
-              <a class="nav-link-cta nav-desktop-only" href="#about">היי</a>
-              <a class="nav-link-cta nav-desktop-only" href="#process">התהליך</a>
-              <a class="nav-link-cta nav-desktop-only" href="#productions">הפקות</a>
-            </div>
-            <div class="header-cta-booking">
-              <button class="button button-primary" type="button" data-open-booking>
-                לקביעת סשן
-              </button>
-              <span class="brand-address brand-address--under-cta" lang="he" dir="rtl">
-                <span class="brand-address-star" aria-hidden="true">*</span> מושב אודים, השרון
-              </span>
+          <div class="header-cta">
+            <div class="header-cta-cluster">
+              <div class="header-cta-links">
+                <a class="nav-link-cta nav-desktop-only" href="#about">היי</a>
+                <a class="nav-link-cta nav-desktop-only" href="#process">התהליך</a>
+                <a class="nav-link-cta nav-desktop-only" href="#productions">הפקות</a>
+              </div>
+              <div class="header-cta-booking">
+                <button
+                  class="button button-primary header-booking-cta text-sm font-semibold motion-reduce:transition-none"
+                  type="button"
+                  data-open-booking
+                >
+                  לקביעת סשן
+                </button>
+                <span class="brand-address brand-address--under-cta" lang="he" dir="rtl">
+                  <span class="brand-address-star" aria-hidden="true">*</span> מושב אודים, השרון
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -119,18 +147,39 @@
             </p>
           </div>
 
-          <div class="hero-meta" data-hero-meta aria-label="תגיות שירות">
-            <div class="hero-meta-row">
-              <span class="pill">הפקה</span>
-              <span class="pill">הקלטה</span>
-              <span class="pill">עריכה</span>
-              <span class="pill">מיקס</span>
-              <span class="pill">סשן חד-פעמי</span>
-            </div>
-            <div class="hero-meta-row">
-              <span class="pill">מרחב תרפיה (ויש פה כלב🐕)</span>
-              <span class="pill">אולפן אינדי רך 🍂</span>
-              <span class="pill">מושב אודים, השרון, חצי שעה מת"א 📍</span>
+          <div class="hero-meta" data-hero-meta role="region" aria-labelledby="hero-tags-heading">
+            <p id="hero-tags-heading" class="sr-only">תגיות שירות</p>
+            <ul
+              class="hero-tags-source sr-only"
+              data-hero-tags-source
+              aria-labelledby="hero-tags-heading"
+            >
+              <li>הפקה</li>
+              <li>הקלטה</li>
+              <li>עריכה</li>
+              <li>מיקס</li>
+              <li>סשן חד-פעמי</li>
+              <li>מרחב תרפיה (ויש פה כלב🐕)</li>
+              <li>אולפן אינדי רך 🍂</li>
+              <li>מושב אודים, השרון, חצי שעה מת"א 📍</li>
+            </ul>
+            <div
+              class="hero-tags-viewport relative mx-auto w-full max-w-3xl min-h-[3rem] sm:min-h-[3.25rem] md:min-h-[3.5rem]"
+              data-hero-tags-viewport
+              aria-hidden="true"
+            >
+              <noscript>
+                <div class="hero-meta-row">
+                  <span class="pill">הפקה</span>
+                  <span class="pill">הקלטה</span>
+                  <span class="pill">עריכה</span>
+                  <span class="pill">מיקס</span>
+                  <span class="pill">סשן חד-פעמי</span>
+                  <span class="pill">מרחב תרפיה (ויש פה כלב🐕)</span>
+                  <span class="pill">אולפן אינדי רך 🍂</span>
+                  <span class="pill">מושב אודים, השרון, חצי שעה מת"א 📍</span>
+                </div>
+              </noscript>
             </div>
           </div>
 
