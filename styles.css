@@ -277,24 +277,30 @@ textarea {
 
   .header-floating-wing-cta {
     flex: 0 0 auto;
-    border: 1px solid rgba(255, 255, 255, 0.9) !important;
-    background: transparent !important;
-    color: rgba(255, 255, 255, 0.96) !important;
-    border-radius: 999px;
-    min-height: 28px;
-    padding: 5px 10px;
+    border: 1px solid rgba(124, 84, 52, 0.62) !important;
+    background: rgba(248, 242, 232, 0.96) !important;
+    color: rgba(56, 38, 24, 0.96) !important;
+    border-radius: 6px;
+    min-height: 36px;
+    padding: 8px 16px;
     font-family: "Carmela", "Heebo", system-ui, sans-serif;
-    font-size: clamp(11px, 0.95vw, 13px);
-    font-weight: 600;
-    line-height: 1.1;
-    box-shadow: none !important;
-    transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+    font-size: clamp(12.5px, 1.05vw, 15px);
+    font-weight: 700;
+    line-height: 1.15;
+    box-shadow:
+      0 2px 0 rgba(255, 255, 255, 0.55) inset,
+      0 4px 14px rgba(124, 84, 52, 0.14) !important;
+    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
     white-space: nowrap;
   }
 
   .header-floating-wing-cta:hover {
     transform: translateY(-1px);
-    background: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(252, 246, 236, 1) !important;
+    border-color: rgba(124, 84, 52, 0.78) !important;
+    box-shadow:
+      0 2px 0 rgba(255, 255, 255, 0.65) inset,
+      0 6px 18px rgba(124, 84, 52, 0.2) !important;
   }
 
   .header-floating-wing-nav {
@@ -475,19 +481,25 @@ textarea {
   }
 
   .site-header.logo-only.scrolled .header-booking-cta.button-primary {
-    background: rgba(255, 255, 255, 0.94) !important;
-    border: 1px solid rgba(255, 255, 255, 0.98) !important;
-    color: rgba(20, 28, 22, 0.9) !important;
-    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.12);
-    font-size: clamp(11.5px, 3.15vw, 14px);
-    padding: 7px 11px;
+    background: rgba(248, 242, 232, 0.96) !important;
+    border: 1px solid rgba(124, 84, 52, 0.62) !important;
+    color: rgba(56, 38, 24, 0.96) !important;
+    border-radius: 6px;
+    box-shadow:
+      0 2px 0 rgba(255, 255, 255, 0.5) inset,
+      0 4px 14px rgba(124, 84, 52, 0.14);
+    font-size: clamp(12.5px, 3.4vw, 15px);
+    padding: 9px 14px;
+    min-height: 38px;
     font-weight: 700;
   }
 
   .site-header.logo-only.scrolled .header-booking-cta.button-primary:hover {
-    background: #fff !important;
-    border-color: #fff !important;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+    background: rgba(252, 246, 236, 1) !important;
+    border-color: rgba(124, 84, 52, 0.78) !important;
+    box-shadow:
+      0 2px 0 rgba(255, 255, 255, 0.6) inset,
+      0 6px 18px rgba(124, 84, 52, 0.2);
   }
 
   .site-header.logo-only.scrolled .icon-button.burger {
@@ -1433,11 +1445,8 @@ a.button-primary:active {
   }
 
   #faq.section {
-    background-color: #7a66a8 !important;
-    background-image: url("./assets/paper-purple-crumpled.png") !important;
-    background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
-    background-position: center !important;
+    background-color: #e8e4dc !important;
+    background-image: none !important;
   }
 
   #faq.section .section-video-overlay {
@@ -1456,6 +1465,7 @@ a.button-primary:active {
 
 #about.section .section-head .section-subtitle,
 #productions.section .section-head .section-subtitle,
+#productions.section .section-head .section-subtitle-line,
 #process.section .section-head .section-subtitle {
   color: rgba(255, 255, 255, 0.9);
   font-weight: 800;
@@ -2085,6 +2095,26 @@ a.button-primary:active {
   margin-inline: auto;
 }
 
+/* Productions intro: one rhythm between lines (no mixed paragraph gaps vs line-height) */
+#productions.section .section-subtitle-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.62em;
+  max-width: min(72ch, 100%);
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+
+#productions.section .section-subtitle-line {
+  margin: 0;
+  padding: 0;
+  line-height: 1.48;
+  max-width: 100%;
+  text-wrap: balance;
+}
+
 #about.section {
   background-color: #f9f1cf;
   background-image:
@@ -2110,12 +2140,12 @@ a.button-primary:active {
   background-image: none !important;
 }
 
-/* Darken FAQ video slightly so accordion text stays readable */
+/* FAQ video: soft warm wash (panel is off-white, not stark) */
 #faq.section .section-video-overlay {
   background: linear-gradient(
     180deg,
-    rgba(20, 28, 22, 0.38),
-    rgba(60, 48, 92, 0.52)
+    rgba(236, 232, 224, 0.78),
+    rgba(228, 223, 214, 0.82)
   );
 }
 
@@ -2152,35 +2182,129 @@ a.button-primary:active {
   color: var(--btn-ink);
 }
 
-/* FAQ (questions accordion) must be readable on purple */
+/* FAQ: minimalist cream accordion (RTL, chevron left, hairline dividers) */
+#faq.section .container {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin-inline: auto;
+  padding: clamp(22px, 4vw, 34px) clamp(16px, 3.5vw, 28px) clamp(26px, 4vw, 38px);
+  background: #ebe8e1;
+  border: 1px solid rgba(20, 28, 22, 0.1);
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset;
+}
+
+#faq.section .section-head {
+  margin-bottom: 0.35rem;
+  text-align: right;
+}
+
 #faq.section .section-title {
-  color: rgba(255, 255, 255, 0.96) !important;
+  color: rgba(22, 26, 24, 0.94) !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+  text-align: right;
 }
 
 #faq.section .section-subtitle {
-  color: rgba(255, 255, 255, 0.86) !important;
+  color: rgba(22, 26, 24, 0.68) !important;
+  text-shadow: none !important;
+  text-align: right;
 }
 
-#faq.section .qa summary {
-  color: rgba(255, 255, 255, 0.96) !important;
-}
-
-#faq.section .qa summary::after {
-  color: rgba(255, 255, 255, 0.86) !important;
-}
-
-#faq.section .qa-body {
-  color: rgba(255, 255, 255, 0.86) !important;
+#faq.section .accordion {
+  display: block;
+  gap: 0;
+  margin-top: 0.5rem;
+  padding: 0;
+  background: transparent;
+  border: none;
 }
 
 #faq.section .qa {
-  background: rgba(255, 255, 255, 0.16) !important;
-  border-color: rgba(255, 255, 255, 0.18) !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(20, 28, 22, 0.14) !important;
+  overflow: visible;
+}
+
+#faq.section .qa:last-child {
+  border-bottom: none !important;
 }
 
 #faq.section .qa[open] {
-  border-color: rgba(255, 255, 255, 0.26) !important;
-  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.12) !important;
+  border-bottom-color: rgba(20, 28, 22, 0.14) !important;
+  box-shadow: none !important;
+}
+
+#faq.section .qa summary {
+  display: flow-root;
+  cursor: pointer;
+  color: rgba(22, 26, 24, 0.94) !important;
+  font-weight: 700 !important;
+  padding: 1.05rem 0 1.05rem 1.75rem;
+  padding-inline-end: 0;
+  line-height: 1.45;
+  list-style: none;
+  text-align: right;
+  transition: color 0.15s ease;
+}
+
+#faq.section .qa summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Chevron on physical left (float:left), text RTL-right */
+#faq.section .qa summary::after {
+  float: left;
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-top: 0.38rem;
+  margin-inline-end: 0;
+  border: solid rgba(22, 26, 24, 0.5);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease, border-color 0.15s ease;
+}
+
+#faq.section .qa[open] summary::after {
+  margin-top: 0.52rem;
+  transform: rotate(-135deg);
+  border-color: rgba(22, 26, 24, 0.58);
+}
+
+#faq.section .qa summary:hover {
+  color: rgba(12, 14, 13, 0.98) !important;
+}
+
+#faq.section .qa-body {
+  color: rgba(22, 26, 24, 0.7) !important;
+  font-weight: 400 !important;
+  font-size: clamp(0.9rem, 2.1vw, 0.98rem);
+  padding: 0 0 1.05rem 1.75rem !important;
+  padding-inline-end: 0 !important;
+  margin: 0;
+  text-align: right;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  #faq.section .container {
+    margin-inline: max(0px, env(safe-area-inset-left, 0px));
+    margin-inline-end: max(0px, env(safe-area-inset-right, 0px));
+    border-radius: 0;
+    border-inline: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #faq.section .qa summary::after {
+    transition: none;
+  }
 }
 
 .section-head {
