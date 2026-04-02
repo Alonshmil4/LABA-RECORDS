@@ -201,7 +201,7 @@ function openBooking() {
     bookingModal.showModal();
     return;
   }
-  alert("הדפדפן לא תומך בחלון הקופץ הזה. אפשר לחבר כאן לוואטסאפ/טלפון בהמשך.");
+  alert("הדפדפן לא תומך בחלון הקופץ הזה. אפשר לפנות ישירות בוואטסאפ.");
 }
 
 function wireBooking() {
@@ -210,16 +210,158 @@ function wireBooking() {
   });
 
   if (!bookingModal) return;
-  bookingModal.addEventListener("close", () => {
-    const form = $("form", bookingModal);
-    if (!form) return;
-    if (bookingModal.returnValue === "confirm") {
-      // Demo only: show a friendly message without sending anywhere.
-      const name = new FormData(form).get("name") || "תודה";
-      alert(`${name} — קיבלתי! כרגע זה דמו, נחבר לוואטסאפ/מייל בהמשך.`);
+  const form = $("form", bookingModal);
+  if (!form) return;
+
+  const parseWhatsappTarget = () => {
+    const direct = $(".whatsapp-float")?.getAttribute("href") || "";
+    const m = direct.match(/wa\.me\/(\d+)/);
+    return m?.[1] || "972546345836";
+  };
+
+  form.addEventListener("submit", (e) => {
+    const submitter = e.submitter;
+    if (submitter?.value === "cancel") return;
+    e.preventDefault();
+
+    if (!form.reportValidity()) return;
+
+    const fd = new FormData(form);
+    const serviceSelect = form.elements.namedItem("service");
+    const name = String(fd.get("name") || "").trim();
+    const phone = String(fd.get("phone") || "").trim();
+    const serviceFromFormData = String(fd.get("service") || "").trim();
+    const serviceFromSelectValue =
+      serviceSelect && "value" in serviceSelect ? String(serviceSelect.value || "").trim() : "";
+    const serviceFromSelectedText =
+      serviceSelect && "selectedOptions" in serviceSelect && serviceSelect.selectedOptions?.[0]
+        ? String(serviceSelect.selectedOptions[0].textContent || "").trim()
+        : "";
+    const service = serviceFromFormData || serviceFromSelectValue || serviceFromSelectedText;
+    const favoriteSong = String(fd.get("favoriteSong") || "").trim();
+    const message = String(fd.get("message") || "").trim();
+
+    if (!service || service.includes("בחר")) {
+      if (serviceSelect && "focus" in serviceSelect) serviceSelect.focus();
+      form.reportValidity();
+      return;
     }
+
+    const lines = [
+      "הייי! הגעתי מהאתר של LABA RECORDS ואשמח לקבוע איתך סשן באולפן :)",
+      "",
+      "פרטים",
+      `שם: ${name}`,
+      `טלפון: ${phone}`,
+      `מה מעניין אותי: ${service}`,
+      `שיר אהוב כרגע: ${favoriteSong || "-"}`,
+      `הודעה: ${message || "-"}`,
+    ];
+
+    const text = encodeURIComponent(lines.join("\n"));
+    const waUrl = `https://wa.me/${parseWhatsappTarget()}?text=${text}`;
+    const popup = window.open(waUrl, "_blank", "noopener,noreferrer");
+    if (!popup) {
+      window.location.href = waUrl;
+    }
+
+    bookingModal.close("confirm");
     form.reset();
   });
+}
+
+function wireFooterSongExperience() {
+  const playerRoot = $("[data-footer-spotify-player]");
+  const songModal = $("[data-footer-song-modal]");
+  if (!playerRoot) return;
+
+  const TRACK_URI = "spotify:track:5eRLUDkuZmM81JdB6xjGeV";
+  const FALLBACK_DURATION_MS = 184000; // 3:04
+  let fallbackTid = null;
+  let modalOpened = false;
+
+  const openSongModal = () => {
+    if (!songModal || songModal.open || modalOpened) return;
+    modalOpened = true;
+    if (typeof songModal.showModal === "function") {
+      songModal.showModal();
+      return;
+    }
+    songModal.setAttribute("open", "");
+  };
+
+  const stripPlayerScrollbars = () => {
+    const iframe = $("iframe", playerRoot);
+    if (!iframe) return;
+    iframe.setAttribute("scrolling", "no");
+    iframe.style.overflow = "hidden";
+    iframe.style.display = "block";
+  };
+
+  const armFallbackTimer = () => {
+    if (fallbackTid != null) {
+      window.clearTimeout(fallbackTid);
+    }
+    fallbackTid = window.setTimeout(openSongModal, FALLBACK_DURATION_MS);
+  };
+
+  if (songModal) {
+    songModal.addEventListener("click", (e) => {
+      if (e.target === songModal) songModal.close("cancel");
+    });
+    const bookingBtn = $("[data-footer-song-booking]", songModal);
+    if (bookingBtn) {
+      bookingBtn.addEventListener("click", () => {
+        songModal.close("booking");
+        openBooking();
+      });
+    }
+  }
+
+  const renderIframeFallback = () => {
+    playerRoot.innerHTML = `
+      <iframe
+        src="https://open.spotify.com/embed/track/5eRLUDkuZmM81JdB6xjGeV?utm_source=generator&theme=0"
+        title="לבה - Coral Bismuth"
+        loading="lazy"
+        scrolling="no"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      ></iframe>
+    `;
+    stripPlayerScrollbars();
+    playerRoot.addEventListener("click", armFallbackTimer, { once: true });
+  };
+
+  window.onSpotifyIframeApiReady = (IFrameAPI) => {
+    IFrameAPI.createController(
+      playerRoot,
+      { uri: TRACK_URI, width: 320, height: 80, theme: "dark" },
+      (EmbedController) => {
+        // API injects an iframe; remove inner scrollbars in compact mode.
+        window.requestAnimationFrame(stripPlayerScrollbars);
+        EmbedController.addListener("playback_update", (event) => {
+          const data = event?.data || {};
+          const duration = Number(data.duration) || FALLBACK_DURATION_MS;
+          const position = Number(data.position) || 0;
+          const isPaused = Boolean(data.isPaused);
+
+          if (!isPaused && position > 0) {
+            armFallbackTimer();
+          }
+
+          if (duration > 0 && position >= duration - 1200) {
+            openSongModal();
+          }
+        });
+      }
+    );
+  };
+
+  const script = document.createElement("script");
+  script.src = "https://open.spotify.com/embed/iframe-api/v1";
+  script.async = true;
+  script.onerror = renderIframeFallback;
+  document.body.appendChild(script);
 }
 
 function wireAccordionSingleOpen() {
@@ -510,6 +652,7 @@ setHeroMetaPillsRevealed();
 initHeroTagsMobileRotator();
 wireMenu();
 wireBooking();
+wireFooterSongExperience();
 wireAccordionSingleOpen();
 wireDisabledLinks();
 wireScrollReveal();

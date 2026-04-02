@@ -749,6 +749,10 @@
           <a href="https://www.facebook.com/CoralBismuthPage" target="_blank" rel="noopener">Facebook</a>
           <a href="https://music.apple.com/il/artist/coral-bismuth/1322500040" target="_blank" rel="noopener">Apple Music</a>
         </div>
+        <div class="footer-play-cta" lang="he" dir="rtl">
+          <p class="footer-play-text">הגעת עד לפה?</p>
+          <div class="footer-spotify-player" data-footer-spotify-player aria-label="נגן Spotify - לבה"></div>
+        </div>
       </div>
     </footer>
 
@@ -757,7 +761,7 @@
         <div class="modal-head">
           <div>
             <div class="modal-title">לקביעת סשן</div>
-            <div class="muted">השאירו פרטים ואחזור אליכם. (כרגע דמו — נחבר לוואטסאפ/מייל אחר כך)</div>
+            <div class="muted">ממש מתרגשת כבר להכיר! צריכה רק כמה פרטים קטנים כדי שאתכוונן למה שהכי מדויק לך &#127928;</div>
           </div>
           <button class="icon-button" type="submit" formnovalidate value="cancel" aria-label="סגור">
             ✕
@@ -777,12 +781,16 @@
             <span>מה בא לך לעשות?</span>
             <select name="service" required>
               <option value="" selected disabled>בחר/י שירות</option>
-              <option>הפקה</option>
-              <option>הקלטה</option>
-              <option>עריכה</option>
-              <option>מיקס</option>
-              <option>ייעוץ/הכוונה</option>
+              <option>הפקה והקלטה</option>
+              <option>עריכה ומיקס</option>
+              <option>סשן חד-פעמי</option>
+              <option>סטודיו להשכרה</option>
+              <option>הכוונה וייעוץ</option>
             </select>
+          </label>
+          <label class="field field-span-2">
+            <span>שיר אהוב כרגע? :)</span>
+            <input name="favoriteSong" placeholder="שם שיר או קישור" />
           </label>
           <label class="field field-span-2">
             <span>הודעה</span>
@@ -791,7 +799,23 @@
         </div>
 
         <div class="modal-actions">
-          <button class="button button-primary" value="confirm">שליחה (דמו)</button>
+          <button class="button button-primary" value="confirm">יאללה התחלנו</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="modal modal--song-end" data-footer-song-modal aria-label="סיום שיר">
+      <form class="modal-card" method="dialog">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title">גם לך יש שיר שמתפרץ מתוכך כמו לבה &#127755;?</div>
+          </div>
+          <button class="icon-button" type="submit" formnovalidate value="cancel" aria-label="סגור">
+            ✕
+          </button>
+        </div>
+        <div class="modal-actions">
+          <button class="button button-primary" type="button" data-footer-song-booking>לקביעת סשן</button>
         </div>
       </form>
     </dialog>
