@@ -144,6 +144,7 @@
             poster="./assets/hero.png"
             aria-hidden="true"
           >
+            <source src="./assets/hero-mobile.mp4" type="video/mp4" media="(max-width: 760px)" />
             <source src="./assets/hero.mp4" type="video/mp4" />
           </video>
           <div class="hero-video-fallback" aria-hidden="true"></div>
@@ -152,7 +153,6 @@
         </div>
 
         <div class="container hero-inner">
-          <p class="kicker">LABA RECORDS — By Coral Bismuth</p>
           <div class="hero-headlines">
             <h1 class="hero-title">
               <span class="hero-title__primary">כשהלב נפתח זה יוצא לבד</span><br />
@@ -199,31 +199,148 @@
             </div>
           </div>
 
+          <p class="kicker">LABA RECORDS — By Coral Bismuth</p>
         </div>
       </section>
 
-      <section class="section" id="about" aria-label="על קורל ביסמוט">
-        <div class="section-video-bg" aria-hidden="true">
-          <video class="section-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-            <source src="./assets/yam-about.mp4" type="video/mp4" />
-          </video>
-          <div class="section-video-overlay" aria-hidden="true"></div>
-        </div>
-        <div class="container">
-          <div class="about-text-only">
-            <h2 class="section-title">היי, אני קורל ביסמוט</h2>
-            <p class="lead">
-              היי :)
-            </p>
-            <p class="muted">
-              כאן נשים את הטקסט האמיתי: מה האולפן בשבילך, מה את מצליחה לייצר כל פעם מחדש, מה האני מאמין שלך, ואיך את גורמת לאמנים לצאת עם שיר שמרגיש שלהם — רק יותר חד, יותר אמיתי, יותר “זה”.
-            </p>
+      <section class="section about-split" id="about" aria-label="על קורל ביסמוט">
+        <div class="about-split__grid" dir="ltr">
+          <div class="about-split__media">
+            <video
+              class="about-split__video"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              aria-hidden="true"
+            >
+              <source src="./assets/yam-about-mobile.mp4" type="video/mp4" />
+            </video>
+            <div class="about-mobile-carousel-layer">
+              <div class="about-mobile-book" dir="ltr">
+                <button
+                  class="about-mobile-book__nav about-mobile-book__nav--prev"
+                  type="button"
+                  data-about-book-prev
+                  aria-controls="about-mobile-carousel-track"
+                  aria-label="עמוד קודם"
+                >
+                  ‹
+                </button>
+                <div class="about-mobile-book__viewport">
+                  <div
+                    id="about-mobile-carousel-track"
+                    class="about-mobile-carousel"
+                    role="region"
+                    aria-label="קצת על קורל — דפדוף בין עמודים"
+                    tabindex="0"
+                    dir="ltr"
+                    data-about-mobile-carousel
+                  >
+                <article class="about-mobile-card" dir="rtl">
+                  <p class="about-mobile-card__text">
+איזה כיף שנחתתם כאן, במקרה או לא. נעים מאוד, אני קורל ביסמוט.
+בת 31, יצור רגיש מאוד, מפיקה מוסיקלית, גיטריסטית, זמרת, כותבת, <span class="about-uline">מלחינה</span>
+ואמא של קיקו הכלב הכי גדול עם האופי הכי קטן שתכירו.</p>
+                </article>
+                <article class="about-mobile-card" dir="rtl">
+                  <p class="about-mobile-card__text">
+אולי נתקלתם בי מנגנת ברחובות הארץ עם מגבר לופר וחמניות,
+או אולי שמעתם עליי דרך הסיפור שלהקת <a class="about-maroon-mention" href="https://www.mako.co.il/news-entertainment/2022_q2/Article-3fdef404834c081026.htm?utm_source=copy_link&amp;utm_medium=share&amp;utm_campaign=n12_article" target="_blank" rel="noopener noreferrer">Maroon5</a>
+<span class="about-line-em">ראתה אותי ברחוב ואירחה אותי על הבמה מול עשרות אלפי אנשים.</span>
+אבל תכלס מה זה משנה הסיפור?
+זאת רק תפאורה לתנועה שחיה בי מבפנים.</p>
+                </article>
+                <article class="about-mobile-card" dir="rtl">
+                  <p class="about-mobile-card__text">
+אני אחת כזו שהולכת אחרי מה שהיא מדמיינת ויודעת לתרגם את זה ל<span class="about-uline">מציאות</span>.
+האולפן הזה הוא בדיוק זה. איך שתמיד חלמתי את זה:
 
-            <div class="hero-actions">
-              <button class="button button-primary" type="button" data-open-booking>
-                כל שיר מתחיל בכוס קקאו
-              </button>
-              <a class="button" href="#productions">הפקות שלי</a>
+סטודיו מעץ.
+משקיף לחורשת עצי פקאן פסטורלית.
+קצת מרגיש כמו צפון איטליה (ועדיין ממש במרכז הארץ)
+ציוצי ציפורים שנכנסים לפעמים למיקס.
+וציוד ברמה הכי גבוהה שיש.
+כי ככה אני רוצה ליצור מוסיקה.
+כי ככה אני באמת מרגישה שאני יכולה לבטא את מה שפועם בי.
+בנחת בעדינות ועם ירוק מול העיניים.</p>
+                </article>
+                <article class="about-mobile-card" dir="rtl">
+                  <p class="about-mobile-card__text">
+אם אתם מתחברים לזה, הגעתם למקום הנכון ❤️
+בואו נשב על כוס תה, יש לי את כל הסוגים בגינת ירק, רק תבחרו.</p>
+                </article>
+                  </div>
+                </div>
+                <button
+                  class="about-mobile-book__nav about-mobile-book__nav--next"
+                  type="button"
+                  data-about-book-next
+                  aria-controls="about-mobile-carousel-track"
+                  aria-label="עמוד הבא"
+                >
+                  ›
+                </button>
+              </div>
+              <p class="about-mobile-book__counter" data-about-book-counter aria-live="polite"></p>
+              <div class="about-mobile-actions">
+                <button class="button button-primary" type="button" data-open-booking>
+                  כל שיר מתחיל בכוס קקאו
+                </button>
+                <a class="button" href="#productions">הפקות שלי</a>
+              </div>
+            </div>
+          </div>
+          <div class="about-split__panel" dir="rtl">
+            <div class="container about-split__inner">
+              <div class="about-text-only">
+                <h2 class="section-title">
+                  היי, אני
+                  <a
+                    class="about-title-link"
+                    href="https://www.google.com/search?q=%D7%A7%D7%95%D7%A8%D7%9C+%D7%91%D7%99%D7%A1%D7%9E%D7%95%D7%98"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    קורל ביסמוט
+                  </a>
+                </h2>
+                <div class="about-prose">
+                  <p class="about-prose__lines">
+איזה כיף שנחתתם כאן, במקרה או לא. נעים מאוד, אני קורל ביסמוט.
+בת 31, יצור רגיש מאוד, מפיקה מוסיקלית, גיטריסטית, זמרת, כותבת, <span class="about-uline">מלחינה</span>
+ואמא של קיקו הכלב הכי גדול עם האופי הכי קטן שתכירו.
+
+אולי נתקלתם בי מנגנת ברחובות הארץ עם מגבר לופר וחמניות,
+או אולי שמעתם עליי דרך הסיפור שלהקת <a class="about-maroon-mention" href="https://www.mako.co.il/news-entertainment/2022_q2/Article-3fdef404834c081026.htm?utm_source=copy_link&amp;utm_medium=share&amp;utm_campaign=n12_article" target="_blank" rel="noopener noreferrer">Maroon5</a>
+<span class="about-line-em">ראתה אותי ברחוב ואירחה אותי על הבמה מול עשרות אלפי אנשים.</span>
+אבל תכלס מה זה משנה הסיפור?
+זאת רק תפאורה לתנועה שחיה בי מבפנים.
+
+אני אחת כזו שהולכת אחרי מה שהיא מדמיינת ויודעת לתרגם את זה ל<span class="about-uline">מציאות</span>.
+האולפן הזה הוא בדיוק זה. איך שתמיד חלמתי את זה:
+
+סטודיו מעץ.
+משקיף לחורשת עצי פקאן פסטורלית.
+קצת מרגיש כמו צפון איטליה (ועדיין ממש במרכז הארץ)
+ציוצי ציפורים שנכנסים לפעמים למיקס.
+וציוד ברמה הכי גבוהה שיש.
+כי ככה אני רוצה ליצור מוסיקה.
+כי ככה אני באמת מרגישה שאני יכולה לבטא את מה שפועם בי.
+בנחת בעדינות ועם ירוק מול העיניים.
+
+אם אתם מתחברים לזה, הגעתם למקום הנכון ❤️
+בואו נשב על כוס תה, יש לי את כל הסוגים בגינת ירק, רק תבחרו.</p>
+                </div>
+
+                <div class="hero-actions">
+                  <button class="button button-primary" type="button" data-open-booking>
+                    כל שיר מתחיל בכוס קקאו
+                  </button>
+                  <a class="button" href="#productions">הפקות שלי</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -232,6 +349,11 @@
       <section class="section section-alt" id="productions" aria-label="הפקות לדוגמה">
         <div class="section-video-bg" aria-hidden="true">
           <video class="section-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+            <source
+              src="./assets/productions-bg-mobile.mp4"
+              type="video/mp4"
+              media="(max-width: 760px)"
+            />
             <source src="./assets/productions-bg.mp4" type="video/mp4" />
           </video>
           <div class="section-video-overlay" aria-hidden="true"></div>
@@ -254,7 +376,11 @@
 
           <div class="split-two">
             <div class="tracks-carousel" data-tracks-carousel aria-label="שירים שיצאו מכאן">
-              <button class="tracks-carousel-nav" type="button" data-tracks-prev aria-label="שיר קודם">‹</button>
+              <div class="tracks-carousel-top">
+                <button class="tracks-carousel-nav" type="button" data-tracks-prev aria-label="שיר קודם">‹</button>
+                <span class="tracks-carousel-hint" aria-hidden="true">לשיר הבא</span>
+                <button class="tracks-carousel-nav" type="button" data-tracks-next aria-label="שיר הבא">›</button>
+              </div>
               <div class="tracks" data-tracks-track>
               <article class="track">
                 <div class="track-cover" aria-label="נגן Spotify לשיר לא בשליטתי">
@@ -482,7 +608,6 @@
                 </div>
               </article>
               </div>
-              <button class="tracks-carousel-nav" type="button" data-tracks-next aria-label="שיר הבא">›</button>
             </div>
           </div>
 

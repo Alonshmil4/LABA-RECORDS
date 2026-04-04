@@ -457,6 +457,84 @@ function wireTracksCarousel() {
   next.addEventListener("click", () => scrollByStep(1));
 }
 
+function wireAboutMobileBook() {
+  const track = document.querySelector("[data-about-mobile-carousel]");
+  const prev = document.querySelector("[data-about-book-prev]");
+  const next = document.querySelector("[data-about-book-next]");
+  const counter = document.querySelector("[data-about-book-counter]");
+  if (!track || !prev || !next) return;
+
+  const cards = () => Array.from(track.querySelectorAll(".about-mobile-card"));
+
+  function pageWidth() {
+    return track.clientWidth;
+  }
+
+  function scrollBehavior() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  }
+
+  function nearestIndex() {
+    const list = cards();
+    if (!list.length) return 0;
+    const sl = track.scrollLeft;
+    let best = 0;
+    let bestD = Infinity;
+    list.forEach((el, i) => {
+      const d = Math.abs(el.offsetLeft - sl);
+      if (d < bestD) {
+        bestD = d;
+        best = i;
+      }
+    });
+    return best;
+  }
+
+  function sync() {
+    const w = pageWidth();
+    const list = cards();
+    const total = list.length;
+    if (w <= 0 || !total) return;
+
+    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+    const idx = nearestIndex();
+
+    if (counter) {
+      counter.textContent = `${idx + 1} \u200f/\u200f ${total}`;
+    }
+    prev.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft >= maxScroll - 2;
+  }
+
+  function go(delta) {
+    const w = pageWidth();
+    if (w <= 0) return;
+    track.scrollBy({ left: delta * w, behavior: scrollBehavior() });
+  }
+
+  prev.addEventListener("click", () => go(-1));
+  next.addEventListener("click", () => go(1));
+
+  track.addEventListener("scroll", sync, { passive: true });
+  window.addEventListener("resize", sync);
+
+  track.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") {
+      go(1);
+      e.preventDefault();
+    } else if (e.key === "ArrowLeft") {
+      go(-1);
+      e.preventDefault();
+    }
+  });
+
+  if ("onscrollend" in window) {
+    track.addEventListener("scrollend", sync);
+  }
+
+  sync();
+}
+
 function wireAdminBuilder() {
   try {
   const params = new URLSearchParams(window.location.search);
@@ -659,6 +737,7 @@ wireScrollReveal();
 wireGalleryCarousel();
 wireTestimonialsCarousel();
 wireTracksCarousel();
+wireAboutMobileBook();
 wireAdminBuilder();
 
 if (yearEl) yearEl.textContent = String(new Date().getFullYear());
