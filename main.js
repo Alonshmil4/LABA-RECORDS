@@ -535,6 +535,20 @@ function wireAboutMobileBook() {
   sync();
 }
 
+function wireAboutPanelVideo() {
+  const v = document.querySelector(".about-full__bg-video");
+  if (!v) return;
+
+  const tryPlay = () => {
+    const p = v.play();
+    if (p && typeof p.catch === "function") p.catch(() => {});
+  };
+
+  v.addEventListener("loadeddata", tryPlay);
+  v.addEventListener("canplay", tryPlay);
+  if (v.readyState >= 2) tryPlay();
+}
+
 function wireAdminBuilder() {
   try {
   const params = new URLSearchParams(window.location.search);
@@ -738,6 +752,7 @@ wireGalleryCarousel();
 wireTestimonialsCarousel();
 wireTracksCarousel();
 wireAboutMobileBook();
+wireAboutPanelVideo();
 wireAdminBuilder();
 
 if (yearEl) yearEl.textContent = String(new Date().getFullYear());

@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Heebo:wght@400&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
@@ -203,19 +203,23 @@
         </div>
       </section>
 
-      <section class="section about-split" id="about" aria-label="על קורל ביסמוט">
-        <div class="about-split__grid" dir="ltr">
-          <div class="about-split__media">
+      <section class="section about-full" id="about" aria-label="על קורל ביסמוט">
+        <div class="about-full__media" dir="ltr">
             <video
-              class="about-split__video"
+              class="about-full__bg-video"
               autoplay
               muted
               loop
               playsinline
-              preload="metadata"
+              preload="auto"
               aria-hidden="true"
             >
-              <source src="./assets/yam-about-mobile.mp4" type="video/mp4" />
+              <source
+                src="./assets/yam-about-mobile.mp4"
+                type="video/mp4"
+                media="(max-width: 760px)"
+              />
+              <source src="./assets/about-new-hi-laba.mp4" type="video/mp4" />
             </video>
             <div class="about-mobile-carousel-layer">
               <div class="about-mobile-book" dir="ltr">
@@ -291,23 +295,23 @@
                 <a class="button" href="#productions">הפקות שלי</a>
               </div>
             </div>
-          </div>
-          <div class="about-split__panel" dir="rtl">
-            <div class="container about-split__inner">
-              <div class="about-text-only">
-                <h2 class="section-title">
-                  היי, אני
-                  <a
-                    class="about-title-link"
-                    href="https://www.google.com/search?q=%D7%A7%D7%95%D7%A8%D7%9C+%D7%91%D7%99%D7%A1%D7%9E%D7%95%D7%98"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    קורל ביסמוט
-                  </a>
-                </h2>
-                <div class="about-prose">
-                  <p class="about-prose__lines">
+          <div class="about-full__desktop" dir="rtl">
+            <div class="about-full__notes" aria-label="על קורל ביסמוט">
+              <article class="about-full__note about-full__note--1">
+                <div class="about-text-only">
+                  <h2 class="section-title">
+                    היי, אני
+                    <a
+                      class="about-title-link"
+                      href="https://www.google.com/search?q=%D7%A7%D7%95%D7%A8%D7%9C+%D7%91%D7%99%D7%A1%D7%9E%D7%95%D7%98"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      קורל ביסמוט
+                    </a>
+                  </h2>
+                  <div class="about-prose">
+                    <p class="about-prose__lines">
 איזה כיף שנחתתם כאן, במקרה או לא. נעים מאוד, אני קורל ביסמוט.
 בת 31, יצור רגיש מאוד, מפיקה מוסיקלית, גיטריסטית, זמרת, כותבת, <span class="about-uline">מלחינה</span>
 ואמא של קיקו הכלב הכי גדול עם האופי הכי קטן שתכירו.
@@ -316,8 +320,14 @@
 או אולי שמעתם עליי דרך הסיפור שלהקת <a class="about-maroon-mention" href="https://www.mako.co.il/news-entertainment/2022_q2/Article-3fdef404834c081026.htm?utm_source=copy_link&amp;utm_medium=share&amp;utm_campaign=n12_article" target="_blank" rel="noopener noreferrer">Maroon5</a>
 <span class="about-line-em">ראתה אותי ברחוב ואירחה אותי על הבמה מול עשרות אלפי אנשים.</span>
 אבל תכלס מה זה משנה הסיפור?
-זאת רק תפאורה לתנועה שחיה בי מבפנים.
-
+זאת רק תפאורה לתנועה שחיה בי מבפנים.</p>
+                  </div>
+                </div>
+              </article>
+              <article class="about-full__note about-full__note--2">
+                <div class="about-text-only">
+                  <div class="about-prose">
+                    <p class="about-prose__lines">
 אני אחת כזו שהולכת אחרי מה שהיא מדמיינת ויודעת לתרגם את זה ל<span class="about-uline">מציאות</span>.
 האולפן הזה הוא בדיוק זה. איך שתמיד חלמתי את זה:
 
@@ -328,19 +338,25 @@
 וציוד ברמה הכי גבוהה שיש.
 כי ככה אני רוצה ליצור מוסיקה.
 כי ככה אני באמת מרגישה שאני יכולה לבטא את מה שפועם בי.
-בנחת בעדינות ועם ירוק מול העיניים.
-
+בנחת בעדינות ועם ירוק מול העיניים.</p>
+                  </div>
+                </div>
+              </article>
+              <article class="about-full__note about-full__note--3">
+                <div class="about-text-only">
+                  <div class="about-prose">
+                    <p class="about-prose__lines">
 אם אתם מתחברים לזה, הגעתם למקום הנכון ❤️
 בואו נשב על כוס תה, יש לי את כל הסוגים בגינת ירק, רק תבחרו.</p>
+                  </div>
+                  <div class="hero-actions">
+                    <button class="button button-primary" type="button" data-open-booking>
+                      כל שיר מתחיל בכוס קקאו
+                    </button>
+                    <a class="button" href="#productions">הפקות שלי</a>
+                  </div>
                 </div>
-
-                <div class="hero-actions">
-                  <button class="button button-primary" type="button" data-open-booking>
-                    כל שיר מתחיל בכוס קקאו
-                  </button>
-                  <a class="button" href="#productions">הפקות שלי</a>
-                </div>
-              </div>
+              </article>
             </div>
           </div>
         </div>
