@@ -510,7 +510,54 @@ function wireTracksCarousel() {
   next.addEventListener("click", () => scrollByStep(1));
 }
 
+function wireAboutMobileStoryExperience() {
+  const about = document.querySelector("#about");
+  if (!about) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const requested = (params.get("aboutMobile") || "").toLowerCase();
+  const variant = requested === "cards" ? "cards" : "sticky";
+
+  about.classList.add("about-mobile-story", `about-mobile-story--${variant}`);
+
+  const isMobile = window.matchMedia("(max-width: 760px)").matches;
+  if (!isMobile) return;
+
+  const cards = Array.from(about.querySelectorAll(".about-mobile-card"));
+  if (!cards.length) return;
+
+  cards.forEach((card, idx) => {
+    card.classList.add("mobile-reveal");
+    card.style.setProperty("--about-mobile-delay", `${Math.min(idx * 65, 260)}ms`);
+  });
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    cards.forEach((card) => card.classList.add("is-visible"));
+    return;
+  }
+
+  const obs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        obs.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.2,
+      rootMargin: "0px 0px -8% 0px",
+    }
+  );
+
+  cards.forEach((card) => obs.observe(card));
+}
+
 function wireAboutMobileBook() {
+  const about = document.querySelector("#about");
+  if (about?.classList.contains("about-mobile-story")) return;
+
   const track = document.querySelector("[data-about-mobile-carousel]");
   const prev = document.querySelector("[data-about-book-prev]");
   const next = document.querySelector("[data-about-book-next]");
@@ -635,6 +682,38 @@ function wireAdminBuilder() {
     }
   };
   let store = loadStore();
+
+  // One-time content migration: keep CTA text consistent with latest copy.
+  const migrateLegacyCopy = () => {
+    let changed = false;
+    const maroonLink =
+      '<a class="about-maroon-mention" href="https://www.mako.co.il/news-entertainment/2022_q2/Article-3fdef404834c081026.htm?utm_source=copy_link&amp;utm_medium=share&amp;utm_campaign=n12_article" target="_blank" rel="noopener noreferrer">Maroon5</a>';
+    Object.keys(store).forEach((key) => {
+      const value = store[key];
+      if (typeof value !== "string") return;
+      let next = value;
+      if (next.includes("רוצה לעבוד יחד?")) {
+        next = next.replaceAll("רוצה לעבוד יחד?", "רוצה להפיק שיר?");
+      }
+
+      // Normalize Maroon5 mention to an underlined link.
+      if (/Moroon5|Maroon5|Maroon 5|mako\.co\.il\/news-entertainment\/2022_q2\/Article-3fdef404834c081026/i.test(next)) {
+        next = next.replace(
+          /<a[^>]*>\s*(Moroon5|Maroon5|Maroon 5)\s*<\/a>/gi,
+          maroonLink
+        );
+        next = next.replace(/\b(Moroon5|Maroon 5)\b/g, "Maroon5");
+        next = next.replace(/שלהקת\s*Maroon5/g, `שלהקת ${maroonLink}`);
+      }
+
+      if (next !== value) {
+        store[key] = next;
+        changed = true;
+      }
+    });
+    if (changed) localStorage.setItem(storageKey, JSON.stringify(store));
+  };
+  migrateLegacyCopy();
 
   const editables = $$(editableSelector)
     .filter((el) => !el.closest(".admin-builder"))
@@ -863,6 +942,7 @@ wireGalleryCarousel();
 wireStudioStoriesCarousel();
 wireTestimonialsCarousel();
 wireTracksCarousel();
+wireAboutMobileStoryExperience();
 wireAboutMobileBook();
 wireAboutPanelVideo();
 wireAdminBuilder();
