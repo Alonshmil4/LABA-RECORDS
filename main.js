@@ -407,6 +407,59 @@ function wireGalleryCarousel() {
   });
 }
 
+function wireStudioStoriesCarousel() {
+  const root = document.querySelector("[data-story-carousel]");
+  if (!root) return;
+  const track = root.querySelector("[data-story-track]");
+  const prev = root.querySelector("[data-story-prev]");
+  const next = root.querySelector("[data-story-next]");
+  const dotsWrap = root.querySelector("[data-story-dots]");
+  if (!track || !prev || !next || !dotsWrap) return;
+
+  const slides = Array.from(track.querySelectorAll(".story-slide"));
+  if (!slides.length) return;
+
+  const dots = slides.map((_, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "story-dot";
+    b.setAttribute("aria-label", `סטורי ${i + 1}`);
+    b.addEventListener("click", () => {
+      const left = track.clientWidth * i;
+      track.scrollTo({ left, behavior: "smooth" });
+    });
+    dotsWrap.appendChild(b);
+    return b;
+  });
+
+  const nearestIndex = () => {
+    const w = track.clientWidth || 1;
+    return Math.min(slides.length - 1, Math.max(0, Math.round(track.scrollLeft / w)));
+  };
+
+  const sync = () => {
+    const i = nearestIndex();
+    dots.forEach((d, idx) => d.classList.toggle("is-active", idx === i));
+    prev.disabled = i <= 0;
+    next.disabled = i >= slides.length - 1;
+  };
+
+  prev.addEventListener("click", () => {
+    const i = nearestIndex();
+    const left = track.clientWidth * Math.max(0, i - 1);
+    track.scrollTo({ left, behavior: "smooth" });
+  });
+  next.addEventListener("click", () => {
+    const i = nearestIndex();
+    const left = track.clientWidth * Math.min(slides.length - 1, i + 1);
+    track.scrollTo({ left, behavior: "smooth" });
+  });
+
+  track.addEventListener("scroll", sync, { passive: true });
+  window.addEventListener("resize", sync);
+  sync();
+}
+
 function wireTestimonialsCarousel() {
   const root = $("[data-testimonials-carousel]");
   if (!root) return;
@@ -604,8 +657,9 @@ function wireAdminBuilder() {
   panel.setAttribute("dir", "rtl");
   panel.innerHTML = `
     <div class="admin-builder__title">מצב אדמין פעיל</div>
-    <div class="admin-builder__hint">עריכה ישירה על הטקסט באתר (רק אצלך בדפדפן)</div>
+    <div class="admin-builder__hint">עריכה חיה במצב אדמין. עדכון לאתר בפועל מתבצע רק בלחיצה על "עדכון".</div>
     <div class="admin-builder__actions">
+      <button type="button" class="button button-small button-primary" data-admin-control="apply">עדכון</button>
       <button type="button" class="button button-small" data-admin-control="export">ייצוא</button>
       <button type="button" class="button button-small" data-admin-control="import">ייבוא</button>
       <button type="button" class="button button-small button-ghost" data-admin-control="reset">איפוס</button>
@@ -621,13 +675,28 @@ function wireAdminBuilder() {
   document.body.appendChild(input);
 
   const saveStore = () => localStorage.setItem(storageKey, JSON.stringify(store));
+  const draftStore = { ...store };
+  const insertHtmlAtCursor = (html) => {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return;
+    const range = sel.getRangeAt(0);
+    range.deleteContents();
+    const frag = range.createContextualFragment(html);
+    const last = frag.lastChild;
+    range.insertNode(frag);
+    if (last) {
+      range.setStartAfter(last);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  };
   const persistAll = () => {
     editables.forEach((el) => {
       const key = el.dataset.adminEditable;
       if (!key) return;
-      store[key] = el.innerHTML;
+      draftStore[key] = el.innerHTML;
     });
-    saveStore();
   };
 
   editables.forEach((el, idx) => {
@@ -635,21 +704,43 @@ function wireAdminBuilder() {
     el.contentEditable = "true";
     el.setAttribute("spellcheck", "false");
     el.classList.add("admin-editable");
+    el.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+      // Keep line breaks deterministic: Enter always inserts <br>
+      e.preventDefault();
+      insertHtmlAtCursor("<br>");
+      draftStore[key] = el.innerHTML;
+    });
+    el.addEventListener("paste", (e) => {
+      const text = e.clipboardData?.getData("text/plain");
+      if (typeof text !== "string") return;
+      e.preventDefault();
+      const safe = text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n")
+        .replace(/\n/g, "<br>");
+      insertHtmlAtCursor(safe);
+      draftStore[key] = el.innerHTML;
+    });
     el.addEventListener("input", () => {
-      store[key] = el.innerHTML;
-      saveStore();
+      draftStore[key] = el.innerHTML;
     });
     el.addEventListener("blur", () => {
-      store[key] = el.innerHTML;
-      saveStore();
+      draftStore[key] = el.innerHTML;
     });
   });
 
-  window.addEventListener("beforeunload", persistAll);
-  window.addEventListener("pagehide", persistAll);
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "hidden") persistAll();
-  });
+  const applyDraftToStore = () => {
+    persistAll();
+    Object.keys(store).forEach((k) => delete store[k]);
+    Object.entries(draftStore).forEach(([k, v]) => {
+      store[k] = v;
+    });
+    saveStore();
+  };
 
   panel.addEventListener("click", (e) => {
     const target = e.target;
@@ -659,13 +750,26 @@ function wireAdminBuilder() {
 
     if (action === "export") {
       persistAll();
-      const blob = new Blob([JSON.stringify(store, null, 2)], { type: "application/json" });
+      const blob = new Blob([JSON.stringify(draftStore, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = "laba-admin-content.json";
       a.click();
       URL.revokeObjectURL(url);
+    }
+
+    if (action === "apply") {
+      applyDraftToStore();
+      panel.classList.add("admin-builder--saved");
+      const oldTitle = panel.querySelector(".admin-builder__title");
+      if (oldTitle) {
+        oldTitle.textContent = "עודכן בהצלחה";
+        window.setTimeout(() => {
+          oldTitle.textContent = "מצב אדמין פעיל";
+        }, 1400);
+      }
+      window.setTimeout(() => panel.classList.remove("admin-builder--saved"), 1400);
     }
 
     if (action === "import") {
@@ -678,7 +782,6 @@ function wireAdminBuilder() {
     }
 
     if (action === "close") {
-      persistAll();
       localStorage.removeItem("laba_admin_enabled");
       const url = new URL(window.location.href);
       url.searchParams.delete("admin");
@@ -691,7 +794,15 @@ function wireAdminBuilder() {
     if (!file) return;
     try {
       const text = await file.text();
-      store = JSON.parse(text);
+      const parsed = JSON.parse(text);
+      Object.keys(draftStore).forEach((k) => delete draftStore[k]);
+      Object.entries(parsed).forEach(([k, v]) => {
+        draftStore[k] = v;
+      });
+      Object.keys(store).forEach((k) => delete store[k]);
+      Object.entries(parsed).forEach(([k, v]) => {
+        store[k] = v;
+      });
       saveStore();
       window.location.reload();
     } catch {
@@ -749,6 +860,7 @@ wireAccordionSingleOpen();
 wireDisabledLinks();
 wireScrollReveal();
 wireGalleryCarousel();
+wireStudioStoriesCarousel();
 wireTestimonialsCarousel();
 wireTracksCarousel();
 wireAboutMobileBook();
