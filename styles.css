@@ -382,7 +382,7 @@ textarea {
     background: rgba(248, 242, 232, 0.92);
     border: 1px solid rgba(124, 84, 52, 0.55);
     color: rgba(72, 52, 35, 0.95);
-    font-family: "Secular One", "Fredoka", "Heebo", system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: clamp(10.5px, 0.9vw, 12px);
     letter-spacing: 0.04em;
     line-height: 1.12;
@@ -4101,6 +4101,19 @@ a.button-primary:active {
 }
 
 @media (max-width: 760px) {
+  #gallery.section .gallery-carousel,
+  #gallery.section .section-foot.split {
+    display: none;
+  }
+
+  .story-preview__top {
+    display: none;
+  }
+
+  .story-track {
+    cursor: pointer;
+  }
+
   #about.section.about-mobile-story .about-full__media {
     display: block;
     min-height: 100vh;

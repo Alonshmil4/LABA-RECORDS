@@ -455,6 +455,46 @@ function wireStudioStoriesCarousel() {
     track.scrollTo({ left, behavior: "smooth" });
   });
 
+  const goToIndex = (idx) => {
+    const nextIndex = Math.min(slides.length - 1, Math.max(0, idx));
+    const left = track.clientWidth * nextIndex;
+    track.scrollTo({ left, behavior: "smooth" });
+  };
+
+  // Mobile-style tap navigation: left tap = previous, right tap = next.
+  let tapStartX = 0;
+  let tapStartY = 0;
+  track.addEventListener(
+    "pointerdown",
+    (e) => {
+      tapStartX = e.clientX;
+      tapStartY = e.clientY;
+    },
+    { passive: true }
+  );
+  track.addEventListener("pointerup", (e) => {
+    const dx = Math.abs(e.clientX - tapStartX);
+    const dy = Math.abs(e.clientY - tapStartY);
+    // Treat as tap only if finger didn't drag significantly.
+    if (dx > 12 || dy > 12) return;
+    const rect = track.getBoundingClientRect();
+    const isRightHalf = e.clientX - rect.left > rect.width / 2;
+    const i = nearestIndex();
+    goToIndex(isRightHalf ? i + 1 : i - 1);
+  });
+
+  // Fallback tap handlers per slide (helps on some mobile browsers)
+  slides.forEach((slide) => {
+    slide.addEventListener("click", (e) => {
+      const target = e.target;
+      if (target instanceof HTMLElement && target.closest("a, button")) return;
+      const rect = slide.getBoundingClientRect();
+      const isRightHalf = e.clientX - rect.left > rect.width / 2;
+      const i = nearestIndex();
+      goToIndex(isRightHalf ? i + 1 : i - 1);
+    });
+  });
+
   track.addEventListener("scroll", sync, { passive: true });
   window.addEventListener("resize", sync);
   sync();
