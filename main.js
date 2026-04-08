@@ -460,6 +460,11 @@ function wireStudioStoriesCarousel() {
     const left = track.clientWidth * nextIndex;
     track.scrollTo({ left, behavior: "smooth" });
   };
+  const wrapIndex = (idx) => {
+    const total = slides.length;
+    if (!total) return 0;
+    return ((idx % total) + total) % total;
+  };
 
   // Mobile-style tap navigation: left tap = previous, right tap = next.
   let tapStartX = 0;
@@ -480,7 +485,7 @@ function wireStudioStoriesCarousel() {
     const rect = track.getBoundingClientRect();
     const isRightHalf = e.clientX - rect.left > rect.width / 2;
     const i = nearestIndex();
-    goToIndex(isRightHalf ? i + 1 : i - 1);
+    goToIndex(wrapIndex(isRightHalf ? i + 1 : i - 1));
   });
 
   // Fallback tap handlers per slide (helps on some mobile browsers)
@@ -491,7 +496,7 @@ function wireStudioStoriesCarousel() {
       const rect = slide.getBoundingClientRect();
       const isRightHalf = e.clientX - rect.left > rect.width / 2;
       const i = nearestIndex();
-      goToIndex(isRightHalf ? i + 1 : i - 1);
+      goToIndex(wrapIndex(isRightHalf ? i + 1 : i - 1));
     });
   });
 

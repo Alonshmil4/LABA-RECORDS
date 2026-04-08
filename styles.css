@@ -1793,7 +1793,7 @@ a.button-primary:active {
   }
 
   #about.section .about-mobile-actions {
-    display: flex;
+    display: none;
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: stretch;
@@ -1998,13 +1998,13 @@ a.button-primary:active {
   }
 
   #about.section .about-mobile-card a.about-maroon-mention {
-    color: #7a1f1f;
-    text-decoration-color: rgba(122, 31, 31, 0.92);
+    color: #ff7f7f;
+    text-decoration-color: rgba(255, 127, 127, 0.95);
   }
 
   #about.section .about-mobile-card a.about-maroon-mention:hover {
-    color: #912626;
-    text-decoration-color: rgba(145, 38, 38, 0.95);
+    color: #ff9b9b;
+    text-decoration-color: rgba(255, 155, 155, 1);
   }
 }
 
@@ -2638,6 +2638,7 @@ a.button-primary:active {
 #productions.section .section-subtitle-line {
   margin: 0;
   padding: 0;
+  font-size: 1.2em;
   line-height: 1.48;
   max-width: 100%;
   text-wrap: balance;
