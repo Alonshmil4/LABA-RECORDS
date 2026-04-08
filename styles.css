@@ -1511,8 +1511,8 @@ a.button-primary:active {
 
 /* Testimonials video framing: crop side black bars and show lower area */
 #testimonials.section .section-video-bg video.section-video {
-  transform: scale(1.34);
-  object-position: center 64%;
+  transform: scale(1.22);
+  object-position: center 60%;
 }
 
 /* Productions: nudge framing slightly lower than center */
