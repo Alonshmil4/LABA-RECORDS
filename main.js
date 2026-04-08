@@ -991,11 +991,12 @@ if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
 if (heroMedia && heroVideo) {
   const markNoVideo = () => heroMedia.classList.add("no-video");
+  const clearNoVideo = () => heroMedia.classList.remove("no-video");
   heroVideo.addEventListener("error", markNoVideo);
-  heroVideo.addEventListener("stalled", markNoVideo);
-  heroVideo.addEventListener("abort", markNoVideo);
-  heroVideo.addEventListener("loadeddata", () => heroMedia.classList.remove("no-video"));
+  heroVideo.addEventListener("loadeddata", clearNoVideo);
+  heroVideo.addEventListener("canplay", clearNoVideo);
+  heroVideo.addEventListener("playing", clearNoVideo);
   setTimeout(() => {
     if (heroVideo.readyState === 0) markNoVideo();
-  }, 600);
+  }, 4000);
 }
