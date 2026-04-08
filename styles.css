@@ -154,6 +154,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 90%;
 }
 
 body {
@@ -1626,7 +1627,7 @@ a.button-primary:active {
   }
 
   #about.section .about-full__note--1 {
-    top: clamp(48px, 8vh, 84px);
+    top: clamp(24px, 5.6vh, 64px);
     right: clamp(24px, 4.2vw, 92px);
     width: min(560px, 52vw);
     min-height: min(700px, 86vh);
