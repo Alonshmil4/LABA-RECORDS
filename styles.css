@@ -154,7 +154,7 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 90%;
+  font-size: 88%;
 }
 
 body {
@@ -1639,12 +1639,12 @@ a.button-primary:active {
   }
 
   #about.section .about-full__note--1 .about-prose__lines {
-    font-size: calc(clamp(12.5px, 1.05vw, 14.5px) * 1.1);
+    font-size: clamp(12.5px, 1.05vw, 14.5px);
     line-height: 1.42;
   }
 
   #about.section .about-full__note--1 .section-title {
-    font-size: calc(clamp(1.1rem, 1.75vw, 1.45rem) * 1.1);
+    font-size: clamp(1.1rem, 1.75vw, 1.45rem);
   }
 
 
@@ -4221,11 +4221,11 @@ a.button-primary:active {
 
   #about.section.about-mobile-story .about-mobile-card__text {
     text-align: right;
-    font-size: clamp(14.5px, 3.7vw, 16.5px);
-    line-height: 1.74;
+    font-size: clamp(13px, 3.2vw, 15px);
+    line-height: 1.6;
     color: rgba(252, 250, 244, 0.96);
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
-    max-width: 35ch;
+    max-width: 40ch;
     margin-inline: auto;
   }
 
