@@ -3517,6 +3517,12 @@ a.button-primary:active {
     transform: scale(0.96);
   }
 
+  #productions.section .tracks-carousel-nav.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
   #productions.section .tracks {
     display: flex;
     flex-direction: row;
@@ -4626,8 +4632,9 @@ a.button-primary:active {
     max-width: min(220px, 100%);
   }
   .header-cta .header-booking-cta {
-    padding: 6px 12px;
-    font-size: var(--nav-bar-font-size);
+    padding: 5px 10px;
+    font-size: clamp(12px, 2.9vw, 13.5px);
+    min-height: 34px;
   }
   .stat-row {
     grid-template-columns: 1fr;

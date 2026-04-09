@@ -553,6 +553,19 @@ function wireTracksCarousel() {
 
   prev.addEventListener("click", () => scrollByStep(-1));
   next.addEventListener("click", () => scrollByStep(1));
+
+  const sync = () => {
+    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+    const atStart = track.scrollLeft <= 2;
+    const atEnd = track.scrollLeft >= maxScroll - 2;
+    prev.classList.toggle("is-hidden", atStart);
+    prev.disabled = atStart;
+    next.disabled = atEnd;
+  };
+
+  track.addEventListener("scroll", sync, { passive: true });
+  window.addEventListener("resize", sync);
+  sync();
 }
 
 function wireAboutMobileStoryExperience() {
