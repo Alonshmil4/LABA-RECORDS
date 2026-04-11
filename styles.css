@@ -483,7 +483,7 @@ textarea {
     top: 50%;
     transform: translate(-50%, -50%);
     width: max-content;
-    max-width: min(280px, calc(100vw - 148px));
+    max-width: min(280px, calc(100vw - 182px));
     margin: 0;
     z-index: 1;
   }
@@ -547,10 +547,12 @@ textarea {
     box-shadow:
       0 2px 0 rgba(255, 255, 255, 0.5) inset,
       0 4px 14px rgba(124, 84, 52, 0.14);
-    font-size: clamp(12.5px, 3.4vw, 15px);
-    padding: 9px 14px;
-    min-height: 38px;
+    font-size: clamp(11px, 3vw, 12.5px);
+    padding: 6px 10px;
+    min-height: 30px;
     font-weight: 400;
+    transform: scale(0.805);
+    transform-origin: center;
   }
 
   .site-header.logo-only.scrolled .header-booking-cta.button-primary:hover {
@@ -562,18 +564,20 @@ textarea {
   }
 
   .site-header.logo-only.scrolled .icon-button.burger {
-    border-color: rgba(255, 255, 255, 0.55);
-    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(20, 28, 22, 0.22);
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   }
 
   .site-header.logo-only.scrolled .burger-lines::before,
   .site-header.logo-only.scrolled .burger-lines::after {
-    background: rgba(22, 26, 24, 0.88);
+    background: rgba(12, 14, 13, 0.92);
+    height: 2px;
   }
 
   .site-header.logo-only .nav.is-open {
-    background: rgba(255, 255, 255, 0.24);
-    border: 1px solid rgba(255, 255, 255, 0.48);
+    background: rgba(255, 252, 246, 0.98);
+    border: 1px solid rgba(20, 28, 22, 0.14);
     backdrop-filter: blur(20px) saturate(1.08);
     -webkit-backdrop-filter: blur(20px) saturate(1.08);
     box-shadow: 0 22px 52px rgba(0, 0, 0, 0.14);
@@ -1751,6 +1755,10 @@ a.button-primary:active {
   text-decoration: none;
 }
 
+#about.section .about-nowrap {
+  white-space: nowrap;
+}
+
 #about.section a.about-maroon-mention {
   color: #e24a4a;
   text-decoration: underline;
@@ -2330,7 +2338,7 @@ a.button-primary:active {
 
 .hero,
 .hero * {
-  font-family: var(--font-sans);
+  font-family: "Carmela", var(--font-sans);
 }
 
 .hero-inner,
@@ -3962,6 +3970,7 @@ a.button-primary:active {
   left: 10px;
   right: 10px;
   z-index: 2;
+  direction: ltr;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 4px;
@@ -4232,7 +4241,7 @@ a.button-primary:active {
     color: rgba(252, 250, 244, 0.96);
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
     max-width: 33ch;
-    white-space: pre-line;
+    white-space: normal;
     word-break: normal;
     margin-inline: auto;
   }
@@ -4530,6 +4539,42 @@ a.button-primary:active {
     z-index: 6;
     grid-area: burger;
   }
+
+  .icon-button.burger {
+    border-color: rgba(20, 28, 22, 0.22);
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .burger-lines::before,
+  .burger-lines::after {
+    height: 2px;
+    background: rgba(12, 14, 13, 0.92);
+  }
+
+  .site-header:not(.scrolled) .icon-button.burger {
+    border-color: rgba(20, 28, 22, 0.18);
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .site-header:not(.scrolled) .burger-lines::before,
+  .site-header:not(.scrolled) .burger-lines::after {
+    background: rgba(12, 14, 13, 0.92);
+  }
+
+  /* Keep the stronger mobile burger styling even when the generic header rules apply */
+  .site-header.scrolled .icon-button.burger {
+    border-color: rgba(20, 28, 22, 0.22);
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .site-header.scrolled .burger-lines::before,
+  .site-header.scrolled .burger-lines::after {
+    background: rgba(12, 14, 13, 0.92);
+    height: 2px;
+  }
   .nav {
     /* Template is only "cta logo burger" — grid-area: nav is invalid here and can break layout */
     grid-area: auto;
@@ -4542,8 +4587,8 @@ a.button-primary:active {
     max-width: min(270px, calc(100vw - 24px));
     border-radius: 14px;
     padding: 10px 10px 12px;
-    background: rgba(241, 236, 226, 0.94);
-    border: 1px solid rgba(255, 255, 255, 0.62);
+    background: rgba(255, 252, 246, 0.98);
+    border: 1px solid rgba(20, 28, 22, 0.14);
     backdrop-filter: blur(28px) saturate(1.18);
     -webkit-backdrop-filter: blur(28px) saturate(1.18);
     box-shadow: 0 26px 64px rgba(18, 40, 22, 0.24);
@@ -4566,11 +4611,11 @@ a.button-primary:active {
     justify-content: flex-start;
     text-align: right;
     white-space: normal;
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 400;
     line-height: 1.25;
     padding: 10px 12px;
-    color: rgba(20, 28, 22, 0.92);
+    color: rgba(12, 14, 13, 0.96);
     border-radius: 9px;
   }
   .nav a:hover {
@@ -4593,7 +4638,7 @@ a.button-primary:active {
     grid-area: cta;
   }
   .brand {
-    max-width: min(100%, calc(100vw - 190px));
+    max-width: min(100%, calc(100vw - 228px));
   }
 
   .brand--soft-editorial .brand-name {
@@ -4632,9 +4677,11 @@ a.button-primary:active {
     max-width: min(220px, 100%);
   }
   .header-cta .header-booking-cta {
-    padding: 5px 10px;
-    font-size: clamp(12px, 2.9vw, 13.5px);
-    min-height: 34px;
+    padding: 5px 9px;
+    font-size: clamp(11px, 3vw, 12.5px);
+    min-height: 30px;
+    transform: scale(0.805);
+    transform-origin: center;
   }
   .stat-row {
     grid-template-columns: 1fr;
