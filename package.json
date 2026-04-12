@@ -1,10 +1,16 @@
 {
   "name": "laba-records",
   "version": "1.0.0",
+  "private": true,
   "description": "אתר סטטי ראשוני בעברית (RTL) עבור **LABA RECORDS** — קורל ביסמוט.",
   "main": "main.js",
   "scripts": {
+    "build": "node scripts/verify-build.mjs",
+    "start": "npx --yes serve . -l 3000",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=18.18.0"
   },
   "keywords": [],
   "author": "",

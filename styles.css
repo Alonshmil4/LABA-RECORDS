@@ -2378,29 +2378,31 @@ a.button-primary:active {
 
   .hero-inner .hero-headlines {
     order: 1;
-    margin-bottom: clamp(28px, 15vh, 160px);
+    margin-bottom: clamp(32px, 16vh, 170px);
   }
 
   @supports (height: 100dvh) {
     .hero-inner .hero-headlines {
-      margin-bottom: clamp(28px, 12dvh, 160px);
+      margin-bottom: clamp(32px, 13dvh, 170px);
     }
   }
 
   .hero-inner .hero-meta {
     order: 2;
     margin-top: auto;
+    padding-top: clamp(14px, 3.5vw, 24px);
   }
 
   .hero-inner .kicker {
     order: 3;
-    margin-top: 22px;
+    margin-top: clamp(28px, 7vw, 46px);
     margin-bottom: max(14px, env(safe-area-inset-bottom, 0px));
   }
 
   #home.hero .hero-title {
     font-size: clamp(26px, 7.2vw, 42px);
     line-height: 1.14;
+    margin-bottom: clamp(18px, 4.8vw, 32px);
   }
 
   #home.hero .hero-title__secondary {
@@ -2414,11 +2416,11 @@ a.button-primary:active {
   }
 
   #home.hero .hero-headlines .hero-meta-location--hero-lead {
-    margin-top: 0.45em;
+    margin-top: clamp(0.62em, 4.5vw, 1.1em);
   }
 
   #home.hero .hero-subtitle {
-    margin-top: 12px;
+    margin-top: clamp(26px, 6.5vw, 44px);
     font-size: clamp(14px, 3.9vw, 16.5px);
     line-height: 1.52;
     padding-inline: 4px;
@@ -2802,7 +2804,7 @@ a.button-primary:active {
   margin-inline: auto;
 }
 
-/* Desktop: keep reading order title → intro copy → tracks (DOM is title → tracks → copy for mobile) */
+/* Desktop: סדר לפי DOM — כותרת → סטריפ Spotify → מבוא טקסט → כפתור */
 @media (min-width: 761px) {
   #productions.section .productions-content {
     display: flex;
@@ -2811,25 +2813,27 @@ a.button-primary:active {
   }
 
   #productions.section .productions-content .section-head {
-    order: 1;
     margin-bottom: clamp(4px, 0.8vh, 12px);
   }
 
-  #productions.section .productions-content .section-subtitle-stack {
-    order: 2;
-    margin-top: 0;
-    margin-bottom: 18px;
-  }
-
   #productions.section .productions-content .split-two {
-    order: 3;
+    margin-bottom: 0;
+    /* סטריפ השירים מעט נמוך יותר מתחת לכותרת */
+    margin-top: clamp(18px, 2.4vh, 40px);
   }
 
-  #productions.section .productions-content .section-foot {
-    order: 4;
+  #productions.section .productions-content .section-subtitle-stack {
+    /* מבוא קרוב יותר לגריד; גופן מוגדל למטה */
+    margin-top: clamp(8px, 1.1vh, 20px);
+    margin-bottom: clamp(14px, 2vh, 26px);
   }
 
-  /* תת-כותרת ממורכזת (מול Tailwind / start ב־RTL שנראה כימין) */
+  /* מבוא מתחת לשירים: +20% לעומת ברירת המחדל בדסקטופ */
+  #productions.section .productions-content .section-subtitle-line--productions-prose {
+    font-size: calc(var(--admin-prod-intro-font, 1.2em) * 1.2);
+  }
+
+  /* מבוא ממורכז מתחת לשירים */
   #productions.section .productions-content .section-subtitle-stack,
   #productions.section .productions-content .section-subtitle-line {
     text-align: center;
@@ -3913,14 +3917,411 @@ a.button-primary:active {
   box-shadow: var(--shadow);
 }
 
-/* Process section: hide photos but keep the same layout height */
+/* ========= LABA / #process — אקורדיון כמו FAQ (דסקטופ: פאנל ממורכז | מובייל: זכוכית על הווידאו) ========= */
+
+/* Process section: hide photos; קומפקטי יותר כדי לקצר את הסקשן */
 #process.section .media-row {
-  min-height: 220px; /* preserve section size so more video shows behind */
+  min-height: 48px;
+  margin-top: 8px;
+}
+
+#process.section .section-foot--process {
+  margin-top: 10px;
+}
+
+#process.section .section-head {
+  margin-bottom: 16px;
 }
 
 #process.section .media-row img {
   opacity: 0;
   pointer-events: none;
+}
+
+#process.section .step-card__prose {
+  display: flex;
+  flex-direction: column;
+  gap: 0.62em;
+  margin-top: 4px;
+}
+
+#process.section .step-card__prose .muted {
+  margin: 0;
+  line-height: 1.58;
+  font-size: clamp(0.9rem, 1.75vw, 0.97rem);
+}
+
+#process .process-step.step-card {
+  padding: 0;
+  overflow: visible;
+}
+
+/* ללא פס עליון של .step-card — במובייל נראה שבור/מוזר מעל רקע שקוף */
+#process .process-step.step-card::before {
+  display: none;
+}
+
+/* אקורדיון — בסיס לכל הרוחבים (מובייל דורס צבעים ופריסת כותרת) */
+#process .process-grid {
+  display: block;
+}
+
+#process .process-step .process-step__flip {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+#process .process-step__face {
+  position: relative;
+  transform: none !important;
+  backface-visibility: visible;
+  -webkit-backface-visibility: visible;
+}
+
+#process .process-step__face--front {
+  position: relative;
+  display: flow-root;
+  cursor: pointer;
+  outline: none;
+  padding: 1.05rem 0 1.05rem 1.75rem;
+  padding-inline-end: 0;
+  line-height: 1.45;
+  text-align: right;
+  direction: rtl;
+  color: rgba(22, 26, 24, 0.94);
+  transition: color 0.15s ease;
+}
+
+#process .process-step__face--front::after {
+  float: left;
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-top: 0.38rem;
+  border: solid rgba(22, 26, 24, 0.5);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease, border-color 0.15s ease;
+}
+
+#process .process-step--open .process-step__face--front::after {
+  margin-top: 0.52rem;
+  transform: rotate(-135deg);
+  border-color: rgba(22, 26, 24, 0.58);
+}
+
+#process .process-step__face--front:focus-visible {
+  box-shadow: inset 0 0 0 2px rgba(124, 84, 52, 0.45);
+  border-radius: 2px;
+}
+
+#process .process-step__face--front:hover {
+  color: rgba(12, 14, 13, 0.98);
+}
+
+#process .process-step .step-num {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.15rem;
+  color: rgba(22, 26, 24, 0.55);
+}
+
+#process .process-step .step-title {
+  margin: 0.2rem 0 0;
+  font-size: clamp(0.95rem, 2.1vw, 1.05rem);
+  max-width: 100%;
+  color: inherit;
+  font-weight: inherit;
+}
+
+#process .process-step .step-card__prose,
+#process .process-step .step-card__prose .muted {
+  color: rgba(22, 26, 24, 0.72) !important;
+}
+
+#process .process-step__face--back {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding: 0;
+  transition:
+    max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.28s ease,
+    padding 0.28s ease;
+}
+
+#process .process-step--open .process-step__face--back {
+  max-height: 2200px;
+  opacity: 1;
+  padding: 0 0 1.05rem 1.75rem;
+  padding-inline-end: 0;
+  overflow: visible;
+}
+
+#process .process-step .step-card__prose {
+  margin-top: 0;
+  padding: 0;
+  font-size: clamp(0.9rem, 2.1vw, 0.98rem);
+  line-height: 1.6;
+}
+
+@media (min-width: 761px) {
+  /* מיכל שקוף, ממורכז; שלבים ככרטיסים נפרדים מעל הווידאו */
+  #process.section .container {
+    position: relative;
+    z-index: 1;
+    /* היה 720px; הקטנה ב־20% למלבני התהליך + כותרת ממורכזים */
+    max-width: min(576px, 100% - 32px);
+    margin-inline: auto;
+    padding: clamp(22px, 4vw, 34px) clamp(16px, 3.5vw, 28px) clamp(26px, 4vw, 38px);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  #process.section .section-head {
+    margin-bottom: clamp(16px, 2.5vw, 24px);
+    text-align: right;
+  }
+
+  #process.section .section-head .section-title {
+    color: rgba(255, 255, 255, 0.98) !important;
+    font-weight: 400 !important;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+    text-align: right;
+  }
+
+  #process .process-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #process .process-step.step-card {
+    margin-bottom: 0;
+    padding-inline: clamp(10px, 1.8vw, 16px);
+    box-sizing: border-box;
+    background: rgba(255, 248, 230, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: var(--radius) !important;
+    box-shadow: 0 4px 28px rgba(0, 0, 0, 0.14);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  #process .process-step--open.step-card {
+    background: rgba(255, 248, 230, 0.14) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+
+  /* שורת כותרת צרה — ממורכז; ריווח אופקי סימטרי (החץ מוחלט משמאל) */
+  #process .process-step__face--front {
+    color: rgba(255, 255, 255, 0.96);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.06rem;
+    padding: 0.28rem 2.35rem 0.3rem;
+    text-align: center;
+    min-height: 0;
+  }
+
+  #process .process-step--open .process-step__face--back {
+    padding: 0 0 1.1rem 3.15rem;
+    padding-inline-end: 0;
+  }
+
+  #process .process-step__face--front::after {
+    position: absolute;
+    left: 1.2rem;
+    top: 50%;
+    float: none;
+    margin: 0;
+    border-color: rgba(255, 255, 255, 0.72);
+    width: 0.48rem;
+    height: 0.48rem;
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  #process .process-step--open .process-step__face--front::after {
+    border-color: rgba(255, 255, 255, 0.88);
+    margin-top: 0;
+    transform: translateY(-50%) rotate(-135deg);
+  }
+
+  #process .process-step__face--front:hover {
+    color: #fff;
+  }
+
+  #process .process-step__face--front:focus-visible {
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35);
+  }
+
+  #process .process-step .step-num {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: calc(12px * 1.3);
+    margin: 0;
+    line-height: 1;
+  }
+
+  /* +50% ו־+30% כבסיס, −10%, ועוד −15% */
+  #process .process-step .step-title {
+    font-size: calc(1.17em * 1.5 * 1.3 * 0.9 * 0.85);
+    line-height: 1.1;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.98);
+  }
+
+  #process .process-step .step-card__prose,
+  #process .process-step .step-card__prose .muted {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  #process .process-step .step-card__prose {
+    font-size: calc(clamp(0.9rem, 2.1vw, 0.98rem) * 1.3);
+    line-height: 1.62;
+  }
+
+  #process.section .process-step .step-card__prose .muted {
+    font-size: calc(clamp(0.9rem, 1.75vw, 0.97rem) * 1.3);
+  }
+
+  #process.section .section-foot--process {
+    margin-top: clamp(32px, 4.5vw, 52px);
+  }
+}
+
+@media (max-width: 760px) {
+  /* סקשן ארוך יותר; הווידאו נמתח עם גובה הסקשן */
+  #process.section {
+    padding: clamp(28px, 7vw, 48px) 0 calc(12px * 1.4 + 18vh);
+    min-height: min(calc(54vh * 1.65), 980px);
+    box-sizing: border-box;
+  }
+
+  #process.section .section-head {
+    margin-bottom: clamp(22px, 6.5vw, 36px);
+  }
+
+  #process.section .media-row {
+    display: none;
+    min-height: 0;
+    height: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  #process.section .section-foot--process {
+    margin-top: clamp(22px, 6vw, 38px);
+    margin-bottom: 0;
+  }
+
+  #process .process-grid {
+    margin-top: clamp(10px, 3vw, 18px);
+  }
+
+  #process .process-step.step-card {
+    margin-bottom: 8px;
+    background: rgba(255, 248, 230, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    border-radius: var(--radius) !important;
+    box-shadow: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  #process .process-step.step-card:last-child {
+    margin-bottom: 2px;
+  }
+
+  #process .process-step--open.step-card {
+    background: rgba(255, 248, 230, 0.12);
+    border-color: rgba(255, 255, 255, 0.28) !important;
+  }
+
+  #process .process-step__face--front {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5px 12px 5px 30px;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.96);
+  }
+
+  #process .process-step__face--front:focus-visible {
+    box-shadow: inset 0 0 0 2px rgba(124, 84, 52, 0.45);
+    border-radius: calc(var(--radius) - 2px);
+  }
+
+  #process .process-step__face--front::after {
+    float: none;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    margin-top: 0;
+    border-color: rgba(255, 255, 255, 0.78);
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  #process .process-step--open .process-step__face--front::after {
+    margin-top: 0;
+    transform: translateY(-50%) rotate(-135deg);
+    border-color: rgba(255, 255, 255, 0.9);
+  }
+
+  #process .process-step__face--front:hover {
+    color: #fff;
+  }
+
+  #process .process-step .step-title {
+    margin: 0;
+    font-size: clamp(0.95rem, 3.4vw, 1.02rem);
+    color: rgba(255, 255, 255, 0.98);
+  }
+
+  #process .process-step .step-num {
+    margin: 0 0 1px;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  #process .process-step .step-card__prose,
+  #process .process-step .step-card__prose .muted {
+    color: rgba(255, 255, 255, 0.94) !important;
+  }
+
+  #process .process-step__face--back {
+    padding: 0 10px;
+  }
+
+  #process .process-step--open .process-step__face--back {
+    padding: 0 10px 10px;
+  }
+
+  #process .process-step .step-card__prose {
+    padding: 0 0 0 1.35rem;
+    padding-inline-end: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #process .process-step .process-step__flip {
+    transition: none;
+  }
+
+  #process .process-step__face--back {
+    transition: none;
+  }
+
+  #process .process-step__face--front::after {
+    transition: none;
+  }
 }
 
 .media-strip {
@@ -4465,13 +4866,16 @@ a.button-primary:active {
     -webkit-backdrop-filter: none;
   }
 
-  /* כמו .section-subtitle-line בהפקות: 1.2em על בסיס body (html 88%) */
+  /* כמו .section-subtitle-line בהפקות; מוקטן 15% מול בסיס האדמין/ברירת מחדל */
   #about.section.about-mobile-story .about-mobile-card__text {
     text-align: center;
-    font-size: var(--admin-about-m-text-font, 1.2em);
+    font-size: calc(var(--admin-about-m-text-font, 1.2em) * 0.85);
     line-height: 1.48;
-    color: rgba(252, 250, 244, 0.96);
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
+    color: rgba(252, 250, 244, 0.98);
+    text-shadow:
+      0 0 1px rgba(0, 0, 0, 0.9),
+      0 1px 3px rgba(0, 0, 0, 0.85),
+      0 2px 18px rgba(0, 0, 0, 0.55);
     max-width: var(--admin-about-m-text-max-w, min(40ch, 92vw));
     white-space: normal;
     word-break: normal;
@@ -4499,7 +4903,27 @@ a.button-primary:active {
     padding-bottom: 0;
   }
 
-  /* גלילה פנימית לטקסט — כפתור «עוד» מתחת; אחרי לחיצה כל הסיפור באותה גלילה */
+  /* קיבוץ About במובייל: מקסימום שקיפות + טשטוש קל — הטקסט נשען על צל חזק */
+  #about.section.about-mobile-story .about-mobile-copy-group {
+    width: 100%;
+    max-width: var(--admin-about-m-group-max-w, min(40ch, 92vw));
+    margin-inline: auto;
+    padding: clamp(14px, 3.4vw, 20px) clamp(14px, 3.6vw, 18px);
+    box-sizing: border-box;
+    border-radius: clamp(20px, 5vw, 28px);
+    border: 1px solid rgba(255, 252, 246, 0.14);
+    background: rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(14px) saturate(1.08);
+    -webkit-backdrop-filter: blur(14px) saturate(1.08);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+  }
+
+  #about.section.about-mobile-story .about-mobile-copy-group .about-mobile-card__teaser-scroll {
+    max-width: 100%;
+    margin-inline: 0;
+  }
+
+  /* לפני «עוד»: גלילה פנימית רק לטיזר; אחרי «עוד»: בלי גלילה פנימית — גלילת דף בלבד (עגון לפרודקשן / Vercel) */
   #about.section.about-mobile-story .about-mobile-card__teaser-scroll {
     width: 100%;
     max-width: var(--admin-about-m-scroll-max-w, min(40ch, 94vw));
@@ -4525,7 +4949,14 @@ a.button-primary:active {
   }
 
   #about.section.about-mobile-story .about-mobile-card--more-revealed .about-mobile-card__teaser-scroll {
-    max-height: min(92vh, 980px);
+    max-height: none;
+    /* visible בשני הצירים — אחרת דפדפנים הופכים את Y ל-auto ונשארת גלילה פנימית */
+    overflow: visible;
+    -webkit-overflow-scrolling: auto;
+    touch-action: auto;
+    overscroll-behavior-y: auto;
+    flex: 0 0 auto;
+    min-height: 0;
   }
 
   #about.section.about-mobile-story .about-mobile-card--teaser .about-mobile-card__text {
@@ -4663,7 +5094,7 @@ a.button-primary:active {
 @media (max-width: 480px) {
   #about.section.about-mobile-story .about-mobile-card__text {
     max-width: var(--admin-about-m-text-max-w-m, var(--admin-about-m-text-max-w, min(40ch, 92vw)));
-    font-size: var(--admin-about-m-text-font-m, var(--admin-about-m-text-font, 1.2em));
+    font-size: calc(var(--admin-about-m-text-font-m, var(--admin-about-m-text-font, 1.2em)) * 0.85);
   }
 
   #about.section.about-mobile-story .about-mobile-card__text--prose {
@@ -4676,6 +5107,13 @@ a.button-primary:active {
 
   #about.section.about-mobile-story .about-mobile-card--teaser .about-mobile-card__text {
     max-width: var(--admin-about-m-prose-max-w-m, var(--admin-about-m-prose-max-w, min(38ch, 92vw)));
+  }
+
+  #about.section.about-mobile-story .about-mobile-copy-group {
+    max-width: var(
+      --admin-about-m-group-max-w-m,
+      var(--admin-about-m-group-max-w, min(40ch, 92vw))
+    );
   }
 }
 
@@ -5129,169 +5567,6 @@ a.button-primary:active {
   .roots-layer {
     display: none;
   }
-}
-
-/* Hidden builder mode (only when ?admin=1) */
-.admin-builder {
-  position: fixed;
-  inset-inline-end: 14px;
-  bottom: 14px;
-  z-index: 120;
-  width: min(92vw, 380px);
-  max-height: min(78vh, 620px);
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  background: rgba(20, 28, 22, 0.9);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 14px;
-  padding: 12px;
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.24);
-  backdrop-filter: blur(8px);
-  transition: border-color 180ms ease, box-shadow 180ms ease;
-}
-
-.admin-builder.admin-builder--saved {
-  border-color: rgba(105, 207, 127, 0.85);
-  box-shadow: 0 14px 36px rgba(34, 168, 74, 0.28);
-}
-
-.admin-builder__title {
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 1.2;
-}
-
-.admin-builder__hint {
-  margin-top: 4px;
-  font-size: 12px;
-  opacity: 0.9;
-}
-
-.admin-builder__actions {
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.admin-builder .button {
-  padding: 8px 10px;
-}
-
-.admin-builder__theme-wrap {
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.admin-builder__theme-title {
-  font-size: 13px;
-  font-weight: 400;
-  margin-bottom: 4px;
-}
-
-.admin-builder__theme-note {
-  margin: 0 0 8px;
-  font-size: 11px;
-  line-height: 1.35;
-  opacity: 0.88;
-}
-
-.admin-builder__theme-note code {
-  font-size: 10px;
-  padding: 1px 4px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.admin-builder__fieldset {
-  margin: 0 0 10px;
-  padding: 8px 8px 6px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 10px;
-}
-
-.admin-builder__fieldset legend {
-  padding: 0 6px;
-  font-size: 12px;
-  opacity: 0.95;
-}
-
-.admin-builder__row {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-
-.admin-builder__row label {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  font-size: 11px;
-  opacity: 0.92;
-}
-
-.admin-builder__row input[type="text"] {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 5px 7px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(0, 0, 0, 0.25);
-  color: #fff;
-  font-size: 12px;
-  font-family: ui-monospace, monospace;
-}
-
-.admin-builder__row--font {
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.admin-builder__row--font label {
-  flex: 1;
-  min-width: 0;
-}
-
-.admin-builder__font-bumps {
-  display: flex;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-.admin-builder__icon-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  font-size: 16px;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0;
-}
-
-.admin-builder__icon-btn:hover {
-  background: rgba(255, 255, 255, 0.16);
-}
-
-.admin-editable {
-  outline: 1px dashed rgba(116, 91, 173, 0.65);
-  outline-offset: 2px;
-  border-radius: 4px;
-  cursor: text;
-}
-
-.admin-editable:focus {
-  outline: 2px solid rgba(116, 91, 173, 0.95);
-  background: rgba(255, 255, 255, 0.5);
 }
 
 /* =================================

@@ -526,13 +526,18 @@
                     data-about-mobile-carousel
                   >
                     <article class="about-mobile-card about-mobile-card--teaser" dir="rtl">
+                      <div
+                        class="about-mobile-copy-group"
+                        role="group"
+                        aria-label="על קורל ביסמוט"
+                      >
                       <div class="about-mobile-card__teaser-scroll">
                         <p
                           class="about-mobile-card__text about-mobile-card__text--teaser-lead"
                           dir="rtl"
                           data-admin-key="mobile-teaser-lead"
                         >נעים מאוד, איזה כיף שנחתת כאן :)
-אני בת 31, יצור רגיש מאוד, מפיקה מוסיקלית, גיטריסטית, זמרת, כותבת, ומלחינה.
+אני קורל ביסמוט, בת 31, יצור רגיש מאוד, מפיקה מוסיקלית, גיטריסטית, זמרת, כותבת, ומלחינה.
 אולי נתקלתם בי מנגנת ברחובות הארץ עם מגבר לופר וחמניות, או אולי שמעתם עליי דרך הסיפור שלהקת <a class="about-maroon-mention" href="https://www.mako.co.il/news-entertainment/2022_q2/Article-3fdef404834c081026.htm?utm_source=copy_link&amp;utm_medium=share&amp;utm_campaign=n12_article" target="_blank" rel="noopener noreferrer">Maroon5</a> ראתה אותי ברחוב ואירחה אותי על הבמה מול עשרות אלפי אנשים.
 אבל תכלס מה זה משנה הסיפור?
 זאת רק תפאורה לתנועה שחיה בי מבפנים.</p>
@@ -561,6 +566,7 @@
 אם התחברת לזה, הגעת למקום הנכון❤️</p>
                           </article>
                         </div>
+                      </div>
                       </div>
                       <button
                         type="button"
@@ -703,35 +709,155 @@
         <div class="container">
           <div class="section-head">
             <h2 class="section-title">התהליך</h2>
-            <p class="section-subtitle">מה עושים, איך עושים, מה כולל — עם מרחב לנשום באמצע.</p>
           </div>
 
-          <div class="grid grid-3">
-            <div class="step-card">
-              <div class="step-num">01</div>
-              <h3 class="step-title">היכרות וכיוון</h3>
-              <p class="muted">מגדירים יחד מה השיר צריך להרגיש, לא רק איך הוא צריך להישמע.</p>
-            </div>
-            <div class="step-card">
-              <div class="step-num">02</div>
-              <h3 class="step-title">הפקה והקלטה</h3>
-              <p class="muted">בונים עולם סביב הווקאל/הסיפור — שכבה־שכבה, בלי להעמיס.</p>
-            </div>
-            <div class="step-card">
-              <div class="step-num">03</div>
-              <h3 class="step-title">עריכה ומיקס</h3>
-              <p class="muted">פוליש עדין שמרים את השיר, אבל משאיר אותו אנושי.</p>
-            </div>
+          <div class="grid grid-3 process-grid" data-process-grid>
+            <article class="step-card process-step" data-process-step>
+              <div class="process-step__flip" data-process-flip>
+                <div
+                  class="process-step__face process-step__face--front"
+                  data-process-step-trigger
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                >
+                  <span class="step-num">01</span>
+                  <h3 class="step-title" data-admin-key="process-step-1-title">היכרות, מילים ולחן</h3>
+                </div>
+                <div class="process-step__face process-step__face--back" data-process-step-back>
+                  <div class="step-card__prose" data-admin-key="process-step-1-body">
+                    <p class="muted">אתם מגיעים אליי לאולפן ואנחנו יושבים בגינה רגע. בנחת.</p>
+                    <p class="muted">
+                      אתם מגיעים עם השיר שכתבתם / עם הטקסטים שיושבים לכם בפתקים, או אפילו בלי שום מילה — רק עם
+                      הרגש שחי בתוכם.
+                    </p>
+                    <p class="muted">
+                      בשלב הראשון אנחנו בעיקר עוסקים בלדייק או ממש לכתוב מאפס את הטקסט והלחן עוד לפני שהתחלנו
+                      לגעת במחשב.
+                    </p>
+                    <p class="muted">אנחנו כנראה נשב עם הגיטרה או הפסנתר ונבנה את הליבה של השיר.</p>
+                    <p class="muted">אני למדתי שכששיר עובד ככה עירום — הוא טוב.</p>
+                    <p class="muted">וזו נקודת התחלה חשובה.</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="step-card process-step" data-process-step>
+              <div class="process-step__flip" data-process-flip>
+                <div
+                  class="process-step__face process-step__face--front"
+                  data-process-step-trigger
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                >
+                  <span class="step-num">02</span>
+                  <h3 class="step-title" data-admin-key="process-step-2-title">בחירת כיוון מוסיקלי</h3>
+                </div>
+                <div class="process-step__face process-step__face--back" data-process-step-back>
+                  <div class="step-card__prose" data-admin-key="process-step-2-body">
+                    <p class="muted">
+                      אחרי שיש לנו מבנה של שיר שאנחנו אוהבים, אנחנו נדבר על איך השיר צריך להרגיש ולהישמע, ונבין
+                      לאיזה כיוון אנחנו רוצים לקחת את זה.
+                    </p>
+                    <p class="muted">נקשיב קצת למוסיקה שאתם אוהבים לשמוע, ונבין יחד מה עושה לכם את זה.</p>
+                    <p class="muted">
+                      האם זה רוקנרול או אינדי רך, האם מוסיקה מינימליסטית או ביטים שמפוצצים את החדר.
+                    </p>
+                    <p class="muted">משם יהיה לי קל יותר לכוון את הכיוון של ההפקה.</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="step-card process-step" data-process-step>
+              <div class="process-step__flip" data-process-flip>
+                <div
+                  class="process-step__face process-step__face--front"
+                  data-process-step-trigger
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                >
+                  <span class="step-num">03</span>
+                  <h3 class="step-title" data-admin-key="process-step-3-title">הקלטה ובניית סקיצה</h3>
+                </div>
+                <div class="process-step__face process-step__face--back" data-process-step-back>
+                  <div class="step-card__prose" data-admin-key="process-step-3-body">
+                    <p class="muted">כמו בעוגה טובה — מתחילים מהבסיס.</p>
+                    <p class="muted">מקליטים סוג של גרסה ראשונית יחסית מינימליסטית.</p>
+                    <p class="muted">שירה, כמה כלים בסיסיים, ומייצרים את המבנה של השיר.</p>
+                    <p class="muted">
+                      בשלב הזה מבינים את עולמות הסאונד, אילו כלים יוכלו להשתלב, וזה מעין אב־טיפוס של מה שבסופו של
+                      דבר יהיה השיר עצמו.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="step-card process-step" data-process-step>
+              <div class="process-step__flip" data-process-flip>
+                <div
+                  class="process-step__face process-step__face--front"
+                  data-process-step-trigger
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                >
+                  <span class="step-num">04</span>
+                  <h3 class="step-title" data-admin-key="process-step-4-title">ההפקה המוסיקלית</h3>
+                </div>
+                <div class="process-step__face process-step__face--back" data-process-step-back>
+                  <div class="step-card__prose" data-admin-key="process-step-4-body">
+                    <p class="muted">בשלב הזה אנחנו יחד.</p>
+                    <p class="muted">
+                      בכל שלב שנוסיף שכבות אני ארצה לשמוע את דעתכם, את הרעיונות שעולים לכם ואת המחשבות שלכם. גם אם
+                      זה רק זמזום או משהו שמרגיש טיפשי — לכל דבר כזה יש משמעות ברגע הזה.
+                    </p>
+                    <p class="muted">
+                      חשוב לי ללוות, לחדד ולמצוא ביחד את המהות והזהות המוסיקלית שלכם. נקליט את שאר הכלים, הקולות,
+                      ואת כל המעטפת הכי מדויקת ונכונה לשיר.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="step-card process-step" data-process-step>
+              <div class="process-step__flip" data-process-flip>
+                <div
+                  class="process-step__face process-step__face--front"
+                  data-process-step-trigger
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                >
+                  <span class="step-num">05</span>
+                  <h3 class="step-title" data-admin-key="process-step-5-title">מיקס ומאסטרינג</h3>
+                </div>
+                <div class="process-step__face process-step__face--back" data-process-step-back>
+                  <div class="step-card__prose" data-admin-key="process-step-5-body">
+                    <p class="muted">השיר מוכן! איזה אושר.</p>
+                    <p class="muted">
+                      עכשיו אנחנו נמקס ונמאסטר את כל מה שעשינו ואנחנו כבר אוהבים, ונרים את זה ברמה.
+                    </p>
+                    <p class="muted">
+                      נדייק ונערוך את הסאונד, נטפל בכל התדרים ונגרום לזה להישמע מדהים בכל מקום ובכל רמקול.
+                    </p>
+                    <p class="muted">(לפעמים נרצה אוזן נוספת ונחליט שאיש מקצוע חיצוני יעשה את זה.)</p>
+                    <p class="muted">מזל טוב, נולד לכם ילד בעולם. :)</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="section-foot section-foot--process">
+            <button class="button button-primary" type="button" data-open-booking>מתחילים</button>
           </div>
 
           <div class="media-row" aria-label="עוד מהמרחב">
             <img src="./assets/gallery-10.png" alt="חלל האולפן" loading="lazy" />
             <img src="./assets/gallery-02.png" alt="עמדת עבודה" loading="lazy" />
             <img src="./assets/gallery-09.png" alt="חלון, עצים ואור" loading="lazy" />
-          </div>
-
-          <div class="section-foot">
-            <button class="button button-primary" type="button" data-open-booking>מתחילים</button>
           </div>
         </div>
       </section>
@@ -750,32 +876,40 @@
 
           <div class="accordion" data-accordion>
             <details class="qa" open>
-              <summary>כמה זמן לוקח להפיק שיר?</summary>
-              <div class="qa-body">תלוי בשיר ובשלב שבו הוא מגיע. לרוב נבנה יחד תכנית קצרה כבר בשיחה הראשונה.</div>
+              <summary data-admin-key="faq-q-produce-time">כמה זמן לוקח להפיק שיר?</summary>
+              <div class="qa-body" data-admin-key="faq-a-produce-time">ממוצע בין 4 ל־5 סשנים. כל מפגש הוא בין 3–4 שעות.</div>
             </details>
             <details class="qa">
-              <summary>אפשר לבוא רק למיקס/עריכה?</summary>
-              <div class="qa-body">כן. אפשר להצטרף בכל שלב — מהקלטה ועד מיקס סופי.</div>
+              <summary data-admin-key="faq-q-first-session-bring">מה להביא לסשן ראשון?</summary>
+              <div class="qa-body" data-admin-key="faq-a-first-session-bring">
+                טקסטים שיש לכם<br />
+                את הכלי שלכם אם יש לכם סאונד משלכם<br />
+                משחק לקיקו (הוא מאד ישמח)
+              </div>
             </details>
             <details class="qa">
-              <summary>מה להביא לסשן ראשון?</summary>
-              <div class="qa-body">דמו/סקיצה אם יש, השראות (2–3 שירים), ואת הסיפור שלך על השיר.</div>
+              <summary data-admin-key="faq-q-trial-session">אפשר להגיע לסשן ניסיון?</summary>
+              <div class="qa-body" data-admin-key="faq-a-trial-session">
+                כן ברור, אפשר להגיע לסשן חד פעמי ולצאת עם סקיצה ראשונית.
+              </div>
             </details>
             <details class="qa">
-              <summary>יש חניה? ואיפה האולפן?</summary>
-              <div class="qa-body">כאן נשים כתובת/הנחיות הגעה כשיהיו מוכנות לפרסום.</div>
+              <summary data-admin-key="faq-q-parking-location">יש חניה? ואיפה האולפן?</summary>
+              <div class="qa-body" data-admin-key="faq-a-parking-location">ממוקם במושב אודים, והחנייה בשפע.</div>
             </details>
             <details class="qa">
-              <summary>למי הסטודיו מתאים</summary>
-              <div class="qa-body">למי שמחפשים תהליך יצירתי-רגיש: ווקאל שמרגיש אמיתי, סאונד נקי, ואווירה שעוזרת להוריד הגנות ולתת לשיר לצאת.</div>
+              <summary data-admin-key="faq-q-who-studio-for">למי הסטודיו מתאים?</summary>
+              <div class="qa-body" data-admin-key="faq-a-who-studio-for">
+                למי שמחפש לעשות תהליך יצירתי רגשי וחשוף.<br /><br />
+                אני מרגישה להפיק פה שיר זה ממש מסע משותף פנימה.
+              </div>
             </details>
             <details class="qa">
-              <summary>איך נראה סשן אצלי?</summary>
-              <div class="qa-body">מתחילים בשיחה קצרה לכיוון, עוברים לעבודה פרקטית (הקלטה/עריכה/מיקס לפי השלב), ובאמצע יש רגעים של נשימה וחיבור למהות של השיר.</div>
-            </details>
-            <details class="qa">
-              <summary>למה אמנים נפתחים פה</summary>
-              <div class="qa-body">כי יש מקום לבן אדם, לא רק לטכניקה. אנחנו עובדים בקצב שלך, עם פידבק עדין, ועם כלים שמאפשרים לשחרר ולהעז לשמוע את הגרסה הכי אמיתית.</div>
+              <summary data-admin-key="faq-q-session-flow">איך נראה סשן אצלי?</summary>
+              <div class="qa-body" data-admin-key="faq-a-session-flow">
+                מתחילים בשתיית תה בגינה, לאכול קצת תמרים עם אגוזים או עוגה שהכנתי<br />
+                ומשם לתהליך עצמו :)
+              </div>
             </details>
           </div>
 
@@ -789,7 +923,10 @@
         <div class="container">
           <div class="section-head">
             <h2 class="section-title">קצת על האולפן</h2>
-            <p class="section-subtitle">כאן נשים סרטונים מהאולפן (כולל מה שבן צילם) וגם חומרים כמו הפרסומת של אלפורו.</p>
+            <p class="section-subtitle" data-admin-key="gallery-intro">
+              דמיינו את עצמכם מסתגרים בתוך חדר מעץ באמצע הטבע ויוצרים את האלבום שלכם<br />
+              אז ככה זה נראה:
+            </p>
           </div>
 
           <div class="story-preview" data-story-carousel aria-label="סטוריז מהאולפן">

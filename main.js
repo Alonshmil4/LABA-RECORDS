@@ -365,15 +365,61 @@ function wireFooterSongExperience() {
 }
 
 function wireAccordionSingleOpen() {
-  const acc = $("[data-accordion]");
-  if (!acc) return;
-  const items = $$("details", acc);
-  items.forEach((d) => {
-    d.addEventListener("toggle", () => {
-      if (!d.open) return;
-      items.forEach((other) => {
-        if (other !== d) other.open = false;
+  $$("[data-accordion]").forEach((acc) => {
+    const items = $$("details", acc);
+    if (!items.length) return;
+    items.forEach((d) => {
+      d.addEventListener("toggle", () => {
+        if (!d.open) return;
+        items.forEach((other) => {
+          if (other !== d) other.open = false;
+        });
       });
+    });
+  });
+}
+
+/* --------------------------------------------------------------------------
+   סקשן #process — אקורדיון כמו FAQ (דסקטופ + מובייל); פריט אחד פתוח בכל פעם
+   -------------------------------------------------------------------------- */
+
+function wireProcessSteps() {
+  const root = document.querySelector("[data-process-grid]");
+  if (!root) return;
+  const steps = () => $$("[data-process-step]", root);
+
+  const setExpanded = (step, trigger, expanded) => {
+    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
+    step.classList.toggle("process-step--open", expanded);
+  };
+
+  const closeOthers = (except) => {
+    steps().forEach((step) => {
+      if (step === except) return;
+      const t = $("[data-process-step-trigger]", step);
+      if (t) setExpanded(step, t, false);
+    });
+  };
+
+  const isExpanded = (step) => step.classList.contains("process-step--open");
+
+  steps().forEach((step) => {
+    const trigger = $("[data-process-step-trigger]", step);
+    if (!trigger) return;
+
+    trigger.addEventListener("click", (e) => {
+      e.preventDefault();
+      const next = !isExpanded(step);
+      if (next) closeOthers(step);
+      setExpanded(step, trigger, next);
+    });
+
+    trigger.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      const next = !isExpanded(step);
+      if (next) closeOthers(step);
+      setExpanded(step, trigger, next);
     });
   });
 }
@@ -752,29 +798,6 @@ const ADMIN_THEME_CSS_PROPS = [
   "--admin-about-m-prose-max-w-m",
 ];
 
-function defaultAdminTheme() {
-  return {
-    productions: {
-      stackMax: "",
-      stackMaxM: "",
-      introMaxW: "",
-      introMaxWM: "",
-      introFont: "",
-      introFontM: "",
-    },
-    aboutMobile: {
-      textMaxW: "",
-      textMaxWM: "",
-      textFont: "",
-      textFontM: "",
-      scrollMaxW: "",
-      scrollMaxWM: "",
-      proseMaxW: "",
-      proseMaxWM: "",
-    },
-  };
-}
-
 function sanitizeAdminCssValue(raw) {
   if (typeof raw !== "string") return "";
   const t = raw.trim();
@@ -829,67 +852,6 @@ function applyAdminThemeFromStore(sourceStore) {
   }
 }
 
-function readAdminThemeFromForm(formRoot) {
-  const out = defaultAdminTheme();
-  if (!formRoot) return out;
-  const val = (name) => {
-    const el = formRoot.querySelector(`[name="${name}"]`);
-    return el instanceof HTMLInputElement ? sanitizeAdminCssValue(el.value) : "";
-  };
-  out.productions.stackMax = val("prod-stack-max");
-  out.productions.stackMaxM = val("prod-stack-max-m");
-  out.productions.introMaxW = val("prod-intro-max-w");
-  out.productions.introMaxWM = val("prod-intro-max-w-m");
-  out.productions.introFont = val("prod-intro-font");
-  out.productions.introFontM = val("prod-intro-font-m");
-  out.aboutMobile.textMaxW = val("about-text-max-w");
-  out.aboutMobile.textMaxWM = val("about-text-max-w-m");
-  out.aboutMobile.textFont = val("about-text-font");
-  out.aboutMobile.textFontM = val("about-text-font-m");
-  out.aboutMobile.scrollMaxW = val("about-scroll-max-w");
-  out.aboutMobile.scrollMaxWM = val("about-scroll-max-w-m");
-  out.aboutMobile.proseMaxW = val("about-prose-max-w");
-  out.aboutMobile.proseMaxWM = val("about-prose-max-w-m");
-  return out;
-}
-
-function writeAdminThemeToForm(formRoot, theme) {
-  if (!formRoot) return;
-  const t = theme && typeof theme === "object" ? theme : defaultAdminTheme();
-  const p = { ...defaultAdminTheme().productions, ...(t.productions || {}) };
-  const a = { ...defaultAdminTheme().aboutMobile, ...(t.aboutMobile || {}) };
-  const set = (name, v) => {
-    const el = formRoot.querySelector(`[name="${name}"]`);
-    if (el instanceof HTMLInputElement) el.value = typeof v === "string" ? v : "";
-  };
-  set("prod-stack-max", p.stackMax);
-  set("prod-stack-max-m", p.stackMaxM);
-  set("prod-intro-max-w", p.introMaxW);
-  set("prod-intro-max-w-m", p.introMaxWM);
-  set("prod-intro-font", p.introFont);
-  set("prod-intro-font-m", p.introFontM);
-  set("about-text-max-w", a.textMaxW);
-  set("about-text-max-w-m", a.textMaxWM);
-  set("about-text-font", a.textFont);
-  set("about-text-font-m", a.textFontM);
-  set("about-scroll-max-w", a.scrollMaxW);
-  set("about-scroll-max-w-m", a.scrollMaxWM);
-  set("about-prose-max-w", a.proseMaxW);
-  set("about-prose-max-w-m", a.proseMaxWM);
-}
-
-function bumpAdminFontInput(input, delta) {
-  if (!(input instanceof HTMLInputElement)) return;
-  const raw = input.value.trim();
-  let n = parseFloat(raw);
-  if (!Number.isFinite(n)) n = 1.2;
-  let unit = "em";
-  const m = raw.match(/^([\d.]+)\s*(em|rem|px)?$/i);
-  if (m && m[2]) unit = m[2].toLowerCase();
-  n = Math.min(2.6, Math.max(0.75, Math.round((n + delta) * 100) / 100));
-  input.value = `${n}${unit}`;
-}
-
 function wireAboutPanelVideo() {
   const v = document.querySelector(".about-full__bg-video");
   if (!v) return;
@@ -904,11 +866,11 @@ function wireAboutPanelVideo() {
   if (v.readyState >= 2) tryPlay();
 }
 
-function wireAdminBuilder() {
+/** טוען תוכן + ערכת נושא מ-localStorage בלי ממשק אדמין */
+function applyStoredSiteContent() {
   try {
-  const params = new URLSearchParams(window.location.search);
-  const isAdminMode = params.get("admin") === "1" || localStorage.getItem("laba_admin_enabled") === "1";
-  /* v6: same as v5 keys; version bump clears stale localStorage so HTML defaults match deploy. */
+  localStorage.removeItem("laba_admin_enabled");
+
   const ADMIN_CONTENT_VERSION = "v6";
   const storageKey = `laba_admin_content:${ADMIN_CONTENT_VERSION}:${window.location.pathname}`;
   const editableSelector = [
@@ -967,18 +929,32 @@ function wireAdminBuilder() {
         changed = true;
       }
     });
+
+    // דסקטופ: גרסה ישנה עם "אני קורל ביסמוט, בת 31" → ללא השם בשורה הזו (הכותרת כבר מציגה)
+    ["about:desktop-prose"].forEach((k) => {
+      const value = store[k];
+      if (typeof value !== "string") return;
+      if (!value.includes("אני קורל ביסמוט, בת 31,")) return;
+      store[k] = value.replace(/אני קורל ביסמוט, בת 31,/g, "אני בת 31,");
+      changed = true;
+    });
+
+    // מובייל: localStorage ישן בלי השם בשורה — משלימים כמו ב-HTML
+    ["about:mobile-teaser-lead"].forEach((k) => {
+      const value = store[k];
+      if (typeof value !== "string") return;
+      if (value.includes("אני קורל ביסמוט")) return;
+      if (!value.includes("אני בת 31,")) return;
+      store[k] = value.replace(/אני בת 31,/g, "אני קורל ביסמוט, בת 31,");
+      changed = true;
+    });
+
     if (changed) localStorage.setItem(storageKey, JSON.stringify(store));
   };
   migrateLegacyCopy();
   applyAdminThemeFromStore(store);
 
-  const draftStore = JSON.parse(JSON.stringify(store));
-  if (!draftStore[ADMIN_THEME_KEY] || typeof draftStore[ADMIN_THEME_KEY] !== "object") {
-    draftStore[ADMIN_THEME_KEY] = defaultAdminTheme();
-  }
-
   const editables = $$(editableSelector)
-    .filter((el) => !el.closest(".admin-builder"))
     .filter((el) => !el.hasAttribute("data-admin-control"))
     .filter((el) => !el.querySelector("img, video, iframe"))
     .filter((el) => !el.hasAttribute("data-admin-skip"));
@@ -994,258 +970,12 @@ function wireAdminBuilder() {
     return `${sid}:${n}`;
   };
 
-  // Always apply saved text overrides, even when admin mode is off.
   editables.forEach((el) => {
     const key = adminKeyFor(el);
-    el.dataset.adminEditable = key;
     if (store[key]) el.innerHTML = store[key];
   });
-
-  if (!isAdminMode) return;
-
-  localStorage.setItem("laba_admin_enabled", "1");
-
-  const panel = document.createElement("aside");
-  panel.className = "admin-builder";
-  panel.setAttribute("dir", "rtl");
-  panel.innerHTML = `
-    <div class="admin-builder__title">מצב אדמין פעיל</div>
-    <div class="admin-builder__hint">עריכה חיה במצב אדמין. עדכון שומר טקסטים + מידות/גופן (משתני CSS בדפדפן) ב־localStorage ומופיע בייצוא JSON. כדי לקבע בקוד: ייצוא → העתקת הערכים ל־styles.css או שמירת JSON בפרויקט. ריווח שורות בטקסט עדיין ב־CSS. מפתחות: mobile-more-body, tracks-intro-body. אחרי שדרוג (v6): מפתח localStorage חדש — טעינה ראשונה מציגה את הטקסט מה־HTML; אם צריך עריכות ישנות: ייצוא מ־v5 + ייבוא ידני.</div>
-    <div class="admin-builder__theme-wrap" data-admin-theme-form>
-      <div class="admin-builder__theme-title">רוחב תיבות וגודל גופן</div>
-      <p class="admin-builder__theme-note">דוגמאות: <code>min(44ch, 92%)</code> · <code>1.22em</code> · <code>17px</code>. שדה ריק = ברירת מחדל. «מובייל צר» = עד ~480px.</p>
-      <fieldset class="admin-builder__fieldset">
-        <legend>מבוא «שירים שיצאו מכאן»</legend>
-        <div class="admin-builder__row">
-          <label>רוחב טור (דסקטופ)<input name="prod-stack-max" type="text" autocomplete="off" placeholder="min(72ch, 100%)" /></label>
-          <label>רוחב טור (מובייל)<input name="prod-stack-max-m" type="text" autocomplete="off" /></label>
-        </div>
-        <div class="admin-builder__row">
-          <label>רוחב טקסט (דסקטופ)<input name="prod-intro-max-w" type="text" autocomplete="off" placeholder="min(40ch, 100%)" /></label>
-          <label>רוחב טקסט (מובייל צר)<input name="prod-intro-max-w-m" type="text" autocomplete="off" /></label>
-        </div>
-        <div class="admin-builder__row admin-builder__row--font">
-          <label>גופן (דסקטופ)<input name="prod-intro-font" type="text" autocomplete="off" placeholder="1.2em" /></label>
-          <div class="admin-builder__font-bumps">
-            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="prod-intro-font" data-bump="-0.05" aria-label="הקטן גופן">−</button>
-            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="prod-intro-font" data-bump="0.05" aria-label="הגדל גופן">+</button>
-          </div>
-        </div>
-        <div class="admin-builder__row admin-builder__row--font">
-          <label>גופן (מובייל צר)<input name="prod-intro-font-m" type="text" autocomplete="off" /></label>
-          <div class="admin-builder__font-bumps">
-            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="prod-intro-font-m" data-bump="-0.05" aria-label="הקטן גופן">−</button>
-            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="prod-intro-font-m" data-bump="0.05" aria-label="הגדל גופן">+</button>
-          </div>
-        </div>
-      </fieldset>
-      <fieldset class="admin-builder__fieldset">
-        <legend>About מובייל («היי»)</legend>
-        <div class="admin-builder__row">
-          <label>רוחב טקסט (עד 760px)<input name="about-text-max-w" type="text" autocomplete="off" /></label>
-          <label>רוחב טקסט (עד 480px)<input name="about-text-max-w-m" type="text" autocomplete="off" /></label>
-        </div>
-        <div class="admin-builder__row admin-builder__row--font">
-          <label>גופן (עד 760px)<input name="about-text-font" type="text" autocomplete="off" /></label>
-          <div class="admin-builder__font-bumps">
-            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="about-text-font" data-bump="-0.05" aria-label="הקטן גופן">−</button>
-            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="about-text-font" data-bump="0.05" aria-label="הגדל גופן">+</button>
-          </div>
-        </div>
-        <div class="admin-builder__row admin-builder__row--font">
-          <label>גופן (עד 480px)<input name="about-text-font-m" type="text" autocomplete="off" /></label>
-          <div class="admin-builder__font-bumps">
-            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="about-text-font-m" data-bump="-0.05" aria-label="הקטן גופן">−</button>
-            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="about-text-font-m" data-bump="0.05" aria-label="הגדל גופן">+</button>
-          </div>
-        </div>
-        <div class="admin-builder__row">
-          <label>רוחב אזור גלילה (עד 760px)<input name="about-scroll-max-w" type="text" autocomplete="off" /></label>
-          <label>רוחב אזור גלילה (עד 480px)<input name="about-scroll-max-w-m" type="text" autocomplete="off" /></label>
-        </div>
-        <div class="admin-builder__row">
-          <label>רוחב טקסט «עוד» (עד 760px)<input name="about-prose-max-w" type="text" autocomplete="off" /></label>
-          <label>רוחב טקסט «עוד» (עד 480px)<input name="about-prose-max-w-m" type="text" autocomplete="off" /></label>
-        </div>
-      </fieldset>
-    </div>
-    <div class="admin-builder__actions">
-      <button type="button" class="button button-small button-primary" data-admin-control="apply">עדכון</button>
-      <button type="button" class="button button-small" data-admin-control="export">ייצוא</button>
-      <button type="button" class="button button-small" data-admin-control="import">ייבוא</button>
-      <button type="button" class="button button-small button-ghost" data-admin-control="reset">איפוס</button>
-      <button type="button" class="button button-small button-primary" data-admin-control="close">סגירה</button>
-    </div>
-  `;
-  document.body.appendChild(panel);
-
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "application/json";
-  input.hidden = true;
-  document.body.appendChild(input);
-
-  const saveStore = () => localStorage.setItem(storageKey, JSON.stringify(store));
-  const themeForm = panel.querySelector("[data-admin-theme-form]");
-  writeAdminThemeToForm(themeForm, draftStore[ADMIN_THEME_KEY]);
-
-  themeForm?.addEventListener("input", () => {
-    draftStore[ADMIN_THEME_KEY] = readAdminThemeFromForm(themeForm);
-    applyAdminThemeFromStore({ ...store, [ADMIN_THEME_KEY]: draftStore[ADMIN_THEME_KEY] });
-  });
-
-  panel.querySelectorAll("[data-admin-font-bump]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const name = btn.getAttribute("data-admin-font-bump");
-      const delta = parseFloat(btn.getAttribute("data-bump") || "0");
-      const inp = name && themeForm ? themeForm.querySelector(`[name="${name}"]`) : null;
-      bumpAdminFontInput(inp, delta);
-      draftStore[ADMIN_THEME_KEY] = readAdminThemeFromForm(themeForm);
-      applyAdminThemeFromStore({ ...store, [ADMIN_THEME_KEY]: draftStore[ADMIN_THEME_KEY] });
-    });
-  });
-
-  const insertHtmlAtCursor = (html) => {
-    const sel = window.getSelection();
-    if (!sel || !sel.rangeCount) return;
-    const range = sel.getRangeAt(0);
-    range.deleteContents();
-    const frag = range.createContextualFragment(html);
-    const last = frag.lastChild;
-    range.insertNode(frag);
-    if (last) {
-      range.setStartAfter(last);
-      range.collapse(true);
-      sel.removeAllRanges();
-      sel.addRange(range);
-    }
-  };
-  const persistAll = () => {
-    editables.forEach((el) => {
-      const key = el.dataset.adminEditable;
-      if (!key) return;
-      draftStore[key] = el.innerHTML;
-    });
-  };
-
-  editables.forEach((el) => {
-    const key = el.dataset.adminEditable;
-    if (!key) return;
-    el.contentEditable = "true";
-    el.setAttribute("spellcheck", "false");
-    el.classList.add("admin-editable");
-    el.addEventListener("keydown", (e) => {
-      if (e.key !== "Enter") return;
-      // Keep line breaks deterministic: Enter always inserts <br>
-      e.preventDefault();
-      insertHtmlAtCursor("<br>");
-      draftStore[key] = el.innerHTML;
-    });
-    el.addEventListener("paste", (e) => {
-      const text = e.clipboardData?.getData("text/plain");
-      if (typeof text !== "string") return;
-      e.preventDefault();
-      const safe = text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\r\n/g, "\n")
-        .replace(/\r/g, "\n")
-        .replace(/\n/g, "<br>");
-      insertHtmlAtCursor(safe);
-      draftStore[key] = el.innerHTML;
-    });
-    el.addEventListener("input", () => {
-      draftStore[key] = el.innerHTML;
-    });
-    el.addEventListener("blur", () => {
-      draftStore[key] = el.innerHTML;
-    });
-  });
-
-  const applyDraftToStore = () => {
-    persistAll();
-    if (themeForm) draftStore[ADMIN_THEME_KEY] = readAdminThemeFromForm(themeForm);
-    Object.keys(store).forEach((k) => delete store[k]);
-    Object.entries(draftStore).forEach(([k, v]) => {
-      store[k] = v;
-    });
-    saveStore();
-    applyAdminThemeFromStore(store);
-  };
-
-  panel.addEventListener("click", (e) => {
-    const target = e.target;
-    if (!(target instanceof HTMLElement)) return;
-    const action = target.getAttribute("data-admin-control");
-    if (!action) return;
-
-    if (action === "export") {
-      persistAll();
-      if (themeForm) draftStore[ADMIN_THEME_KEY] = readAdminThemeFromForm(themeForm);
-      const blob = new Blob([JSON.stringify(draftStore, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "laba-admin-content.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    if (action === "apply") {
-      applyDraftToStore();
-      panel.classList.add("admin-builder--saved");
-      const oldTitle = panel.querySelector(".admin-builder__title");
-      if (oldTitle) {
-        oldTitle.textContent = "עודכן בהצלחה";
-        window.setTimeout(() => {
-          oldTitle.textContent = "מצב אדמין פעיל";
-        }, 1400);
-      }
-      window.setTimeout(() => panel.classList.remove("admin-builder--saved"), 1400);
-    }
-
-    if (action === "import") {
-      input.click();
-    }
-
-    if (action === "reset") {
-      localStorage.removeItem(storageKey);
-      window.location.reload();
-    }
-
-    if (action === "close") {
-      localStorage.removeItem("laba_admin_enabled");
-      const url = new URL(window.location.href);
-      url.searchParams.delete("admin");
-      window.location.href = url.toString();
-    }
-  });
-
-  input.addEventListener("change", async () => {
-    const file = input.files?.[0];
-    if (!file) return;
-    try {
-      const text = await file.text();
-      const parsed = JSON.parse(text);
-      Object.keys(draftStore).forEach((k) => delete draftStore[k]);
-      Object.entries(parsed).forEach(([k, v]) => {
-        draftStore[k] = v;
-      });
-      Object.keys(store).forEach((k) => delete store[k]);
-      Object.entries(parsed).forEach(([k, v]) => {
-        store[k] = v;
-      });
-      saveStore();
-      window.location.reload();
-    } catch {
-      alert("קובץ לא תקין");
-    } finally {
-      input.value = "";
-    }
-  });
   } catch (err) {
-    console.error("[LABA] wireAdminBuilder failed", err);
+    console.error("[LABA] applyStoredSiteContent failed", err);
   }
 }
 
@@ -1289,6 +1019,7 @@ initHeroTagsMobileRotator();
 wireMenu();
 wireBooking();
 wireFooterSongExperience();
+wireProcessSteps();
 wireAccordionSingleOpen();
 wireDisabledLinks();
 wireScrollReveal();
@@ -1300,7 +1031,7 @@ wireAboutMobileStoryExperience();
 wireAboutMobileMoreToggle();
 wireAboutMobileBook();
 wireAboutPanelVideo();
-wireAdminBuilder();
+applyStoredSiteContent();
 
 if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
