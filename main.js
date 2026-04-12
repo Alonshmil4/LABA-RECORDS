@@ -838,7 +838,7 @@ function wireAdminBuilder() {
   panel.setAttribute("dir", "rtl");
   panel.innerHTML = `
     <div class="admin-builder__title">מצב אדמין פעיל</div>
-    <div class="admin-builder__hint">עריכה חיה במצב אדמין. עדכון לאתר בפועל רק בלחיצה על «עדכון». ריווח בין שורות נקבע ב־CSS ולא נשמר כאן. טקסטי About (מובייל + «עוד») ודסקטופ, וטקסטי מבוא הפקות — במפתחות יציבים (מחסן v5). אחרי שדרוג מגרסה קודמת: ייצוא ישן + ייבוא ידני או העתקה מחדש.</div>
+    <div class="admin-builder__hint">עריכה חיה במצב אדמין. עדכון לאתר בפועל רק בלחיצה על «עדכון». ריווח בין שורות נקבע ב־CSS ולא נשמר כאן. טקסטי About (מובייל + «עוד») ודסקטופ, וטקסטי מבוא הפקות — במפתחות יציבים (מחסן v5). מובייל «עוד»: mobile-more-body. מבוא הפקות: tracks-intro-body. אחרי שדרוג מגרסה קודמת: ייצוא ישן + ייבוא ידני או העתקה מחדש.</div>
     <div class="admin-builder__actions">
       <button type="button" class="button button-small button-primary" data-admin-control="apply">עדכון</button>
       <button type="button" class="button button-small" data-admin-control="export">ייצוא</button>

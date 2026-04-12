@@ -2548,6 +2548,15 @@ a.button-primary:active {
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 0, 0, 0.35);
 }
 
+.hero-loc-highlight {
+  display: inline;
+  padding: 0.06em 0.26em 0.1em;
+  border-radius: 5px;
+  background: rgba(168, 140, 255, 0.38);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
 .hero-tags-desktop {
   width: 100%;
 }
@@ -2571,6 +2580,20 @@ a.button-primary:active {
   position: relative;
   width: 100%;
   min-height: 2.85rem;
+}
+
+.hero-tags-mobile-strip {
+  margin: 0;
+  padding: 4px 10px 0;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: clamp(11px, 3vw, 12.5px);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.35);
 }
 
 .hero-tags-mobile-layer {
@@ -2762,6 +2785,13 @@ a.button-primary:active {
   line-height: 1.48;
   max-width: 100%;
   text-wrap: balance;
+}
+
+/* מבוא «שירים שיצאו מכאן»: שורות + רווחי בלוק כפולים מהמקור (לא gap בין פסקאות) */
+#productions.section .section-subtitle-line--productions-prose {
+  white-space: pre-line;
+  text-wrap: unset;
+  max-width: min(40ch, 100%);
 }
 
 #process.section {
@@ -4472,10 +4502,6 @@ a.button-primary:active {
   #about.section.about-mobile-story .about-mobile-more-panel .about-mobile-card {
     padding-top: 0;
     padding-bottom: 0;
-  }
-
-  #about.section.about-mobile-story .about-mobile-more-panel .about-mobile-card + .about-mobile-card {
-    margin-top: clamp(10px, 0.55em, 16px);
   }
 
   #about.section.about-mobile-story .about-mobile-card.mobile-reveal {
