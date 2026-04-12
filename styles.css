@@ -23,6 +23,9 @@
   --btn-ink: #002b49;
   --btn-outline: #ffffff;
 
+  /* ‹ › in circular buttons: font metrics sit low; flex + slight bottom padding optically centers */
+  --circle-chevron-pad-bottom: 0.11em;
+
   --radius: 18px;
   --radius-sm: 12px;
   --container: 1120px;
@@ -1558,6 +1561,7 @@ a.button-primary:active {
 #about.section .section-head .section-subtitle,
 #productions.section .section-head .section-subtitle,
 #productions.section .section-head .section-subtitle-line,
+#productions.section .section-subtitle-stack .section-subtitle-line,
 #process.section .section-head .section-subtitle {
   color: rgba(255, 255, 255, 0.9);
   font-weight: 400;
@@ -1631,14 +1635,14 @@ a.button-primary:active {
   }
 
   #about.section .about-full__note--1 {
-    top: clamp(8px, 3.8vh, 42px);
+    top: clamp(4px, 1.5vh, 28px);
     right: clamp(24px, 4.2vw, 92px);
     width: min(560px, 52vw);
-    min-height: min(680px, 82vh);
-    z-index: 3;
-  }
-
-  #about.section .about-full__note--1 {
+    min-height: 0;
+    max-height: min(calc(100vh - 88px), 94vh);
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     z-index: 3;
   }
 
@@ -1856,7 +1860,7 @@ a.button-primary:active {
     margin-top: 0;
   }
 
-  #about.section .about-mobile-carousel-layer {
+  #about.section:not(.about-mobile-story) .about-mobile-carousel-layer {
     position: absolute;
     top: 0;
     bottom: auto;
@@ -1890,7 +1894,7 @@ a.button-primary:active {
     filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.26));
   }
 
-  #about.section .about-mobile-book__viewport {
+  #about.section:not(.about-mobile-story) .about-mobile-book__viewport {
     flex: 1;
     min-width: 0;
     max-width: min(62vw, 238px);
@@ -1938,7 +1942,7 @@ a.button-primary:active {
     display: none;
   }
 
-  #about.section .about-mobile-carousel {
+  #about.section:not(.about-mobile-story) .about-mobile-carousel {
     display: flex;
     flex-flow: row nowrap;
     gap: 0;
@@ -1957,7 +1961,7 @@ a.button-primary:active {
     display: none;
   }
 
-  #about.section .about-mobile-card {
+  #about.section:not(.about-mobile-story) .about-mobile-card {
     flex: 0 0 100%;
     width: 100%;
     height: 100%;
@@ -2322,6 +2326,7 @@ a.button-primary:active {
 
   .hero-inner .hero-headlines {
     order: 1;
+    margin-bottom: clamp(32px, 20vh, 200px);
   }
 
   .hero-inner .hero-meta {
@@ -2331,8 +2336,8 @@ a.button-primary:active {
 
   .hero-inner .kicker {
     order: 3;
-    margin-top: 14px;
-    margin-bottom: 10px;
+    margin-top: 22px;
+    margin-bottom: max(14px, env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -2351,6 +2356,16 @@ a.button-primary:active {
   text-align: center;
   width: 100%;
   margin-inline: auto;
+}
+
+/* לוקיישן מיד מתחת לתת-כותרת ההירו, לפני פסקת המשנה */
+.hero-headlines .hero-meta-location--hero-lead {
+  margin-top: 0.38em;
+  margin-bottom: 0;
+}
+
+.hero-headlines .hero-subtitle {
+  margin-top: 10px;
 }
 
 .kicker {
@@ -2629,6 +2644,45 @@ a.button-primary:active {
   align-items: center;
   text-align: center;
   margin-inline: auto;
+}
+
+/* Desktop: keep reading order title → intro copy → tracks (DOM is title → tracks → copy for mobile) */
+@media (min-width: 761px) {
+  #productions.section .productions-content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #productions.section .productions-content .section-head {
+    order: 1;
+  }
+
+  #productions.section .productions-content .section-subtitle-stack {
+    order: 2;
+    margin-bottom: 22px;
+  }
+
+  #productions.section .productions-content .split-two {
+    order: 3;
+  }
+
+  #productions.section .productions-content .section-foot {
+    order: 4;
+  }
+
+  /* תת-כותרת ממורכזת (מול Tailwind / start ב־RTL שנראה כימין) */
+  #productions.section .productions-content .section-subtitle-stack,
+  #productions.section .productions-content .section-subtitle-line {
+    text-align: center;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  #productions.section .productions-content .section-subtitle-stack {
+    margin-top: 16px;
+  }
 }
 
 /* Productions intro: one rhythm between lines (no mixed paragraph gaps vs line-height) */
@@ -3409,11 +3463,13 @@ a.button-primary:active {
     justify-content: flex-end;
   }
 
-  /* Mobile: keep icon buttons attached under each Spotify card */
+  /* Mobile: keep icon buttons tight under Spotify preview */
   #productions.section .track {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 4px;
+    gap: 0;
+    align-items: center;
+    justify-items: center;
   }
 
   #productions.section .track-cover {
@@ -3429,7 +3485,9 @@ a.button-primary:active {
     width: 100%;
     max-width: 100%;
     gap: 10px;
-    margin-top: 8px;
+    margin-top: -14px;
+    margin-bottom: 0;
+    transform: none;
   }
 
   /* מובייל: אפל לפני יוטיוב בשורה (משמאל ב-LTR) */
@@ -3451,12 +3509,12 @@ a.button-primary:active {
     max-width: 288px;
   }
 
-  /* Arrows + «לשיר הבא» above the carousel; Spotify + icons below */
+  /* Spotify + icons first; «לשיר הבא» + arrows last — extra space before nav row */
   #productions.section .tracks-carousel {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
     width: min(288px, calc(100% - 24px));
     max-width: 100%;
     min-width: 0;
@@ -3465,7 +3523,14 @@ a.button-primary:active {
     direction: ltr;
   }
 
+  #productions.section .tracks-carousel > .tracks {
+    order: 1;
+    width: 100%;
+    min-width: 0;
+  }
+
   #productions.section .tracks-carousel-top {
+    order: 2;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -3473,6 +3538,8 @@ a.button-primary:active {
     gap: 10px;
     width: 100%;
     flex-wrap: wrap;
+    margin-top: 4px;
+    margin-bottom: 0;
   }
 
   #productions.section .tracks-carousel-hint {
@@ -3483,11 +3550,6 @@ a.button-primary:active {
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
     white-space: nowrap;
     user-select: none;
-  }
-
-  #productions.section .tracks-carousel > .tracks {
-    width: 100%;
-    min-width: 0;
   }
 
   #productions.section .tracks-carousel-nav {
@@ -3505,14 +3567,9 @@ a.button-primary:active {
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    padding: 0;
+    padding: 0 0 var(--circle-chevron-pad-bottom) 0;
     transition: transform 140ms ease, background 160ms ease, border-color 160ms ease, color 160ms ease;
     box-shadow: 0 6px 14px rgba(0, 43, 73, 0.2);
-  }
-
-  /* Slight optical correction: keeps › centered like ‹ */
-  #productions.section .tracks-carousel-nav[data-tracks-next] {
-    padding-left: 1px;
   }
 
   #productions.section .tracks-carousel-nav:hover {
@@ -3547,7 +3604,7 @@ a.button-primary:active {
     scroll-snap-type: x mandatory;
     scroll-padding-inline: 0;
     scroll-behavior: smooth;
-    padding: 0 0 6px;
+    padding: 0;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -3577,7 +3634,7 @@ a.button-primary:active {
     min-width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    padding: 8px 0;
+    padding: 0;
     overflow-x: hidden;
     scroll-snap-align: start;
     scroll-snap-stop: always;
@@ -3606,8 +3663,9 @@ a.button-primary:active {
 
   #productions.section .track-actions--apple-only {
     justify-content: center;
-    min-height: 72px;
-    transform: translateY(-6px);
+    min-height: 0;
+    margin-top: -14px;
+    transform: none;
   }
 
   #productions.section .section-foot.split {
@@ -4180,8 +4238,8 @@ a.button-primary:active {
     margin-top: -100vh;
     margin-top: -100svh;
     margin-top: -100dvh;
-    /* first paragraph starts lower, so Coral stays visible */
-    padding-top: calc(56vh + env(safe-area-inset-top, 0px));
+    /* טקסט צמוד יותר מתחת לכותרת האתר */
+    padding-top: calc(48px + env(safe-area-inset-top, 0px));
   }
 
   #about.section.about-mobile-story .about-mobile-book {
@@ -4208,7 +4266,7 @@ a.button-primary:active {
   #about.section.about-mobile-story .about-mobile-carousel {
     display: grid;
     grid-template-columns: 1fr;
-    gap: clamp(22px, 4.8vh, 42px);
+    gap: clamp(10px, 0.62em, 16px);
     height: auto;
     width: 100%;
     overflow: visible;
@@ -4216,44 +4274,151 @@ a.button-primary:active {
     background: transparent;
   }
 
+  /* טקסט ישירות מעל הווידאו — בלי קופסת כרטיס */
   #about.section.about-mobile-story .about-mobile-card {
     width: 100%;
     height: auto;
     min-height: 0;
-    padding: 14px 16px 16px;
-    border-radius: 16px;
-    overflow: hidden;
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.2),
-      rgba(0, 0, 0, 0.4)
-    );
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 10px 26px rgba(8, 12, 10, 0.2);
+    padding: 0 14px 2px;
+    border-radius: 0;
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
 
+  /* כמו .section-subtitle-line בהפקות: 1.2em על בסיס body (html 88%) */
   #about.section.about-mobile-story .about-mobile-card__text {
     text-align: center;
-    font-size: clamp(12.4px, 3.05vw, 14.2px);
-    line-height: 1.56;
+    font-size: 1.2em;
+    line-height: 1.48;
     color: rgba(252, 250, 244, 0.96);
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
-    max-width: 33ch;
+    max-width: min(40ch, 92vw);
     white-space: normal;
     word-break: normal;
-    margin-inline: auto;
+    margin: 0 auto;
   }
 
-  #about.section.about-mobile-story .about-mobile-actions {
-    margin-top: 16px;
-    max-width: min(88vw, 286px);
+  /* טקסט מורחב: שורות מהמקור — בלי ריווח פסקה מוגזם (רווחים כפולים במקור עדיין שוברים שורה) */
+  #about.section.about-mobile-story .about-mobile-card__text--prose {
+    white-space: pre-line;
+    max-width: min(38ch, 92vw);
+    text-align: center;
+    line-height: 1.48;
+  }
+
+  #about.section.about-mobile-story .about-mobile-card--teaser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(8px, 0.62em, 14px);
+    padding-bottom: 4px;
+  }
+
+  #about.section.about-mobile-story .about-mobile-card--teaser.about-mobile-card--more-revealed {
+    gap: 0;
+    padding-bottom: 0;
+  }
+
+  /* גלילה פנימית לטקסט — כפתור «עוד» מתחת; אחרי לחיצה כל הסיפור באותה גלילה */
+  #about.section.about-mobile-story .about-mobile-card__teaser-scroll {
+    width: 100%;
+    max-width: min(40ch, 94vw);
+    max-height: min(52vh, 420px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 0 1 auto;
+    min-height: 0;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  #about.section.about-mobile-story .about-mobile-card__teaser-scroll::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+
+  #about.section.about-mobile-story .about-mobile-card--more-revealed .about-mobile-card__teaser-scroll {
+    max-height: min(92vh, 980px);
+  }
+
+  #about.section.about-mobile-story .about-mobile-card--teaser .about-mobile-card__text {
+    margin: 0;
+    max-width: min(38ch, 92vw);
+  }
+
+  #about.section.about-mobile-story .about-mobile-card__text--teaser-lead {
+    white-space: pre-line;
+    line-height: 1.48;
+  }
+
+  #about.section.about-mobile-story .about-mobile-expand-btn {
+    appearance: none;
+    margin: 0;
+    flex-shrink: 0;
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 252, 246, 0.38);
+    background: rgba(8, 10, 9, 0.35);
+    color: rgba(252, 250, 244, 0.96);
+    font-family: inherit;
+    font-size: 0.92em;
+    font-weight: 400;
+    line-height: 1.2;
+    cursor: pointer;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+    transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+  }
+
+  #about.section.about-mobile-story .about-mobile-expand-btn:hover {
+    background: rgba(255, 252, 246, 0.14);
+    border-color: rgba(255, 252, 246, 0.55);
+  }
+
+  #about.section.about-mobile-story .about-mobile-expand-btn:active {
+    transform: scale(0.98);
+  }
+
+  #about.section.about-mobile-story .about-mobile-more-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: clamp(10px, 0.62em, 16px);
+    width: 100%;
+    max-width: min(92vw, 520px);
+    margin-inline: auto;
+    padding-bottom: max(32px, env(safe-area-inset-bottom, 0px));
+  }
+
+  /* פאנל בתוך אותה גלילה כמו הטיזר — רצף טקסט צפוף */
+  #about.section.about-mobile-story .about-mobile-card__teaser-scroll .about-mobile-more-panel {
+    max-width: 100%;
+    width: 100%;
+    margin-inline: 0;
+    margin-top: 0;
+    padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+    gap: 0;
+  }
+
+  #about.section.about-mobile-story .about-mobile-more-panel[hidden] {
+    display: none !important;
+  }
+
+  #about.section.about-mobile-story .about-mobile-more-panel .about-mobile-card {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   #about.section.about-mobile-story .about-mobile-card.mobile-reveal {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(6px);
     transition:
       opacity 560ms ease-out,
       transform 560ms ease-out;
@@ -4264,6 +4429,11 @@ a.button-primary:active {
   #about.section.about-mobile-story .about-mobile-card.mobile-reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  #about.section.about-mobile-story .about-mobile-card__text a,
+  #about.section.about-mobile-story .about-mobile-card__text .about-line-em {
+    display: inline;
   }
 
   #about.section.about-mobile-story--cards .about-full__bg-video {
@@ -4280,11 +4450,10 @@ a.button-primary:active {
   }
 
   #about.section.about-mobile-story--cards .about-mobile-card {
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.2),
-      rgba(0, 0, 0, 0.4)
-    );
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
   }
 
   #about.section.about-mobile-story--cards .about-mobile-card.mobile-reveal {
@@ -4329,6 +4498,21 @@ a.button-primary:active {
   font-weight: 400;
 }
 
+.footer-brand-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 18px;
+  justify-content: flex-start;
+}
+
+.footer-location {
+  font-size: 0.92em;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+}
+
 .footer-credit {
   margin-top: 6px;
 }
@@ -4354,13 +4538,6 @@ a.button-primary:active {
   display: grid;
   gap: 8px;
   justify-items: center;
-}
-
-.footer-play-text {
-  margin: 0;
-  color: rgba(20, 28, 22, 0.82);
-  font-weight: 400;
-  letter-spacing: 0.02em;
 }
 
 .footer-spotify-player {
@@ -4525,6 +4702,9 @@ a.button-primary:active {
   .footer-inner {
     grid-template-columns: 1fr;
     text-align: center;
+  }
+  .footer-brand-row {
+    justify-content: center;
   }
   .footer-links,
   .footer-social {
@@ -4832,4 +5012,20 @@ a.button-primary:active {
   background-image: none !important;
   border-top-color: transparent !important;
   border-bottom-color: transparent !important;
+}
+
+/* --- Small circular ‹ › buttons: one place for flex centering + optical vertical lift --- */
+.carousel-nav,
+.carousel-nav-v,
+.story-nav,
+#about.section .about-mobile-book__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: var(--circle-chevron-pad-bottom);
 }

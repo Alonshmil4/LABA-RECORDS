@@ -576,11 +576,15 @@ function wireAboutMobileStoryExperience() {
   const requested = (params.get("aboutMobile") || "").toLowerCase();
   const variant = requested === "cards" ? "cards" : "sticky";
 
-  about.classList.add("about-mobile-story", `about-mobile-story--${variant}`);
+  about.classList.add("about-mobile-story");
+  about.classList.remove("about-mobile-story--sticky", "about-mobile-story--cards");
+  about.classList.add(`about-mobile-story--${variant}`);
 
   const isMobile = window.matchMedia("(max-width: 760px)").matches;
   if (!isMobile) return;
 
+  const morePanel = about.querySelector("[data-about-mobile-more]");
+  const teaser = about.querySelector(".about-mobile-card--teaser");
   const cards = Array.from(about.querySelectorAll(".about-mobile-card"));
   if (!cards.length) return;
 
@@ -594,6 +598,8 @@ function wireAboutMobileStoryExperience() {
     cards.forEach((card) => card.classList.add("is-visible"));
     return;
   }
+
+  if (teaser) teaser.classList.add("is-visible");
 
   const obs = new IntersectionObserver(
     (entries) => {
@@ -609,7 +615,32 @@ function wireAboutMobileStoryExperience() {
     }
   );
 
-  cards.forEach((card) => obs.observe(card));
+  cards.forEach((card) => {
+    if (teaser && card === teaser) return;
+    if (morePanel?.contains(card)) return;
+    obs.observe(card);
+  });
+}
+
+function wireAboutMobileMoreToggle() {
+  const btn = document.querySelector("[data-about-more-toggle]");
+  const panel = document.querySelector("#about [data-about-mobile-more]");
+  if (!btn || !panel) return;
+
+  btn.addEventListener("click", () => {
+    if (btn.hidden) return;
+
+    panel.removeAttribute("hidden");
+    btn.setAttribute("aria-expanded", "true");
+
+    panel.querySelectorAll(".about-mobile-card").forEach((card) => card.classList.add("is-visible"));
+
+    const teaser = btn.closest(".about-mobile-card--teaser");
+    if (teaser) teaser.classList.add("about-mobile-card--more-revealed");
+
+    btn.hidden = true;
+    btn.setAttribute("aria-hidden", "true");
+  });
 }
 
 function wireAboutMobileBook() {
@@ -711,7 +742,8 @@ function wireAdminBuilder() {
   try {
   const params = new URLSearchParams(window.location.search);
   const isAdminMode = params.get("admin") === "1" || localStorage.getItem("laba_admin_enabled") === "1";
-  const ADMIN_CONTENT_VERSION = "v3";
+  /* v5: stable `data-admin-key` per block (About mobile/desktop, Productions intro) + numeric fallback per section. */
+  const ADMIN_CONTENT_VERSION = "v5";
   const storageKey = `laba_admin_content:${ADMIN_CONTENT_VERSION}:${window.location.pathname}`;
   const editableSelector = [
     "h1",
@@ -776,11 +808,23 @@ function wireAdminBuilder() {
   const editables = $$(editableSelector)
     .filter((el) => !el.closest(".admin-builder"))
     .filter((el) => !el.hasAttribute("data-admin-control"))
-    .filter((el) => !el.querySelector("img, video, iframe"));
+    .filter((el) => !el.querySelector("img, video, iframe"))
+    .filter((el) => !el.hasAttribute("data-admin-skip"));
+
+  const perSectionEditableCount = new Map();
+  const adminKeyFor = (el) => {
+    const section = el.closest("section[id]");
+    const sid = section?.id ?? "_";
+    const stable = el.getAttribute("data-admin-key");
+    if (stable) return `${sid}:${stable}`;
+    const n = perSectionEditableCount.get(sid) ?? 0;
+    perSectionEditableCount.set(sid, n + 1);
+    return `${sid}:${n}`;
+  };
 
   // Always apply saved text overrides, even when admin mode is off.
-  editables.forEach((el, idx) => {
-    const key = `editable-${idx}`;
+  editables.forEach((el) => {
+    const key = adminKeyFor(el);
     el.dataset.adminEditable = key;
     if (store[key]) el.innerHTML = store[key];
   });
@@ -794,7 +838,7 @@ function wireAdminBuilder() {
   panel.setAttribute("dir", "rtl");
   panel.innerHTML = `
     <div class="admin-builder__title">מצב אדמין פעיל</div>
-    <div class="admin-builder__hint">עריכה חיה במצב אדמין. עדכון לאתר בפועל מתבצע רק בלחיצה על "עדכון".</div>
+    <div class="admin-builder__hint">עריכה חיה במצב אדמין. עדכון לאתר בפועל רק בלחיצה על «עדכון». ריווח בין שורות נקבע ב־CSS ולא נשמר כאן. טקסטי About (מובייל + «עוד») ודסקטופ, וטקסטי מבוא הפקות — במפתחות יציבים (מחסן v5). אחרי שדרוג מגרסה קודמת: ייצוא ישן + ייבוא ידני או העתקה מחדש.</div>
     <div class="admin-builder__actions">
       <button type="button" class="button button-small button-primary" data-admin-control="apply">עדכון</button>
       <button type="button" class="button button-small" data-admin-control="export">ייצוא</button>
@@ -836,8 +880,9 @@ function wireAdminBuilder() {
     });
   };
 
-  editables.forEach((el, idx) => {
-    const key = `editable-${idx}`;
+  editables.forEach((el) => {
+    const key = el.dataset.adminEditable;
+    if (!key) return;
     el.contentEditable = "true";
     el.setAttribute("spellcheck", "false");
     el.classList.add("admin-editable");
@@ -956,7 +1001,7 @@ function wireAdminBuilder() {
 function wireScrollReveal() {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const targets = $$(
-    ".section-head, .testimonials-slide, .track, .step-card, .qa, .media-row img, .media-strip img, .tile, .about-text-only"
+    ".section-head, #productions.section .section-subtitle-stack, .testimonials-slide, .track, .step-card, .qa, .media-row img, .media-strip img, .tile, .about-text-only"
   );
 
   if (!targets.length) return;
@@ -1001,6 +1046,7 @@ wireStudioStoriesCarousel();
 wireTestimonialsCarousel();
 wireTracksCarousel();
 wireAboutMobileStoryExperience();
+wireAboutMobileMoreToggle();
 wireAboutMobileBook();
 wireAboutPanelVideo();
 wireAdminBuilder();
