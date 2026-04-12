@@ -155,19 +155,20 @@
 
         <div class="container hero-inner">
           <div class="hero-headlines">
-            <h1 class="hero-title">
-              <span class="hero-title__primary">כשהלב נפתח זה יוצא לבד</span><br />
-              <span class="hero-title__secondary">אולפן הקלטות בין העצים</span>
+            <h1 class="hero-title" data-admin-skip>
+              <span class="hero-title__primary" data-admin-key="hero-title-primary">כשהלב נפתח זה יוצא לבד</span><br />
+              <span class="hero-title__secondary" data-admin-key="hero-title-secondary">אולפן הקלטות בין העצים</span>
             </h1>
-            <p class="hero-meta-location hero-meta-location--hero-lead">
+            <p class="hero-meta-location hero-meta-location--hero-lead" data-admin-key="hero-location">
               מושב אודים, השרון. חצי שעה מת"א&nbsp;📍
             </p>
-            <p class="hero-subtitle">
-              אני מכירה איך זה לשים את הלב<br />
-              בידיים של מישהו ולהפוך אותו לשיר.<br />
-              באולפן שלי עושים את זה ביחד.
-            </p>
           </div>
+
+          <p class="hero-subtitle" data-admin-key="hero-lead">
+            אני מכירה איך זה לשים את הלב<br>
+            בידיים של מישהו ולהפוך אותו לשיר.<br>
+            באולפן שלי עושים את זה ביחד.
+          </p>
 
           <div class="hero-meta" data-hero-meta role="region" aria-label="שירותי האולפן">
             <ul class="hero-tags-source sr-only" data-hero-tags-source>
@@ -202,7 +203,7 @@
             </div>
           </div>
 
-          <p class="kicker">LABA RECORDS – By Coral Bismuth</p>
+          <p class="kicker" data-admin-key="hero-kicker">LABA RECORDS – By Coral Bismuth</p>
         </div>
       </section>
 
@@ -598,12 +599,7 @@
                 <div class="about-text-only">
                   <h2 class="section-title" data-admin-key="desktop-heading">
                     היי, אני
-                    <a
-                      class="about-title-link"
-                      href="https://www.google.com/search?q=%D7%A7%D7%95%D7%A8%D7%9C+%D7%91%D7%99%D7%A1%D7%9E%D7%95%D7%98"
-                      target="_blank"
-                      rel="noopener"
-                    >
+                    <a class="about-title-link" href="https://www.google.com/search?q=%D7%A7%D7%95%D7%A8%D7%9C+%D7%91%D7%99%D7%A1%D7%9E%D7%95%D7%98" target="_blank" rel="noopener">
                       קורל ביסמוט
                     </a>
                   </h2>
@@ -882,8 +878,8 @@
             <details class="qa">
               <summary data-admin-key="faq-q-first-session-bring">מה להביא לסשן ראשון?</summary>
               <div class="qa-body" data-admin-key="faq-a-first-session-bring">
-                טקסטים שיש לכם<br />
-                את הכלי שלכם אם יש לכם סאונד משלכם<br />
+                טקסטים שיש לכם<br>
+                את הכלי שלכם אם יש לכם סאונד משלכם<br>
                 משחק לקיקו (הוא מאד ישמח)
               </div>
             </details>
@@ -900,14 +896,14 @@
             <details class="qa">
               <summary data-admin-key="faq-q-who-studio-for">למי הסטודיו מתאים?</summary>
               <div class="qa-body" data-admin-key="faq-a-who-studio-for">
-                למי שמחפש לעשות תהליך יצירתי רגשי וחשוף.<br /><br />
+                למי שמחפש לעשות תהליך יצירתי רגשי וחשוף.<br><br>
                 אני מרגישה להפיק פה שיר זה ממש מסע משותף פנימה.
               </div>
             </details>
             <details class="qa">
               <summary data-admin-key="faq-q-session-flow">איך נראה סשן אצלי?</summary>
               <div class="qa-body" data-admin-key="faq-a-session-flow">
-                מתחילים בשתיית תה בגינה, לאכול קצת תמרים עם אגוזים או עוגה שהכנתי<br />
+                מתחילים בשתיית תה בגינה, לאכול קצת תמרים עם אגוזים או עוגה שהכנתי<br>
                 ומשם לתהליך עצמו :)
               </div>
             </details>
@@ -924,7 +920,7 @@
           <div class="section-head">
             <h2 class="section-title">קצת על האולפן</h2>
             <p class="section-subtitle" data-admin-key="gallery-intro">
-              דמיינו את עצמכם מסתגרים בתוך חדר מעץ באמצע הטבע ויוצרים את האלבום שלכם<br />
+              דמיינו את עצמכם מסתגרים בתוך חדר מעץ באמצע הטבע ויוצרים את האלבום שלכם<br>
               אז ככה זה נראה:
             </p>
           </div>
@@ -1083,6 +1079,7 @@
           <div class="muted footer-credit">נבנה ע"י אלון שמילוביץ</div>
         </div>
         <div class="footer-links">
+          <a class="footer-admin-link" href="./admin.html" lang="he" dir="rtl">ניהול תוכן</a>
           <a href="#testimonials">ציטוטים נבחרים</a>
           <a href="#productions">הפקות</a>
           <a href="#process">התהליך</a>

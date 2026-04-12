@@ -804,7 +804,7 @@ function sanitizeAdminCssValue(raw) {
   if (!t) return "";
   if (t.length > 96) return "";
   if (/[;{}]|@import|url\s*\(|expression\s*\(|!important|<|>/i.test(t)) return "";
-  if (!/^[\d\s.%+(),\-/a-zA-Z"'_:]+$/i.test(t)) return "";
+  if (!/^[\d\s.%#+(),\-/a-zA-Z"'_:]+$/i.test(t)) return "";
   return t;
 }
 
@@ -866,114 +866,166 @@ function wireAboutPanelVideo() {
   if (v.readyState >= 2) tryPlay();
 }
 
-/** טוען תוכן + ערכת נושא מ-localStorage בלי ממשק אדמין */
+function fetchSiteContentJsonSync() {
+  try {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "./site-content.json", false);
+    xhr.send(null);
+    if (xhr.status === 200) return JSON.parse(xhr.responseText);
+  } catch (_) {}
+  return null;
+}
+
+function stripDangerousAdminHtml(html) {
+  if (typeof html !== "string") return "";
+  let s = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+  s = s.replace(/\son\w+\s*=/gi, " data-blocked=");
+  return s;
+}
+
+function sanitizeAdminInlineStyleBlock(raw) {
+  if (typeof raw !== "string") return "";
+  const parts = raw.split(";").map((p) => p.trim()).filter(Boolean);
+  const out = [];
+  for (const p of parts) {
+    const i = p.indexOf(":");
+    if (i <= 0) continue;
+    const prop = p.slice(0, i).trim();
+    const val = p.slice(i + 1).trim();
+    if (!/^[-\w]+$/.test(prop)) continue;
+    const v = sanitizeAdminCssValue(val);
+    if (v) out.push(`${prop}: ${v}`);
+  }
+  return out.join("; ");
+}
+
+function sanitizeAdminGlobalCss(css) {
+  if (typeof css !== "string") return "";
+  if (css.length > 12000) return "";
+  if (/@import|url\s*\(|expression\s*\(|<\/style|javascript:/i.test(css)) return "";
+  return css.trim();
+}
+
+/** טוען site-content.json + localStorage + ערכת נושא (מפתחות רק עם data-admin-key) */
 function applyStoredSiteContent() {
   try {
-  localStorage.removeItem("laba_admin_enabled");
+    localStorage.removeItem("laba_admin_enabled");
 
-  const ADMIN_CONTENT_VERSION = "v6";
-  const storageKey = `laba_admin_content:${ADMIN_CONTENT_VERSION}:${window.location.pathname}`;
-  const editableSelector = [
-    "h1",
-    "h2",
-    "h3",
-    "p",
-    "summary",
-    ".qa-body",
-    ".kicker",
-    ".track-title",
-    ".track-meta",
-    ".nav a",
-    ".nav-link-cta",
-    ".brand-name",
-    ".brand-by",
-    ".button",
-    ".planter-quote",
-    ".planter-by",
-  ].join(", ");
+    const ADMIN_CONTENT_VERSION = "v7";
+    const storageKey = `laba_admin_content:${ADMIN_CONTENT_VERSION}:site`;
+    const stylesKey = `laba_admin_element_styles:${ADMIN_CONTENT_VERSION}`;
+    const globalCssKey = `laba_admin_global_css:${ADMIN_CONTENT_VERSION}`;
 
-  const loadStore = () => {
-    try {
-      return JSON.parse(localStorage.getItem(storageKey) || "{}");
-    } catch {
-      return {};
+    const loadStore = () => {
+      try {
+        return JSON.parse(localStorage.getItem(storageKey) || "{}");
+      } catch {
+        return {};
+      }
+    };
+
+    const fileJson = fetchSiteContentJsonSync();
+    let store = loadStore();
+    if (fileJson && fileJson.text && typeof fileJson.text === "object") {
+      store = { ...fileJson.text, ...store };
     }
-  };
-  let store = loadStore();
 
-  // One-time content migration: keep CTA text consistent with latest copy.
-  const migrateLegacyCopy = () => {
-    let changed = false;
-    const maroonLink =
-      '<a class="about-maroon-mention" href="https://www.mako.co.il/news-entertainment/2022_q2/Article-3fdef404834c081026.htm?utm_source=copy_link&amp;utm_medium=share&amp;utm_campaign=n12_article" target="_blank" rel="noopener noreferrer">Maroon5</a>';
-    Object.keys(store).forEach((key) => {
-      const value = store[key];
-      if (typeof value !== "string") return;
-      let next = value;
-      if (next.includes("רוצה לעבוד יחד?")) {
-        next = next.replaceAll("רוצה לעבוד יחד?", "רוצה להפיק שיר?");
-      }
+    const migrateLegacyCopy = () => {
+      let changed = false;
+      const maroonLink =
+        '<a class="about-maroon-mention" href="https://www.mako.co.il/news-entertainment/2022_q2/Article-3fdef404834c081026.htm?utm_source=copy_link&amp;utm_medium=share&amp;utm_campaign=n12_article" target="_blank" rel="noopener noreferrer">Maroon5</a>';
+      Object.keys(store).forEach((key) => {
+        if (key === ADMIN_THEME_KEY) return;
+        const value = store[key];
+        if (typeof value !== "string") return;
+        let next = value;
+        if (next.includes("רוצה לעבוד יחד?")) {
+          next = next.replaceAll("רוצה לעבוד יחד?", "רוצה להפיק שיר?");
+        }
+        if (/Moroon5|Maroon5|Maroon 5|mako\.co\.il\/news-entertainment\/2022_q2\/Article-3fdef404834c081026/i.test(next)) {
+          next = next.replace(/<a[^>]*>\s*(Moroon5|Maroon5|Maroon 5)\s*<\/a>/gi, maroonLink);
+          next = next.replace(/\b(Moroon5|Maroon 5)\b/g, "Maroon5");
+          next = next.replace(/שלהקת\s*Maroon5/g, `שלהקת ${maroonLink}`);
+        }
+        if (next !== value) {
+          store[key] = next;
+          changed = true;
+        }
+      });
 
-      // Normalize Maroon5 mention to an underlined link.
-      if (/Moroon5|Maroon5|Maroon 5|mako\.co\.il\/news-entertainment\/2022_q2\/Article-3fdef404834c081026/i.test(next)) {
-        next = next.replace(
-          /<a[^>]*>\s*(Moroon5|Maroon5|Maroon 5)\s*<\/a>/gi,
-          maroonLink
-        );
-        next = next.replace(/\b(Moroon5|Maroon 5)\b/g, "Maroon5");
-        next = next.replace(/שלהקת\s*Maroon5/g, `שלהקת ${maroonLink}`);
-      }
-
-      if (next !== value) {
-        store[key] = next;
+      ["about:desktop-prose"].forEach((k) => {
+        const value = store[k];
+        if (typeof value !== "string") return;
+        if (!value.includes("אני קורל ביסמוט, בת 31,")) return;
+        store[k] = value.replace(/אני קורל ביסמוט, בת 31,/g, "אני בת 31,");
         changed = true;
-      }
+      });
+
+      ["about:mobile-teaser-lead"].forEach((k) => {
+        const value = store[k];
+        if (typeof value !== "string") return;
+        if (value.includes("אני קורל ביסמוט")) return;
+        if (!value.includes("אני בת 31,")) return;
+        store[k] = value.replace(/אני בת 31,/g, "אני קורל ביסמוט, בת 31,");
+        changed = true;
+      });
+
+      if (changed) localStorage.setItem(storageKey, JSON.stringify(store));
+    };
+    migrateLegacyCopy();
+    applyAdminThemeFromStore(store);
+
+    const adminKeyFor = (el) => {
+      const section = el.closest("section[id]");
+      const sid = section?.id ?? "_";
+      const stable = el.getAttribute("data-admin-key");
+      return stable ? `${sid}:${stable}` : null;
+    };
+
+    $$("[data-admin-key]")
+      .filter((el) => !el.hasAttribute("data-admin-skip"))
+      .forEach((el) => {
+        const key = adminKeyFor(el);
+        if (!key || typeof store[key] !== "string") return;
+        el.innerHTML = stripDangerousAdminHtml(store[key]);
+      });
+
+    let styleMap = { ...(fileJson?.elementStyles && typeof fileJson.elementStyles === "object" ? fileJson.elementStyles : {}) };
+    try {
+      const lsSt = JSON.parse(localStorage.getItem(stylesKey) || "{}");
+      styleMap = { ...styleMap, ...lsSt };
+    } catch (_) {}
+    Object.entries(styleMap).forEach(([compound, raw]) => {
+      if (typeof raw !== "string" || !raw.trim()) return;
+      const idx = compound.indexOf(":");
+      if (idx === -1) return;
+      const sid = compound.slice(0, idx);
+      const adminKey = compound.slice(idx + 1);
+      if (!/^[\w-]+$/.test(sid) || !/^[\w-]+$/.test(adminKey)) return;
+      const el = document.querySelector(`section#${sid} [data-admin-key="${adminKey}"]`);
+      if (!el) return;
+      const cleaned = sanitizeAdminInlineStyleBlock(raw);
+      if (cleaned) el.setAttribute("style", cleaned);
+      else el.removeAttribute("style");
     });
 
-    // דסקטופ: גרסה ישנה עם "אני קורל ביסמוט, בת 31" → ללא השם בשורה הזו (הכותרת כבר מציגה)
-    ["about:desktop-prose"].forEach((k) => {
-      const value = store[k];
-      if (typeof value !== "string") return;
-      if (!value.includes("אני קורל ביסמוט, בת 31,")) return;
-      store[k] = value.replace(/אני קורל ביסמוט, בת 31,/g, "אני בת 31,");
-      changed = true;
-    });
-
-    // מובייל: localStorage ישן בלי השם בשורה — משלימים כמו ב-HTML
-    ["about:mobile-teaser-lead"].forEach((k) => {
-      const value = store[k];
-      if (typeof value !== "string") return;
-      if (value.includes("אני קורל ביסמוט")) return;
-      if (!value.includes("אני בת 31,")) return;
-      store[k] = value.replace(/אני בת 31,/g, "אני קורל ביסמוט, בת 31,");
-      changed = true;
-    });
-
-    if (changed) localStorage.setItem(storageKey, JSON.stringify(store));
-  };
-  migrateLegacyCopy();
-  applyAdminThemeFromStore(store);
-
-  const editables = $$(editableSelector)
-    .filter((el) => !el.hasAttribute("data-admin-control"))
-    .filter((el) => !el.querySelector("img, video, iframe"))
-    .filter((el) => !el.hasAttribute("data-admin-skip"));
-
-  const perSectionEditableCount = new Map();
-  const adminKeyFor = (el) => {
-    const section = el.closest("section[id]");
-    const sid = section?.id ?? "_";
-    const stable = el.getAttribute("data-admin-key");
-    if (stable) return `${sid}:${stable}`;
-    const n = perSectionEditableCount.get(sid) ?? 0;
-    perSectionEditableCount.set(sid, n + 1);
-    return `${sid}:${n}`;
-  };
-
-  editables.forEach((el) => {
-    const key = adminKeyFor(el);
-    if (store[key]) el.innerHTML = store[key];
-  });
+    let globalCss = "";
+    try {
+      globalCss = localStorage.getItem(globalCssKey) || "";
+    } catch (_) {
+      globalCss = "";
+    }
+    if (!globalCss.trim() && fileJson && typeof fileJson.globalCss === "string") {
+      globalCss = fileJson.globalCss;
+    }
+    globalCss = sanitizeAdminGlobalCss(globalCss);
+    let gEl = $("#laba-admin-global-css");
+    if (!gEl) {
+      gEl = document.createElement("style");
+      gEl.id = "laba-admin-global-css";
+      document.head.appendChild(gEl);
+    }
+    gEl.textContent = globalCss;
   } catch (err) {
     console.error("[LABA] applyStoredSiteContent failed", err);
   }

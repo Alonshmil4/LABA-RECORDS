@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ניהול תוכן — LABA RECORDS</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 24px 18px 48px;
+        background: #f4f1eb;
+        color: #161a18;
+        font-family: var(--font-sans, system-ui, sans-serif);
+      }
+      .admin-shell {
+        max-width: 820px;
+        margin: 0 auto;
+      }
+      .admin-shell h1 {
+        font-size: 1.45rem;
+        font-weight: 500;
+        margin: 0 0 8px;
+      }
+      .admin-shell .lead {
+        margin: 0 0 20px;
+        color: rgba(22, 26, 24, 0.72);
+        line-height: 1.55;
+        font-size: 0.95rem;
+      }
+      .admin-field {
+        margin-bottom: 22px;
+      }
+      .admin-field label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 6px;
+        font-size: 0.92rem;
+      }
+      .admin-field textarea {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 72px;
+        padding: 10px 12px;
+        border: 1px solid rgba(20, 28, 22, 0.18);
+        border-radius: 8px;
+        font: inherit;
+        line-height: 1.45;
+        resize: vertical;
+        background: #fff;
+      }
+      .admin-field-actions {
+        margin-top: 6px;
+      }
+      .admin-btn {
+        border: none;
+        cursor: pointer;
+        padding: 10px 18px;
+        border-radius: 999px;
+        font: inherit;
+        font-size: 0.92rem;
+      }
+      .admin-btn--primary {
+        background: rgba(124, 84, 52, 0.96);
+        color: #fffdf8;
+      }
+      .admin-btn--ghost {
+        background: transparent;
+        color: rgba(124, 84, 52, 0.95);
+        border: 1px solid rgba(124, 84, 52, 0.45);
+        margin-inline-end: 8px;
+      }
+      .admin-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 24px 0 12px;
+        align-items: center;
+      }
+      .admin-status {
+        margin-top: 14px;
+        font-size: 0.88rem;
+        color: rgba(22, 26, 24, 0.75);
+      }
+      .admin-block textarea {
+        min-height: 120px;
+        font-family: ui-monospace, monospace;
+        font-size: 0.82rem;
+      }
+      .admin-block h2 {
+        font-size: 1.05rem;
+        margin: 28px 0 8px;
+        font-weight: 500;
+      }
+      #admin-gate {
+        max-width: 520px;
+        margin: 40px auto;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="admin-gate">
+      <p>טוען…</p>
+    </div>
+
+    <div id="admin-app" class="admin-shell" hidden>
+      <h1>ניהול תוכן</h1>
+      <p class="lead">
+        ערכו את השדות. אפשר HTML מלא (כולל <code>&lt;br /&gt;</code>, <code>&lt;p&gt;</code> וכו׳). כפתור «שורות חדשות» ממיר שבירת שורה בטקסט
+        ל־<code>&lt;br /&gt;</code>. לריווחים פר־אלמנט ערכו JSON בשדה למטה (מפתח = מזהה כמו
+        <code>home:hero-lead</code>, ערך = למשל <code>margin-top: 1.5rem;</code>).
+      </p>
+
+      <div id="admin-fields"></div>
+
+      <h2>ריווחים (JSON)</h2>
+      <div class="admin-block">
+        <textarea id="admin-element-styles" spellcheck="false" placeholder='{ "home:hero-lead": "margin-bottom: 1rem;" }'></textarea>
+      </div>
+
+      <h2>CSS גלובלי (ייכנס ל-styles.css)</h2>
+      <div class="admin-block">
+        <textarea id="admin-global-css" spellcheck="false" placeholder="/* לדוגמה: #home .hero-subtitle { max-width: 40ch; margin-inline: auto; } */"></textarea>
+      </div>
+
+      <div class="admin-toolbar">
+        <button type="button" class="admin-btn admin-btn--primary" id="admin-save-preview">שמירה לתצוגה (דפדפן)</button>
+        <button type="button" class="admin-btn admin-btn--primary" id="admin-download">הורדת site-content.json</button>
+      </div>
+      <p class="lead" style="margin-top: 8px">
+        אחרי ההורדה: שמרו את הקובץ בשורש הפרויקט (במקום <code>site-content.json</code> הקיים) והריצו
+        <code>npm run admin:apply</code> — זה יעדכן את <code>index.html</code> ואת בלוק ה-CSS ב־<code>styles.css</code>.
+      </p>
+      <div class="admin-status" id="admin-status" aria-live="polite"></div>
+      <p class="lead" style="margin-top: 28px">
+        <a href="./index.html">חזרה לאתר</a>
+      </p>
+    </div>
+
+    <script src="./admin.js" defer></script>
+  </body>
+</html>

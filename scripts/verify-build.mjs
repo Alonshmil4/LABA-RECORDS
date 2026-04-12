@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
-const need = ["index.html", "main.js", "styles.css"];
+const need = ["index.html", "main.js", "styles.css", "site-content.json", "admin.html", "admin.js"];
 
 for (const f of need) {
   const p = path.join(root, f);
