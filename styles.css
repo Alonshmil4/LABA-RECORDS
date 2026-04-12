@@ -1659,18 +1659,17 @@ a.button-primary:active {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     z-index: 3;
+    padding: clamp(12px, 1.6vh, 22px) clamp(14px, 1.8vw, 24px) clamp(10px, 1.4vh, 18px);
   }
 
-  #about.section .about-full__note--1 .about-prose__lines {
-    font-size: clamp(12.5px, 1.05vw, 14.5px);
-    line-height: 1.42;
+  #about.section .about-full__note--1::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
   }
-
-  #about.section .about-full__note--1 .section-title {
-    font-size: clamp(1.1rem, 1.75vw, 1.45rem);
-  }
-
 
   #about.section .about-full__note .about-prose__lines,
   #about.section .about-full__note .section-title {
@@ -1768,6 +1767,29 @@ a.button-primary:active {
     text-align: center;
   }
 
+  /* About דסקטופ: ממורכז, ריווח צפוף יותר, בלי גלילה פנימית */
+  #about.section .about-full__note.about-full__note--1 .about-text-only {
+    text-align: center;
+  }
+
+  #about.section .about-full__note.about-full__note--1 .about-text-only .section-title {
+    text-align: center;
+    margin: 0;
+    line-height: 1.22;
+    font-size: clamp(1.26rem, 1.62vw, 1.5rem);
+  }
+
+  #about.section .about-full__note.about-full__note--1 .about-text-only .about-prose {
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  #about.section .about-full__note.about-full__note--1 .about-text-only .about-prose__lines {
+    text-align: center;
+    font-size: clamp(15.5px, 1.2vw, 17.25px);
+    line-height: 1.38;
+    letter-spacing: 0.01em;
+  }
 }
 
 #about.section .about-uline,
@@ -2403,9 +2425,10 @@ a.button-primary:active {
   }
 }
 
+/* Fredoka/Heebo כמו שאר האתר; הכותרות מקבלות --font-display ב-.hero-title */
 .hero,
 .hero * {
-  font-family: "Carmela", var(--font-sans);
+  font-family: var(--font-sans);
 }
 
 .hero-inner,
