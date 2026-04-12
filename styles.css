@@ -2521,9 +2521,57 @@ a.button-primary:active {
     transform: translateY(-32px);
   }
 
+  /* תת-כותרת צמודה לכותרת הראשית */
+  #home.hero .hero-title .hero-title__secondary {
+    display: block;
+    margin-top: 0.14em;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  /* פסקת «אני מכירה…» — מורדת (רווח מתחת לשורת הלוקיישן) */
+  .hero-inner .hero-headlines .hero-subtitle {
+    margin-top: clamp(40px, 7.5vh, 104px);
+  }
+
   .hero-inner .hero-meta {
     order: 3;
-    margin-top: calc(26px + 32px);
+    margin-top: calc(40px + 48px);
+    transform: translateY(18px);
+  }
+
+  /* כל שירותי האולפן בשורה אחת (כולל «סטודיו להשכרה») */
+  #home.hero .hero-tags-viewport {
+    max-width: min(1180px, 96vw);
+  }
+
+  .hero-meta-row.hero-meta-row--services {
+    flex-wrap: nowrap;
+    justify-content: center;
+    column-gap: clamp(3px, 0.42vw, 9px);
+    row-gap: 0;
+  }
+
+  .hero-tags-desktop {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hero-tags-desktop::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .hero-meta .pill {
+    font-size: clamp(10.5px, 0.85vw, 13px);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    padding: 2px 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 }
 
@@ -2764,11 +2812,13 @@ a.button-primary:active {
 
   #productions.section .productions-content .section-head {
     order: 1;
+    margin-bottom: clamp(4px, 0.8vh, 12px);
   }
 
   #productions.section .productions-content .section-subtitle-stack {
     order: 2;
-    margin-bottom: 22px;
+    margin-top: 0;
+    margin-bottom: 18px;
   }
 
   #productions.section .productions-content .split-two {

@@ -908,8 +908,8 @@ function wireAdminBuilder() {
   try {
   const params = new URLSearchParams(window.location.search);
   const isAdminMode = params.get("admin") === "1" || localStorage.getItem("laba_admin_enabled") === "1";
-  /* v5: stable `data-admin-key` per block (About mobile/desktop, Productions intro) + numeric fallback per section. */
-  const ADMIN_CONTENT_VERSION = "v5";
+  /* v6: same as v5 keys; version bump clears stale localStorage so HTML defaults match deploy. */
+  const ADMIN_CONTENT_VERSION = "v6";
   const storageKey = `laba_admin_content:${ADMIN_CONTENT_VERSION}:${window.location.pathname}`;
   const editableSelector = [
     "h1",
@@ -1010,7 +1010,7 @@ function wireAdminBuilder() {
   panel.setAttribute("dir", "rtl");
   panel.innerHTML = `
     <div class="admin-builder__title">מצב אדמין פעיל</div>
-    <div class="admin-builder__hint">עריכה חיה במצב אדמין. עדכון שומר טקסטים + מידות/גופן (משתני CSS בדפדפן) ב־localStorage ומופיע בייצוא JSON. כדי לקבע בקוד: ייצוא → העתקת הערכים ל־styles.css או שמירת JSON בפרויקט. ריווח שורות בטקסט עדיין ב־CSS. מפתחות: mobile-more-body, tracks-intro-body. אחרי שדרוג מגרסה קודמת: ייצוא ישן + ייבוא ידני או העתקה מחדש.</div>
+    <div class="admin-builder__hint">עריכה חיה במצב אדמין. עדכון שומר טקסטים + מידות/גופן (משתני CSS בדפדפן) ב־localStorage ומופיע בייצוא JSON. כדי לקבע בקוד: ייצוא → העתקת הערכים ל־styles.css או שמירת JSON בפרויקט. ריווח שורות בטקסט עדיין ב־CSS. מפתחות: mobile-more-body, tracks-intro-body. אחרי שדרוג (v6): מפתח localStorage חדש — טעינה ראשונה מציגה את הטקסט מה־HTML; אם צריך עריכות ישנות: ייצוא מ־v5 + ייבוא ידני.</div>
     <div class="admin-builder__theme-wrap" data-admin-theme-form>
       <div class="admin-builder__theme-title">רוחב תיבות וגודל גופן</div>
       <p class="admin-builder__theme-note">דוגמאות: <code>min(44ch, 92%)</code> · <code>1.22em</code> · <code>17px</code>. שדה ריק = ברירת מחדל. «מובייל צר» = עד ~480px.</p>
