@@ -589,6 +589,7 @@ function wireAboutMobileStoryExperience() {
   if (!cards.length) return;
 
   cards.forEach((card, idx) => {
+    if (morePanel?.contains(card)) return;
     card.classList.add("mobile-reveal");
     card.style.setProperty("--about-mobile-delay", `${Math.min(idx * 65, 260)}ms`);
   });
@@ -637,6 +638,14 @@ function wireAboutMobileMoreToggle() {
 
     const teaser = btn.closest(".about-mobile-card--teaser");
     if (teaser) teaser.classList.add("about-mobile-card--more-revealed");
+
+    const scrollEl = teaser?.querySelector(".about-mobile-card__teaser-scroll");
+    if (scrollEl) {
+      scrollEl.setAttribute("tabindex", "-1");
+      requestAnimationFrame(() => {
+        scrollEl.focus({ preventScroll: true });
+      });
+    }
 
     btn.hidden = true;
     btn.setAttribute("aria-hidden", "true");
@@ -724,6 +733,163 @@ function wireAboutMobileBook() {
   sync();
 }
 
+const ADMIN_THEME_KEY = "__laba_theme";
+
+const ADMIN_THEME_CSS_PROPS = [
+  "--admin-prod-stack-max",
+  "--admin-prod-stack-max-m",
+  "--admin-prod-intro-max-w",
+  "--admin-prod-intro-max-w-m",
+  "--admin-prod-intro-font",
+  "--admin-prod-intro-font-m",
+  "--admin-about-m-text-max-w",
+  "--admin-about-m-text-max-w-m",
+  "--admin-about-m-text-font",
+  "--admin-about-m-text-font-m",
+  "--admin-about-m-scroll-max-w",
+  "--admin-about-m-scroll-max-w-m",
+  "--admin-about-m-prose-max-w",
+  "--admin-about-m-prose-max-w-m",
+];
+
+function defaultAdminTheme() {
+  return {
+    productions: {
+      stackMax: "",
+      stackMaxM: "",
+      introMaxW: "",
+      introMaxWM: "",
+      introFont: "",
+      introFontM: "",
+    },
+    aboutMobile: {
+      textMaxW: "",
+      textMaxWM: "",
+      textFont: "",
+      textFontM: "",
+      scrollMaxW: "",
+      scrollMaxWM: "",
+      proseMaxW: "",
+      proseMaxWM: "",
+    },
+  };
+}
+
+function sanitizeAdminCssValue(raw) {
+  if (typeof raw !== "string") return "";
+  const t = raw.trim();
+  if (!t) return "";
+  if (t.length > 96) return "";
+  if (/[;{}]|@import|url\s*\(|expression\s*\(|!important|<|>/i.test(t)) return "";
+  if (!/^[\d\s.%+(),\-/a-zA-Z"'_:]+$/i.test(t)) return "";
+  return t;
+}
+
+function clearAdminThemeOnRoot() {
+  const root = document.documentElement;
+  ADMIN_THEME_CSS_PROPS.forEach((k) => root.style.removeProperty(k));
+}
+
+function applyAdminThemeFromStore(sourceStore) {
+  const root = document.documentElement;
+  clearAdminThemeOnRoot();
+  const theme = sourceStore?.[ADMIN_THEME_KEY];
+  if (!theme || typeof theme !== "object") return;
+  const p = theme.productions;
+  const a = theme.aboutMobile;
+  if (p && typeof p === "object") {
+    const pairs = [
+      [p.stackMax, "--admin-prod-stack-max"],
+      [p.stackMaxM, "--admin-prod-stack-max-m"],
+      [p.introMaxW, "--admin-prod-intro-max-w"],
+      [p.introMaxWM, "--admin-prod-intro-max-w-m"],
+      [p.introFont, "--admin-prod-intro-font"],
+      [p.introFontM, "--admin-prod-intro-font-m"],
+    ];
+    pairs.forEach(([val, prop]) => {
+      const v = sanitizeAdminCssValue(val);
+      if (v) root.style.setProperty(prop, v);
+    });
+  }
+  if (a && typeof a === "object") {
+    const pairs = [
+      [a.textMaxW, "--admin-about-m-text-max-w"],
+      [a.textMaxWM, "--admin-about-m-text-max-w-m"],
+      [a.textFont, "--admin-about-m-text-font"],
+      [a.textFontM, "--admin-about-m-text-font-m"],
+      [a.scrollMaxW, "--admin-about-m-scroll-max-w"],
+      [a.scrollMaxWM, "--admin-about-m-scroll-max-w-m"],
+      [a.proseMaxW, "--admin-about-m-prose-max-w"],
+      [a.proseMaxWM, "--admin-about-m-prose-max-w-m"],
+    ];
+    pairs.forEach(([val, prop]) => {
+      const v = sanitizeAdminCssValue(val);
+      if (v) root.style.setProperty(prop, v);
+    });
+  }
+}
+
+function readAdminThemeFromForm(formRoot) {
+  const out = defaultAdminTheme();
+  if (!formRoot) return out;
+  const val = (name) => {
+    const el = formRoot.querySelector(`[name="${name}"]`);
+    return el instanceof HTMLInputElement ? sanitizeAdminCssValue(el.value) : "";
+  };
+  out.productions.stackMax = val("prod-stack-max");
+  out.productions.stackMaxM = val("prod-stack-max-m");
+  out.productions.introMaxW = val("prod-intro-max-w");
+  out.productions.introMaxWM = val("prod-intro-max-w-m");
+  out.productions.introFont = val("prod-intro-font");
+  out.productions.introFontM = val("prod-intro-font-m");
+  out.aboutMobile.textMaxW = val("about-text-max-w");
+  out.aboutMobile.textMaxWM = val("about-text-max-w-m");
+  out.aboutMobile.textFont = val("about-text-font");
+  out.aboutMobile.textFontM = val("about-text-font-m");
+  out.aboutMobile.scrollMaxW = val("about-scroll-max-w");
+  out.aboutMobile.scrollMaxWM = val("about-scroll-max-w-m");
+  out.aboutMobile.proseMaxW = val("about-prose-max-w");
+  out.aboutMobile.proseMaxWM = val("about-prose-max-w-m");
+  return out;
+}
+
+function writeAdminThemeToForm(formRoot, theme) {
+  if (!formRoot) return;
+  const t = theme && typeof theme === "object" ? theme : defaultAdminTheme();
+  const p = { ...defaultAdminTheme().productions, ...(t.productions || {}) };
+  const a = { ...defaultAdminTheme().aboutMobile, ...(t.aboutMobile || {}) };
+  const set = (name, v) => {
+    const el = formRoot.querySelector(`[name="${name}"]`);
+    if (el instanceof HTMLInputElement) el.value = typeof v === "string" ? v : "";
+  };
+  set("prod-stack-max", p.stackMax);
+  set("prod-stack-max-m", p.stackMaxM);
+  set("prod-intro-max-w", p.introMaxW);
+  set("prod-intro-max-w-m", p.introMaxWM);
+  set("prod-intro-font", p.introFont);
+  set("prod-intro-font-m", p.introFontM);
+  set("about-text-max-w", a.textMaxW);
+  set("about-text-max-w-m", a.textMaxWM);
+  set("about-text-font", a.textFont);
+  set("about-text-font-m", a.textFontM);
+  set("about-scroll-max-w", a.scrollMaxW);
+  set("about-scroll-max-w-m", a.scrollMaxWM);
+  set("about-prose-max-w", a.proseMaxW);
+  set("about-prose-max-w-m", a.proseMaxWM);
+}
+
+function bumpAdminFontInput(input, delta) {
+  if (!(input instanceof HTMLInputElement)) return;
+  const raw = input.value.trim();
+  let n = parseFloat(raw);
+  if (!Number.isFinite(n)) n = 1.2;
+  let unit = "em";
+  const m = raw.match(/^([\d.]+)\s*(em|rem|px)?$/i);
+  if (m && m[2]) unit = m[2].toLowerCase();
+  n = Math.min(2.6, Math.max(0.75, Math.round((n + delta) * 100) / 100));
+  input.value = `${n}${unit}`;
+}
+
 function wireAboutPanelVideo() {
   const v = document.querySelector(".about-full__bg-video");
   if (!v) return;
@@ -804,6 +970,12 @@ function wireAdminBuilder() {
     if (changed) localStorage.setItem(storageKey, JSON.stringify(store));
   };
   migrateLegacyCopy();
+  applyAdminThemeFromStore(store);
+
+  const draftStore = JSON.parse(JSON.stringify(store));
+  if (!draftStore[ADMIN_THEME_KEY] || typeof draftStore[ADMIN_THEME_KEY] !== "object") {
+    draftStore[ADMIN_THEME_KEY] = defaultAdminTheme();
+  }
 
   const editables = $$(editableSelector)
     .filter((el) => !el.closest(".admin-builder"))
@@ -838,7 +1010,65 @@ function wireAdminBuilder() {
   panel.setAttribute("dir", "rtl");
   panel.innerHTML = `
     <div class="admin-builder__title">מצב אדמין פעיל</div>
-    <div class="admin-builder__hint">עריכה חיה במצב אדמין. עדכון לאתר בפועל רק בלחיצה על «עדכון». ריווח בין שורות נקבע ב־CSS ולא נשמר כאן. טקסטי About (מובייל + «עוד») ודסקטופ, וטקסטי מבוא הפקות — במפתחות יציבים (מחסן v5). מובייל «עוד»: mobile-more-body. מבוא הפקות: tracks-intro-body. אחרי שדרוג מגרסה קודמת: ייצוא ישן + ייבוא ידני או העתקה מחדש.</div>
+    <div class="admin-builder__hint">עריכה חיה במצב אדמין. עדכון שומר טקסטים + מידות/גופן (משתני CSS בדפדפן) ב־localStorage ומופיע בייצוא JSON. כדי לקבע בקוד: ייצוא → העתקת הערכים ל־styles.css או שמירת JSON בפרויקט. ריווח שורות בטקסט עדיין ב־CSS. מפתחות: mobile-more-body, tracks-intro-body. אחרי שדרוג מגרסה קודמת: ייצוא ישן + ייבוא ידני או העתקה מחדש.</div>
+    <div class="admin-builder__theme-wrap" data-admin-theme-form>
+      <div class="admin-builder__theme-title">רוחב תיבות וגודל גופן</div>
+      <p class="admin-builder__theme-note">דוגמאות: <code>min(44ch, 92%)</code> · <code>1.22em</code> · <code>17px</code>. שדה ריק = ברירת מחדל. «מובייל צר» = עד ~480px.</p>
+      <fieldset class="admin-builder__fieldset">
+        <legend>מבוא «שירים שיצאו מכאן»</legend>
+        <div class="admin-builder__row">
+          <label>רוחב טור (דסקטופ)<input name="prod-stack-max" type="text" autocomplete="off" placeholder="min(72ch, 100%)" /></label>
+          <label>רוחב טור (מובייל)<input name="prod-stack-max-m" type="text" autocomplete="off" /></label>
+        </div>
+        <div class="admin-builder__row">
+          <label>רוחב טקסט (דסקטופ)<input name="prod-intro-max-w" type="text" autocomplete="off" placeholder="min(40ch, 100%)" /></label>
+          <label>רוחב טקסט (מובייל צר)<input name="prod-intro-max-w-m" type="text" autocomplete="off" /></label>
+        </div>
+        <div class="admin-builder__row admin-builder__row--font">
+          <label>גופן (דסקטופ)<input name="prod-intro-font" type="text" autocomplete="off" placeholder="1.2em" /></label>
+          <div class="admin-builder__font-bumps">
+            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="prod-intro-font" data-bump="-0.05" aria-label="הקטן גופן">−</button>
+            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="prod-intro-font" data-bump="0.05" aria-label="הגדל גופן">+</button>
+          </div>
+        </div>
+        <div class="admin-builder__row admin-builder__row--font">
+          <label>גופן (מובייל צר)<input name="prod-intro-font-m" type="text" autocomplete="off" /></label>
+          <div class="admin-builder__font-bumps">
+            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="prod-intro-font-m" data-bump="-0.05" aria-label="הקטן גופן">−</button>
+            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="prod-intro-font-m" data-bump="0.05" aria-label="הגדל גופן">+</button>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="admin-builder__fieldset">
+        <legend>About מובייל («היי»)</legend>
+        <div class="admin-builder__row">
+          <label>רוחב טקסט (עד 760px)<input name="about-text-max-w" type="text" autocomplete="off" /></label>
+          <label>רוחב טקסט (עד 480px)<input name="about-text-max-w-m" type="text" autocomplete="off" /></label>
+        </div>
+        <div class="admin-builder__row admin-builder__row--font">
+          <label>גופן (עד 760px)<input name="about-text-font" type="text" autocomplete="off" /></label>
+          <div class="admin-builder__font-bumps">
+            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="about-text-font" data-bump="-0.05" aria-label="הקטן גופן">−</button>
+            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="about-text-font" data-bump="0.05" aria-label="הגדל גופן">+</button>
+          </div>
+        </div>
+        <div class="admin-builder__row admin-builder__row--font">
+          <label>גופן (עד 480px)<input name="about-text-font-m" type="text" autocomplete="off" /></label>
+          <div class="admin-builder__font-bumps">
+            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="about-text-font-m" data-bump="-0.05" aria-label="הקטן גופן">−</button>
+            <button type="button" class="admin-builder__icon-btn" data-admin-font-bump="about-text-font-m" data-bump="0.05" aria-label="הגדל גופן">+</button>
+          </div>
+        </div>
+        <div class="admin-builder__row">
+          <label>רוחב אזור גלילה (עד 760px)<input name="about-scroll-max-w" type="text" autocomplete="off" /></label>
+          <label>רוחב אזור גלילה (עד 480px)<input name="about-scroll-max-w-m" type="text" autocomplete="off" /></label>
+        </div>
+        <div class="admin-builder__row">
+          <label>רוחב טקסט «עוד» (עד 760px)<input name="about-prose-max-w" type="text" autocomplete="off" /></label>
+          <label>רוחב טקסט «עוד» (עד 480px)<input name="about-prose-max-w-m" type="text" autocomplete="off" /></label>
+        </div>
+      </fieldset>
+    </div>
     <div class="admin-builder__actions">
       <button type="button" class="button button-small button-primary" data-admin-control="apply">עדכון</button>
       <button type="button" class="button button-small" data-admin-control="export">ייצוא</button>
@@ -856,7 +1086,25 @@ function wireAdminBuilder() {
   document.body.appendChild(input);
 
   const saveStore = () => localStorage.setItem(storageKey, JSON.stringify(store));
-  const draftStore = { ...store };
+  const themeForm = panel.querySelector("[data-admin-theme-form]");
+  writeAdminThemeToForm(themeForm, draftStore[ADMIN_THEME_KEY]);
+
+  themeForm?.addEventListener("input", () => {
+    draftStore[ADMIN_THEME_KEY] = readAdminThemeFromForm(themeForm);
+    applyAdminThemeFromStore({ ...store, [ADMIN_THEME_KEY]: draftStore[ADMIN_THEME_KEY] });
+  });
+
+  panel.querySelectorAll("[data-admin-font-bump]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const name = btn.getAttribute("data-admin-font-bump");
+      const delta = parseFloat(btn.getAttribute("data-bump") || "0");
+      const inp = name && themeForm ? themeForm.querySelector(`[name="${name}"]`) : null;
+      bumpAdminFontInput(inp, delta);
+      draftStore[ADMIN_THEME_KEY] = readAdminThemeFromForm(themeForm);
+      applyAdminThemeFromStore({ ...store, [ADMIN_THEME_KEY]: draftStore[ADMIN_THEME_KEY] });
+    });
+  });
+
   const insertHtmlAtCursor = (html) => {
     const sel = window.getSelection();
     if (!sel || !sel.rangeCount) return;
@@ -917,11 +1165,13 @@ function wireAdminBuilder() {
 
   const applyDraftToStore = () => {
     persistAll();
+    if (themeForm) draftStore[ADMIN_THEME_KEY] = readAdminThemeFromForm(themeForm);
     Object.keys(store).forEach((k) => delete store[k]);
     Object.entries(draftStore).forEach(([k, v]) => {
       store[k] = v;
     });
     saveStore();
+    applyAdminThemeFromStore(store);
   };
 
   panel.addEventListener("click", (e) => {
@@ -932,6 +1182,7 @@ function wireAdminBuilder() {
 
     if (action === "export") {
       persistAll();
+      if (themeForm) draftStore[ADMIN_THEME_KEY] = readAdminThemeFromForm(themeForm);
       const blob = new Blob([JSON.stringify(draftStore, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");

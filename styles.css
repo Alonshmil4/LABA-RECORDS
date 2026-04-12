@@ -548,15 +548,15 @@ textarea {
     background: rgba(248, 242, 232, 0.96) !important;
     border: 1px solid rgba(124, 84, 52, 0.62) !important;
     color: rgba(56, 38, 24, 0.96) !important;
-    border-radius: 6px;
+    border-radius: 8px;
     box-shadow:
       0 2px 0 rgba(255, 255, 255, 0.5) inset,
       0 4px 14px rgba(124, 84, 52, 0.14);
-    font-size: clamp(10px, 2.75vw, 12px);
-    padding: 5px 8px;
-    min-height: 28px;
+    font-size: clamp(12px, 3.2vw, 14px);
+    padding: 8px 12px;
+    min-height: 38px;
     font-weight: 400;
-    transform: scale(0.805);
+    transform: none;
     transform-origin: center;
   }
 
@@ -2384,7 +2384,11 @@ a.button-primary:active {
   #home.hero .hero-title__secondary {
     font-size: clamp(19px, 5.1vw, 30px);
     line-height: 1.16;
-    margin-top: 0.12em;
+    margin-top: clamp(0.42em, 5vw, 0.85em);
+    display: block;
+    width: 100%;
+    margin-inline: auto;
+    text-align: center;
   }
 
   #home.hero .hero-headlines .hero-meta-location--hero-lead {
@@ -2760,19 +2764,13 @@ a.button-primary:active {
   }
 }
 
-@media (max-width: 760px) {
-  #productions.section .productions-content .section-subtitle-stack {
-    margin-top: 16px;
-  }
-}
-
 /* Productions intro: one rhythm between lines (no mixed paragraph gaps vs line-height) */
 #productions.section .section-subtitle-stack {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.62em;
-  max-width: min(72ch, 100%);
+  max-width: var(--admin-prod-stack-max, min(72ch, 100%));
   width: 100%;
   margin: 0;
   text-align: center;
@@ -2781,7 +2779,7 @@ a.button-primary:active {
 #productions.section .section-subtitle-line {
   margin: 0;
   padding: 0;
-  font-size: 1.2em;
+  font-size: var(--admin-prod-intro-font, 1.2em);
   line-height: 1.48;
   max-width: 100%;
   text-wrap: balance;
@@ -2791,7 +2789,22 @@ a.button-primary:active {
 #productions.section .section-subtitle-line--productions-prose {
   white-space: pre-line;
   text-wrap: unset;
-  max-width: min(40ch, 100%);
+  max-width: var(--admin-prod-intro-max-w, min(40ch, 100%));
+}
+
+@media (max-width: 760px) {
+  #productions.section .productions-content .section-subtitle-stack {
+    margin-top: 16px;
+  }
+
+  #productions.section .section-subtitle-stack {
+    max-width: var(--admin-prod-stack-max-m, var(--admin-prod-stack-max, min(72ch, 100%)));
+  }
+
+  #productions.section .section-subtitle-line--productions-prose {
+    max-width: var(--admin-prod-intro-max-w-m, var(--admin-prod-intro-max-w, min(40ch, 100%)));
+    font-size: var(--admin-prod-intro-font-m, var(--admin-prod-intro-font, 1.2em));
+  }
 }
 
 #process.section {
@@ -4299,6 +4312,8 @@ a.button-primary:active {
     object-fit: cover;
     object-position: center center;
     z-index: 1;
+    /* לא לחטוף מחוות גלילה — השכבה מעל הטקסט מטפלת בניווט */
+    pointer-events: none;
   }
 
   #about.section.about-mobile-story--sticky .about-full__bg-video {
@@ -4380,11 +4395,11 @@ a.button-primary:active {
   /* כמו .section-subtitle-line בהפקות: 1.2em על בסיס body (html 88%) */
   #about.section.about-mobile-story .about-mobile-card__text {
     text-align: center;
-    font-size: 1.2em;
+    font-size: var(--admin-about-m-text-font, 1.2em);
     line-height: 1.48;
     color: rgba(252, 250, 244, 0.96);
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
-    max-width: min(40ch, 92vw);
+    max-width: var(--admin-about-m-text-max-w, min(40ch, 92vw));
     white-space: normal;
     word-break: normal;
     margin: 0 auto;
@@ -4393,7 +4408,7 @@ a.button-primary:active {
   /* טקסט מורחב: שורות מהמקור — בלי ריווח פסקה מוגזם (רווחים כפולים במקור עדיין שוברים שורה) */
   #about.section.about-mobile-story .about-mobile-card__text--prose {
     white-space: pre-line;
-    max-width: min(38ch, 92vw);
+    max-width: var(--admin-about-m-prose-max-w, min(38ch, 92vw));
     text-align: center;
     line-height: 1.48;
   }
@@ -4414,14 +4429,17 @@ a.button-primary:active {
   /* גלילה פנימית לטקסט — כפתור «עוד» מתחת; אחרי לחיצה כל הסיפור באותה גלילה */
   #about.section.about-mobile-story .about-mobile-card__teaser-scroll {
     width: 100%;
-    max-width: min(40ch, 94vw);
+    max-width: var(--admin-about-m-scroll-max-w, min(40ch, 94vw));
     max-height: min(52vh, 420px);
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    position: relative;
+    z-index: 2;
     flex: 0 1 auto;
     min-height: 0;
-    overscroll-behavior: contain;
+    overscroll-behavior-y: contain;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
@@ -4439,7 +4457,7 @@ a.button-primary:active {
 
   #about.section.about-mobile-story .about-mobile-card--teaser .about-mobile-card__text {
     margin: 0;
-    max-width: min(38ch, 92vw);
+    max-width: var(--admin-about-m-teaser-text-max-w, var(--admin-about-m-prose-max-w, min(38ch, 92vw)));
   }
 
   #about.section.about-mobile-story .about-mobile-card__text--teaser-lead {
@@ -4565,6 +4583,26 @@ a.button-primary:active {
   }
   .carousel-slide img {
     height: 230px;
+  }
+}
+
+/* About מובייל: עדכוני אדמין לרוחב/גופן במסכים צרים */
+@media (max-width: 480px) {
+  #about.section.about-mobile-story .about-mobile-card__text {
+    max-width: var(--admin-about-m-text-max-w-m, var(--admin-about-m-text-max-w, min(40ch, 92vw)));
+    font-size: var(--admin-about-m-text-font-m, var(--admin-about-m-text-font, 1.2em));
+  }
+
+  #about.section.about-mobile-story .about-mobile-card__text--prose {
+    max-width: var(--admin-about-m-prose-max-w-m, var(--admin-about-m-prose-max-w, min(38ch, 92vw)));
+  }
+
+  #about.section.about-mobile-story .about-mobile-card__teaser-scroll {
+    max-width: var(--admin-about-m-scroll-max-w-m, var(--admin-about-m-scroll-max-w, min(40ch, 94vw)));
+  }
+
+  #about.section.about-mobile-story .about-mobile-card--teaser .about-mobile-card__text {
+    max-width: var(--admin-about-m-prose-max-w-m, var(--admin-about-m-prose-max-w, min(38ch, 92vw)));
   }
 }
 
@@ -5026,7 +5064,11 @@ a.button-primary:active {
   inset-inline-end: 14px;
   bottom: 14px;
   z-index: 120;
-  width: min(92vw, 360px);
+  width: min(92vw, 380px);
+  max-height: min(78vh, 620px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: rgba(20, 28, 22, 0.9);
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -5063,6 +5105,108 @@ a.button-primary:active {
 
 .admin-builder .button {
   padding: 8px 10px;
+}
+
+.admin-builder__theme-wrap {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.admin-builder__theme-title {
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.admin-builder__theme-note {
+  margin: 0 0 8px;
+  font-size: 11px;
+  line-height: 1.35;
+  opacity: 0.88;
+}
+
+.admin-builder__theme-note code {
+  font-size: 10px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.admin-builder__fieldset {
+  margin: 0 0 10px;
+  padding: 8px 8px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+}
+
+.admin-builder__fieldset legend {
+  padding: 0 6px;
+  font-size: 12px;
+  opacity: 0.95;
+}
+
+.admin-builder__row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.admin-builder__row label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+  opacity: 0.92;
+}
+
+.admin-builder__row input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px 7px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font-size: 12px;
+  font-family: ui-monospace, monospace;
+}
+
+.admin-builder__row--font {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.admin-builder__row--font label {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-builder__font-bumps {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.admin-builder__icon-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.admin-builder__icon-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .admin-editable {
