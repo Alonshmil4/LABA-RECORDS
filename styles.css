@@ -2391,9 +2391,9 @@ a.button-primary:active {
     transform: translateY(-6px);
   }
 
-  /* פסקה + תוויות + קיקר גבוהים יותר באזור האמצע (לא נדבקים לתחתית) */
+  /* פסקה + תוויות + קיקר יורדים מעט למטה כדי לייצר רווח מהכותרות */
   .hero-inner .hero-subtitle {
-    margin-top: clamp(18px, 10vh, 88px);
+    margin-top: clamp(42px, 15vh, 128px);
     margin-bottom: clamp(8px, 2.5vw, 16px);
   }
 
@@ -3672,7 +3672,7 @@ a.button-primary:active {
     align-self: center;
     width: 100%;
     max-width: 100%;
-    gap: 10px;
+    gap: 12px;
     margin-top: -14px;
     margin-bottom: 0;
     transform: none;
@@ -3694,7 +3694,7 @@ a.button-primary:active {
 
   #productions.section .track-preview-card {
     width: 100%;
-    max-width: 288px;
+    max-width: 346px;
   }
 
   /* Spotify + icons first; «לשיר הבא» + arrows last — extra space before nav row */
@@ -3703,7 +3703,7 @@ a.button-primary:active {
     flex-direction: column;
     align-items: center;
     gap: 14px;
-    width: min(288px, calc(100% - 24px));
+    width: min(346px, calc(100% - 16px));
     max-width: 100%;
     min-width: 0;
     margin-inline: 0;
@@ -3731,7 +3731,7 @@ a.button-primary:active {
   }
 
   #productions.section .tracks-carousel-hint {
-    font-size: clamp(13px, 3.2vw, 15px);
+    font-size: clamp(15px, 3.9vw, 18px);
     font-weight: 400;
     letter-spacing: 0.02em;
     color: rgba(255, 255, 255, 0.94);
@@ -3743,13 +3743,13 @@ a.button-primary:active {
   #productions.section .tracks-carousel-nav {
     display: inline-flex;
     align-self: center;
-    width: 28px;
-    height: 28px;
+    width: 34px;
+    height: 34px;
     border-radius: 999px;
     border: 1px solid var(--btn-outline);
     background: transparent;
     color: var(--btn-outline);
-    font-size: 16px;
+    font-size: 19px;
     line-height: 0;
     cursor: pointer;
     flex-shrink: 0;
@@ -3828,7 +3828,7 @@ a.button-primary:active {
     scroll-snap-stop: always;
   }
 
-  /* Spotify compact — full width of carousel row (arrows no longer eat horizontal space) */
+  /* Spotify preview במובייל: גדול ובולט יותר */
   #productions.section .track-cover {
     width: 100%;
     max-width: 100%;
@@ -3836,12 +3836,13 @@ a.button-primary:active {
     overflow: hidden;
     overflow: clip;
     direction: ltr;
-    border-radius: 10px;
+    border-radius: 12px;
     line-height: 0;
+    box-shadow: none;
   }
 
   #productions.section .track-cover iframe {
-    height: 137px;
+    height: 218px;
     width: 100%;
     max-width: 100%;
     margin: 0;
@@ -3856,9 +3857,43 @@ a.button-primary:active {
     transform: none;
   }
 
+  /* התאמת כפתורי הפעולה ל-preview הגדול במובייל */
+  #productions.section .track-icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  #productions.section .track-icon-btn svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  #productions.section .track-icon-btn--apple .apple-music-mark {
+    width: 21px;
+    height: 21px;
+  }
+
+  /* בלי "פס/צל" מאחורי אייקוני הפעולות */
+  #productions.section .tracks-carousel,
+  #productions.section .tracks-carousel-top,
+  #productions.section .tracks,
+  #productions.section .track,
+  #productions.section .track-actions {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
   #productions.section .section-foot.split {
     width: 100%;
     justify-content: center;
+  }
+
+  /* מבטל fade תחתון במובייל בסקשן ההפקות */
+  #productions.section .section-video-overlay {
+    background: rgba(20, 28, 22, 0.34);
   }
 }
 
