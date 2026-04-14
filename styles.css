@@ -1364,7 +1364,7 @@ a.button-primary:active {
     top: auto;
     bottom: calc(116px + env(safe-area-inset-bottom, 0px));
     /* Mobile: keep rail less dominant until user interacts (~30% smaller than former mobile size) */
-    transform: translateX(14px) scale(0.88);
+    transform: translateX(14px) scale(0.97);
     transform-origin: right center;
     right: calc(10px + env(safe-area-inset-right, 0px));
     gap: 5px;
@@ -1372,18 +1372,18 @@ a.button-primary:active {
   }
 
   .hero-social-btn {
-    width: 28px;
-    height: 28px;
+    width: 31px;
+    height: 31px;
   }
 
   .hero-social-btn svg {
-    width: 13px;
-    height: 13px;
+    width: 14px;
+    height: 14px;
   }
 
   .hero-social-btn .apple-music-mark {
-    width: 13px;
-    height: 13px;
+    width: 14px;
+    height: 14px;
   }
 
   .hero-social-rail:hover,
@@ -2391,9 +2391,9 @@ a.button-primary:active {
     transform: translateY(-6px);
   }
 
-  /* פסקה + תוויות + קיקר יורדים מעט למטה כדי לייצר רווח מהכותרות */
+  /* פסקה + תוויות + קיקר יורדים עוד קצת למטה כדי לייצר רווח ברור מהכותרות */
   .hero-inner .hero-subtitle {
-    margin-top: clamp(42px, 15vh, 128px);
+    margin-top: clamp(58px, 18vh, 156px);
     margin-bottom: clamp(8px, 2.5vw, 16px);
   }
 
@@ -2428,7 +2428,7 @@ a.button-primary:active {
 
   #home.hero .hero-headlines .hero-meta-location--hero-lead {
     margin-top: clamp(0.5em, 3.8vw, 0.95em);
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: 0.02em;
   }
 
@@ -3976,6 +3976,11 @@ a.button-primary:active {
 
 #process.section .section-head {
   margin-bottom: 16px;
+  text-align: center;
+}
+
+#process.section .section-head .section-title {
+  text-align: center;
 }
 
 #process.section .media-row img {
@@ -4127,14 +4132,14 @@ a.button-primary:active {
 
   #process.section .section-head {
     margin-bottom: clamp(16px, 2.5vw, 24px);
-    text-align: right;
+    text-align: center;
   }
 
   #process.section .section-head .section-title {
     color: rgba(255, 255, 255, 0.98) !important;
     font-weight: 400 !important;
     text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
-    text-align: right;
+    text-align: center;
   }
 
   #process .process-grid {
@@ -5185,8 +5190,9 @@ a.button-primary:active {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 10px 18px;
+  gap: 12px 22px;
   justify-content: flex-start;
+  line-height: 1.55;
 }
 
 .footer-location {
@@ -5203,8 +5209,9 @@ a.button-primary:active {
 .footer-social {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
   justify-content: end;
+  line-height: 1.55;
 }
 
 .footer a {
@@ -5216,9 +5223,9 @@ a.button-primary:active {
 
 .footer-play-cta {
   grid-column: 1 / -1;
-  margin-top: 6px;
+  margin-top: 10px;
   display: grid;
-  gap: 8px;
+  gap: 12px;
   justify-items: center;
 }
 
@@ -5391,10 +5398,50 @@ a.button-primary:active {
   .footer-links,
   .footer-social {
     justify-content: center;
+    gap: 12px 16px;
+  }
+
+  .footer-brand {
+    display: grid;
+    gap: 6px;
+  }
+
+  .footer-location,
+  .footer-credit,
+  .footer .muted {
+    line-height: 1.6;
+  }
+
+  .footer-play-cta {
+    margin-top: 14px;
+  }
+
+  .footer-spotify-player {
+    width: 272px;
+    max-width: min(272px, 100%);
+  }
+
+  .footer-spotify-player iframe {
+    width: 272px;
   }
 }
 
 @media (max-width: 760px) {
+  .footer-play-cta {
+    justify-items: center;
+  }
+
+  .footer-spotify-player {
+    width: 128px;
+    max-width: 128px;
+    margin-inline: auto;
+    justify-self: center;
+  }
+
+  .footer-spotify-player iframe {
+    width: 128px;
+  }
+
   .burger {
     display: inline-flex;
     position: relative;
