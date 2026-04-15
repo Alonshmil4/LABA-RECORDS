@@ -139,6 +139,22 @@ function collectTextFromForm() {
   return out;
 }
 
+function collectPayload(base) {
+  const text = { ...base.text, ...collectTextFromForm() };
+  let elementStyles = {};
+  try {
+    elementStyles = JSON.parse($("#admin-element-styles").value || "{}");
+  } catch {
+    throw new Error("JSON ריווחים לא תקין.");
+  }
+  return {
+    version: base.version || 7,
+    text,
+    elementStyles,
+    globalCss: $("#admin-global-css").value || "",
+  };
+}
+
 function $$(sel, root = document) {
   return Array.from(root.querySelectorAll(sel));
 }
@@ -191,23 +207,45 @@ async function init() {
     $("#admin-status").textContent = "נשמר ב-localStorage. רעננו את דף הבית.";
   });
 
-  $("#admin-download").addEventListener("click", () => {
-    const text = { ...base.text, ...collectTextFromForm() };
-    let elementStyles = {};
+  $("#admin-apply-live").addEventListener("click", async () => {
+    let payload;
     try {
-      elementStyles = JSON.parse($("#admin-element-styles").value || "{}");
-    } catch {
-      alert("JSON ריווחים לא תקין.");
+      payload = collectPayload(base);
+    } catch (e) {
+      alert(String(e.message || e));
       return;
     }
-    const globalCss = $("#admin-global-css").value || "";
-    downloadJson("site-content.json", {
-      version: base.version || 7,
-      text,
-      elementStyles,
-      globalCss,
-    });
-    $("#admin-status").textContent = "הורד site-content.json — החליפו בפרויקט והריצו npm run admin:apply";
+
+    // Keep preview storage in sync as well.
+    saveJsonStore(payload.text);
+    localStorage.setItem(STORAGE_STYLES, JSON.stringify(payload.elementStyles || {}));
+    localStorage.setItem(STORAGE_GLOBAL_CSS, payload.globalCss || "");
+
+    $("#admin-status").textContent = "מעדכן קבצים...";
+    try {
+      const res = await fetch("/__admin/apply", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        throw new Error(data.details || data.error || `HTTP ${res.status}`);
+      }
+      $("#admin-status").textContent = "עודכן בהצלחה בקוד (index.html + styles.css). רעננו את האתר.";
+    } catch (e) {
+      $("#admin-status").textContent = `נכשל עדכון לייב: ${String(e.message || e)}. ודאו שהשרת רץ עם npm start.`;
+    }
+  });
+
+  $("#admin-download").addEventListener("click", () => {
+    try {
+      const payload = collectPayload(base);
+      downloadJson("site-content.json", payload);
+      $("#admin-status").textContent = "הורד site-content.json — החליפו בפרויקט והריצו npm run admin:apply";
+    } catch {
+      alert("JSON ריווחים לא תקין.");
+    }
   });
 }
 

@@ -125,11 +125,13 @@
       </div>
 
       <div class="admin-toolbar">
+        <button type="button" class="admin-btn admin-btn--primary" id="admin-apply-live">עדכון (לייב לקוד)</button>
         <button type="button" class="admin-btn admin-btn--primary" id="admin-save-preview">שמירה לתצוגה (דפדפן)</button>
         <button type="button" class="admin-btn admin-btn--primary" id="admin-download">הורדת site-content.json</button>
       </div>
       <p class="lead" style="margin-top: 8px">
-        אחרי ההורדה: שמרו את הקובץ בשורש הפרויקט (במקום <code>site-content.json</code> הקיים) והריצו
+        כפתור «עדכון (לייב לקוד)» כותב מיד ל־<code>site-content.json</code> ומריץ Apply על <code>index.html</code>/<code>styles.css</code>.
+        אם תרצו גם קובץ גיבוי, השתמשו ב"הורדה". ידני: שמרו את הקובץ בשורש הפרויקט והריצו
         <code>npm run admin:apply</code> — זה יעדכן את <code>index.html</code> ואת בלוק ה-CSS ב־<code>styles.css</code>.
       </p>
       <div class="admin-status" id="admin-status" aria-live="polite"></div>
