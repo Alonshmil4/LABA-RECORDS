@@ -1063,6 +1063,83 @@ function wireScrollReveal() {
   targets.forEach((el) => observer.observe(el));
 }
 
+/** Productions Spotify previews: allow only one active player at a time. */
+function wireExclusiveSpotifyPreviews() {
+  const frames = $$(`#productions.section .track-cover iframe[src*="open.spotify.com/embed/track/"]`);
+  if (!frames.length) return;
+
+  const frameSet = new Set(frames);
+  let activeFrame = null;
+  let lastFocusedFrame = null;
+
+  const stopFrame = (frame) => {
+    if (!frame) return;
+    const src = frame.getAttribute("src");
+    if (!src) return;
+    // Re-assigning src hard-stops the current Spotify preview playback.
+    frame.setAttribute("src", src);
+  };
+
+  const onFrameInteract = (frame) => {
+    if (!frame) return;
+    if (activeFrame && activeFrame !== frame) {
+      stopFrame(activeFrame);
+    }
+    activeFrame = frame;
+  };
+
+  const resolveFrameFromEventTarget = (target) => {
+    if (!target) return null;
+    if (target instanceof HTMLIFrameElement && frameSet.has(target)) return target;
+    const cover = target.closest?.(".track-cover");
+    if (!cover) return null;
+    const iframe = $("iframe[src*='open.spotify.com/embed/track/']", cover);
+    return iframe && frameSet.has(iframe) ? iframe : null;
+  };
+
+  // Cross-origin iframe clicks are tricky; poll activeElement as a reliable fallback.
+  const watchFocusedIframe = () => {
+    const el = document.activeElement;
+    if (!(el instanceof HTMLIFrameElement)) return;
+    if (!frameSet.has(el)) return;
+    if (lastFocusedFrame === el) return;
+    lastFocusedFrame = el;
+    onFrameInteract(el);
+  };
+
+  frames.forEach((frame) => {
+    frame.addEventListener("pointerdown", () => onFrameInteract(frame), { passive: true });
+    frame.addEventListener("touchstart", () => onFrameInteract(frame), { passive: true });
+    frame.addEventListener("focus", () => onFrameInteract(frame), true);
+  });
+
+  const productions = document.querySelector("#productions.section");
+  if (productions) {
+    productions.addEventListener(
+      "pointerdown",
+      (e) => {
+        const frame = resolveFrameFromEventTarget(e.target);
+        if (frame) onFrameInteract(frame);
+      },
+      { passive: true, capture: true }
+    );
+    productions.addEventListener(
+      "touchstart",
+      (e) => {
+        const frame = resolveFrameFromEventTarget(e.target);
+        if (frame) onFrameInteract(frame);
+      },
+      { passive: true, capture: true }
+    );
+  }
+
+  window.addEventListener("blur", watchFocusedIframe);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") watchFocusedIframe();
+  });
+  setInterval(watchFocusedIframe, 350);
+}
+
 window.addEventListener("scroll", setScrolledHeader, { passive: true });
 window.addEventListener("scroll", setHeroMetaPillsRevealed, { passive: true });
 setScrolledHeader();
@@ -1079,6 +1156,7 @@ wireGalleryCarousel();
 wireStudioStoriesCarousel();
 wireTestimonialsCarousel();
 wireTracksCarousel();
+wireExclusiveSpotifyPreviews();
 wireAboutMobileStoryExperience();
 wireAboutMobileMoreToggle();
 wireAboutMobileBook();
