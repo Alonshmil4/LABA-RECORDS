@@ -852,18 +852,95 @@ function applyAdminThemeFromStore(sourceStore) {
   }
 }
 
-function wireAboutPanelVideo() {
-  const v = document.querySelector(".about-full__bg-video");
+/** Muted inline autoplay (esp. iOS Safari): keep IDL flags aligned before play(). */
+function ensureMutedBackgroundVideo(v) {
+  if (!v || v.tagName !== "VIDEO") return;
+  v.defaultMuted = true;
+  v.muted = true;
+  v.playsInline = true;
+  if (!v.hasAttribute("muted")) v.setAttribute("muted", "");
+}
+
+function tryPlayVideo(v) {
+  if (!v || v.tagName !== "VIDEO") return;
+  ensureMutedBackgroundVideo(v);
+  const p = v.play();
+  if (p && typeof p.catch === "function") p.catch(() => {});
+}
+
+/** Hero: metadata preload + programmatic play (HTML autoplay alone is flaky on iOS). */
+function wireHeroBackgroundVideo() {
+  const v = document.querySelector(".hero-video");
   if (!v) return;
+  const run = () => tryPlayVideo(v);
+  v.addEventListener("loadeddata", run);
+  v.addEventListener("canplay", run);
+  v.addEventListener("playing", run);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") run();
+  });
+  window.addEventListener("pageshow", run);
+  requestAnimationFrame(() => requestAnimationFrame(run));
+  if (v.readyState >= 2) run();
+}
 
-  const tryPlay = () => {
-    const p = v.play();
-    if (p && typeof p.catch === "function") p.catch(() => {});
+/** First user gesture unblocks Safari autoplay policies for all background clips. */
+function wireGestureUnlockBackgroundVideos() {
+  const warm = () => {
+    $$(".hero-video, .section-video, .about-full__bg-video").forEach(tryPlayVideo);
   };
+  window.addEventListener("pointerdown", warm, { capture: true, once: true, passive: true });
+  window.addEventListener("touchstart", warm, { capture: true, once: true, passive: true });
+}
 
-  v.addEventListener("loadeddata", tryPlay);
-  v.addEventListener("canplay", tryPlay);
-  if (v.readyState >= 2) tryPlay();
+/**
+ * Sections below the hero: preload="none" until near viewport, then load + play.
+ * Pauses when far off-screen to avoid parallel decode on slow mobile.
+ */
+function wireDeferredBackgroundVideos() {
+  const nodes = $$("video[data-defer-bg-video]");
+  if (!nodes.length) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function primeAndPlay(video) {
+    ensureMutedBackgroundVideo(video);
+    if (video.preload === "none") video.preload = "metadata";
+    try {
+      video.load();
+    } catch (_) {}
+    tryPlayVideo(video);
+    video.addEventListener("loadeddata", () => tryPlayVideo(video), { once: true });
+    video.addEventListener("canplay", () => tryPlayVideo(video), { once: true });
+  }
+
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    nodes.forEach((v) => primeAndPlay(v));
+    return;
+  }
+
+  nodes.forEach((video) => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const v = e.target;
+          if (!(v instanceof HTMLVideoElement)) return;
+          if (e.isIntersecting) {
+            if (v.dataset.bgPrimed === "1") {
+              tryPlayVideo(v);
+              return;
+            }
+            v.dataset.bgPrimed = "1";
+            primeAndPlay(v);
+            return;
+          }
+          if (v.dataset.bgPrimed === "1" && !v.paused) v.pause();
+        });
+      },
+      { root: null, rootMargin: "320px 0px 200px 0px", threshold: 0.01 }
+    );
+    io.observe(video);
+  });
 }
 
 function fetchSiteContentJsonSync() {
@@ -1160,7 +1237,9 @@ wireExclusiveSpotifyPreviews();
 wireAboutMobileStoryExperience();
 wireAboutMobileMoreToggle();
 wireAboutMobileBook();
-wireAboutPanelVideo();
+wireHeroBackgroundVideo();
+wireGestureUnlockBackgroundVideos();
+wireDeferredBackgroundVideos();
 applyStoredSiteContent();
 
 if (yearEl) yearEl.textContent = String(new Date().getFullYear());
@@ -1174,5 +1253,5 @@ if (heroMedia && heroVideo) {
   heroVideo.addEventListener("playing", clearNoVideo);
   setTimeout(() => {
     if (heroVideo.readyState === 0) markNoVideo();
-  }, 4000);
+  }, 10000);
 }
