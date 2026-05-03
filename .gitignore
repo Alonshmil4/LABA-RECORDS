@@ -2,3 +2,6 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# Local export / backup (exceeds GitHub 100MB per-file limit)
+laba-records-full.zip

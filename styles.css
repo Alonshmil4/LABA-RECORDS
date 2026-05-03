@@ -1493,6 +1493,13 @@ a.button-primary:active {
 
   .hero-video-fallback {
     transform: none;
+    /* בלי תמונת hero ישנה בזמן טעינה / כשאין וידאו — רק מעבר צבע */
+    background: linear-gradient(
+      165deg,
+      rgba(12, 14, 13, 0.92) 0%,
+      rgba(28, 32, 30, 0.78) 45%,
+      rgba(18, 22, 20, 0.88) 100%
+    );
     background-size: cover;
     background-position: center;
   }
@@ -4640,7 +4647,8 @@ a.button-primary:active {
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.25);
 }
 
-.story-phone img {
+.story-phone img,
+.story-phone video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -4654,12 +4662,12 @@ a.button-primary:active {
   right: 10px;
   z-index: 2;
   direction: ltr;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
   gap: 4px;
 }
 
 .story-phone__bars span {
+  flex: 1;
   height: 3px;
   border-radius: 99px;
   background: rgba(255, 255, 255, 0.38);
@@ -4770,7 +4778,8 @@ a.button-primary:active {
   background: rgba(255, 255, 255, 0.6);
 }
 
-.carousel-slide img {
+.carousel-slide img,
+.carousel-slide video {
   width: 100%;
   height: 280px;
   object-fit: cover;
@@ -4973,20 +4982,19 @@ a.button-primary:active {
     margin-inline: 0;
   }
 
-  /* לפני «עוד»: גלילה פנימית רק לטיזר; אחרי «עוד»: בלי גלילה פנימית — גלילת דף בלבד (עגון לפרודקשן / Vercel) */
+  /* גלילת דף בלבד מעל התיבה — בלי מיכל overflow פנימי שחוטף החלקה במובייל */
   #about.section.about-mobile-story .about-mobile-card__teaser-scroll {
     width: 100%;
     max-width: var(--admin-about-m-scroll-max-w, min(40ch, 94vw));
-    max-height: min(52vh, 420px);
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+    max-height: none;
+    overflow: visible;
+    -webkit-overflow-scrolling: auto;
+    touch-action: auto;
     position: relative;
     z-index: 2;
     flex: 0 1 auto;
     min-height: 0;
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
