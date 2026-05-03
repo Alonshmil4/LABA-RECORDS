@@ -4863,11 +4863,13 @@ a.button-primary:active {
     right: auto;
     left: auto;
     bottom: auto;
-    z-index: 2;
+    /* מעל ריל הרשתות (40) וכפתורי הצף (39); מתחת להדר הקבוע (z-50) */
+    z-index: 41;
     max-height: none;
     padding: 0 0 10px;
     pointer-events: auto;
     background: transparent;
+    isolation: isolate;
   }
 
   #about.section.about-mobile-story--sticky .about-mobile-carousel-layer {
@@ -4975,6 +4977,14 @@ a.button-primary:active {
     backdrop-filter: blur(14px) saturate(1.08);
     -webkit-backdrop-filter: blur(14px) saturate(1.08);
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+    /* גלילה בתוך התיבה — מגעים לא נבלעים ע״י ריל/כפתורי צף; iOS momentum scroll */
+    max-height: min(68vh, 520px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+    min-height: 0;
   }
 
   #about.section.about-mobile-story .about-mobile-copy-group .about-mobile-card__teaser-scroll {
@@ -4982,14 +4992,13 @@ a.button-primary:active {
     margin-inline: 0;
   }
 
-  /* גלילת דף בלבד מעל התיבה — בלי מיכל overflow פנימי שחוטף החלקה במובייל */
+  /* תוכן בתוך התיבה — הגלילה על המעטפת (.about-mobile-copy-group) */
   #about.section.about-mobile-story .about-mobile-card__teaser-scroll {
     width: 100%;
     max-width: var(--admin-about-m-scroll-max-w, min(40ch, 94vw));
     max-height: none;
     overflow: visible;
-    -webkit-overflow-scrolling: auto;
-    touch-action: auto;
+    touch-action: pan-y;
     position: relative;
     z-index: 2;
     flex: 0 1 auto;
@@ -5008,10 +5017,8 @@ a.button-primary:active {
 
   #about.section.about-mobile-story .about-mobile-card--more-revealed .about-mobile-card__teaser-scroll {
     max-height: none;
-    /* visible בשני הצירים — אחרת דפדפנים הופכים את Y ל-auto ונשארת גלילה פנימית */
     overflow: visible;
-    -webkit-overflow-scrolling: auto;
-    touch-action: auto;
+    touch-action: pan-y;
     overscroll-behavior-y: auto;
     flex: 0 0 auto;
     min-height: 0;
