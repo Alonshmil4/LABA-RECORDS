@@ -2335,10 +2335,10 @@ a.button-primary:active {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
 }
 
-/* דסקטופ: ציטוטים קומפקטיים יותר — פחות גובה עמודות, פסקאות מאוזנות */
+/* דסקטופ: ציטוטים קומפקטיים — גובה אחיד, גלילה רק בתוך הטקסט אם צריך */
 @media (min-width: 761px) {
   #testimonials.section .testimonials-carousel {
-    max-width: min(800px, 92vw);
+    max-width: min(760px, 90vw);
     gap: 10px;
   }
 
@@ -2353,19 +2353,40 @@ a.button-primary:active {
   }
 
   #testimonials.section .planter-card {
-    padding: 6px 6px 10px;
+    padding: 6px 6px 8px;
+    max-height: min(42vh, 360px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   #testimonials.section .planter-quote {
-    font-size: clamp(13px, 0.92vw, 16px);
-    line-height: 1.38;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+    font-size: clamp(11.5px, 0.68vw, 13.5px);
+    line-height: 1.36;
     margin-inline: auto;
     text-wrap: balance;
   }
 
+  #testimonials.section .planter-quote::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  #testimonials.section .planter-quote::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+  }
+
   #testimonials.section .planter-by {
-    margin-top: 8px;
-    font-size: clamp(11.5px, 0.82vw, 13.5px);
+    flex-shrink: 0;
+    margin-top: 6px;
+    font-size: clamp(10.5px, 0.62vw, 12.5px);
   }
 
   #testimonials.section .carousel-nav-v {
