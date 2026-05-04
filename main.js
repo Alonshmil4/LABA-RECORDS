@@ -919,9 +919,15 @@ function tryPlayVideo(v) {
 function wireHeroBackgroundVideo() {
   const v = document.querySelector(".hero-video");
   if (!v) return;
+  ensureMutedBackgroundVideo(v);
+  if (v.preload !== "auto") v.preload = "auto";
+  try {
+    v.load();
+  } catch (_) {}
   const run = () => tryPlayVideo(v);
   v.addEventListener("loadeddata", run);
   v.addEventListener("canplay", run);
+  v.addEventListener("canplaythrough", run);
   v.addEventListener("playing", run);
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") run();
@@ -1295,10 +1301,13 @@ if (heroMedia && heroVideo) {
   const markNoVideo = () => heroMedia.classList.add("no-video");
   const clearNoVideo = () => heroMedia.classList.remove("no-video");
   heroVideo.addEventListener("error", markNoVideo);
+  heroVideo.addEventListener("stalled", () => {
+    // iOS יכול לדווח stalled זמנית; לא עוברים מיד ל-fallback כהה.
+    setTimeout(() => {
+      if (heroVideo.readyState === 0) markNoVideo();
+    }, 12000);
+  });
   heroVideo.addEventListener("loadeddata", clearNoVideo);
   heroVideo.addEventListener("canplay", clearNoVideo);
   heroVideo.addEventListener("playing", clearNoVideo);
-  setTimeout(() => {
-    if (heroVideo.readyState === 0) markNoVideo();
-  }, 10000);
 }
