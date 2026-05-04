@@ -559,18 +559,65 @@ function wireTestimonialsCarousel() {
   const next = $("[data-testimonials-next]", root);
   if (!track || !prev || !next) return;
 
-  const getStep = () => {
-    const firstSlide = $(".testimonials-slide", track);
-    if (!firstSlide) return 320;
-    const rect = firstSlide.getBoundingClientRect();
-    return rect.width + 14;
+  const slides = () => $$(".testimonials-slide", track);
+
+  const getGap = () => {
+    const raw = getComputedStyle(track).columnGap || getComputedStyle(track).gap || "14px";
+    return Number.parseFloat(raw) || 14;
   };
 
-  prev.addEventListener("click", () => {
-    track.scrollBy({ left: -getStep(), behavior: "smooth" });
-  });
-  next.addEventListener("click", () => {
-    track.scrollBy({ left: getStep(), behavior: "smooth" });
+  let index = 0;
+
+  const scrollLeftForIndex = (i) => {
+    const list = slides();
+    const gap = getGap();
+    let left = 0;
+    for (let k = 0; k < i; k++) {
+      left += list[k].offsetWidth + gap;
+    }
+    return left;
+  };
+
+  const nearestIndexFromScroll = () => {
+    const list = slides();
+    if (!list.length) return 0;
+    const x = track.scrollLeft;
+    let best = 0;
+    let bestD = Infinity;
+    list.forEach((el, i) => {
+      const d = Math.abs(scrollLeftForIndex(i) - x);
+      if (d < bestD) {
+        bestD = d;
+        best = i;
+      }
+    });
+    return best;
+  };
+
+  const scrollToIndex = (rawI, behavior = "smooth") => {
+    const list = slides();
+    const n = list.length;
+    if (!n) return;
+    const i = ((rawI % n) + n) % n;
+    index = i;
+    track.scrollTo({ left: scrollLeftForIndex(i), behavior });
+  };
+
+  prev.addEventListener("click", () => scrollToIndex(index - 1));
+  next.addEventListener("click", () => scrollToIndex(index + 1));
+
+  track.addEventListener(
+    "scroll",
+    () => {
+      window.requestAnimationFrame(() => {
+        index = nearestIndexFromScroll();
+      });
+    },
+    { passive: true }
+  );
+
+  window.addEventListener("resize", () => {
+    scrollToIndex(index, "auto");
   });
 }
 

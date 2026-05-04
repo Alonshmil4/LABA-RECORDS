@@ -2249,39 +2249,59 @@ a.button-primary:active {
 }
 
 #testimonials.section .testimonials-track {
+  position: relative;
   width: 100%;
   max-height: none;
   overflow-x: auto;
-  overflow-y: hidden;
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(260px, 32vw);
+  overflow-y: visible;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
   gap: 14px;
-  padding: 6px 2px 8px;
+  padding: 6px 2px 12px;
   scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0;
+  /* LTR: סדר פריטי הגלילה + scrollLeft עקביים; התוכן בתוך כל כרטיס — RTL */
   direction: ltr;
+  -webkit-overflow-scrolling: touch;
 }
 
 #testimonials.section .testimonials-slide {
   scroll-snap-align: start;
   scroll-snap-stop: always;
   padding-bottom: 0;
+  flex: 0 0 calc((100% - 28px) / 3);
+  min-width: 0;
+  max-width: calc((100% - 28px) / 3);
+  box-sizing: border-box;
 }
 
 #testimonials.section .planter-card {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  min-height: 150px;
-  padding: 8px 6px;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  padding: 8px 6px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  direction: rtl;
+  unicode-bidi: isolate;
 }
 
 #testimonials.section .planter-quote {
+  margin: 0;
   color: rgba(255, 255, 255, 0.98);
-  font-size: clamp(20px, 2.1vw, 30px);
+  font-size: clamp(17px, 1.85vw, 26px);
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 1.5;
   text-align: center;
+  direction: rtl;
+  unicode-bidi: plaintext;
   text-shadow:
     -1px -1px 0 rgba(0, 0, 0, 0.72),
     1px -1px 0 rgba(0, 0, 0, 0.72),
@@ -2291,10 +2311,13 @@ a.button-primary:active {
 }
 
 #testimonials.section .planter-by {
-  margin-top: 10px;
-  font-size: clamp(16px, 1.5vw, 20px);
+  flex-shrink: 0;
+  margin-top: 12px;
+  font-size: clamp(14px, 1.35vw, 18px);
   font-weight: 400;
   text-align: center;
+  direction: rtl;
+  unicode-bidi: isolate;
   color: rgba(255, 255, 255, 0.95);
   text-shadow:
     -1px -1px 0 rgba(0, 0, 0, 0.72),
@@ -2324,18 +2347,50 @@ a.button-primary:active {
   }
 
   #testimonials.section .testimonials-carousel {
-    grid-template-columns: 30px 1fr 30px;
-    gap: 6px;
+    grid-template-columns: 34px 1fr 34px;
+    gap: 4px;
+    align-items: stretch;
   }
 
+  /* מובייל: כרטיס אחד ברוחב המסך — בלי עמודות צרות וציטוט ענק */
   #testimonials.section .testimonials-track {
-    grid-auto-columns: minmax(220px, 78vw);
+    max-height: none;
+    overflow-y: visible;
+    gap: 12px;
+    padding-block: 4px 14px;
+    padding-inline: 2px;
+  }
+
+  #testimonials.section .testimonials-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: normal;
+  }
+
+  #testimonials.section .planter-card {
+    padding: 10px 12px 14px;
+    max-width: min(36rem, 100%);
+    margin-inline: auto;
+  }
+
+  #testimonials.section .planter-quote {
+    font-size: clamp(14.5px, 3.85vw, 17px);
+    line-height: 1.58;
+    text-wrap: balance;
+  }
+
+  #testimonials.section .planter-by {
+    margin-top: 14px;
+    font-size: clamp(13px, 3.25vw, 15.5px);
   }
 
   #testimonials.section .carousel-nav-v {
     width: 30px;
     height: 30px;
     font-size: 16px;
+    align-self: center;
   }
 }
 
@@ -4977,14 +5032,17 @@ a.button-primary:active {
     backdrop-filter: blur(14px) saturate(1.08);
     -webkit-backdrop-filter: blur(14px) saturate(1.08);
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
-    /* גלילה בתוך התיבה — מגעים לא נבלעים ע״י ריל/כפתורי צף; iOS momentum scroll */
-    max-height: min(68vh, 520px);
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
-    touch-action: pan-y;
+    /* גלילת דף מעל התיבה: בלי overflow פנימי + מגע עובר לרקע; קישורים נשארים לחיצים */
+    max-height: none;
+    overflow: visible;
+    overscroll-behavior-y: auto;
+    touch-action: auto;
     min-height: 0;
+    pointer-events: none;
+  }
+
+  #about.section.about-mobile-story .about-mobile-copy-group a {
+    pointer-events: auto;
   }
 
   #about.section.about-mobile-story .about-mobile-copy-group .about-mobile-card__teaser-scroll {
@@ -4992,13 +5050,13 @@ a.button-primary:active {
     margin-inline: 0;
   }
 
-  /* תוכן בתוך התיבה — הגלילה על המעטפת (.about-mobile-copy-group) */
+  /* תוכן בתוך התיבה — גלילת דף, לא מיכל נפרד */
   #about.section.about-mobile-story .about-mobile-card__teaser-scroll {
     width: 100%;
     max-width: var(--admin-about-m-scroll-max-w, min(40ch, 94vw));
     max-height: none;
     overflow: visible;
-    touch-action: pan-y;
+    touch-action: auto;
     position: relative;
     z-index: 2;
     flex: 0 1 auto;
@@ -5018,7 +5076,7 @@ a.button-primary:active {
   #about.section.about-mobile-story .about-mobile-card--more-revealed .about-mobile-card__teaser-scroll {
     max-height: none;
     overflow: visible;
-    touch-action: pan-y;
+    touch-action: auto;
     overscroll-behavior-y: auto;
     flex: 0 0 auto;
     min-height: 0;
