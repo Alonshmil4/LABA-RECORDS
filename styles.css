@@ -1457,13 +1457,16 @@ a.button-primary:active {
 }
 
 .hero-video-fallback {
-  background:
-    linear-gradient(180deg, rgba(247, 251, 247, 0.1), rgba(247, 251, 247, 0.72)),
-    url("./assets/hero.png");
-  background-size: cover;
-  background-position: center;
   opacity: 0;
   transition: opacity 180ms ease;
+}
+
+.hero-video-fallback__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .hero-media.no-video .hero-video-fallback {
@@ -5397,6 +5400,15 @@ a.button-primary:active {
   line-height: 1.35;
 }
 
+.footer-tagline {
+  margin: 8px 0 6px;
+  max-width: 36ch;
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(20, 28, 22, 0.48);
+  letter-spacing: 0.01em;
+}
+
 .footer-credit {
   margin-top: 6px;
 }
@@ -5541,9 +5553,16 @@ a.button-primary:active {
   }
 
   .footer-location,
+  .footer-tagline,
   .footer-credit,
   .footer .muted {
     line-height: 1.6;
+  }
+
+  .footer-tagline {
+    margin-inline: auto;
+    max-width: 34ch;
+    text-align: center;
   }
 
   .footer-play-cta {
