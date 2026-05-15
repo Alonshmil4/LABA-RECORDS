@@ -4,7 +4,6 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 const header = $("[data-header]");
 const nav = $("[data-nav]");
 const menuBtn = $("[data-menu-button]");
-const bookingModal = $("[data-booking-modal]");
 const yearEl = $("[data-year]");
 const heroMedia = $(".hero-media");
 const heroVideo = $(".hero-video");
@@ -195,81 +194,6 @@ function wireMenu() {
   });
 }
 
-function openBooking() {
-  if (!bookingModal) return;
-  if (typeof bookingModal.showModal === "function") {
-    bookingModal.showModal();
-    return;
-  }
-  alert("הדפדפן לא תומך בחלון הקופץ הזה. אפשר לפנות ישירות בוואטסאפ.");
-}
-
-function wireBooking() {
-  $$("[data-open-booking]").forEach((btn) => {
-    btn.addEventListener("click", openBooking);
-  });
-
-  if (!bookingModal) return;
-  const form = $("form", bookingModal);
-  if (!form) return;
-
-  const parseWhatsappTarget = () => {
-    const direct = $(".whatsapp-float")?.getAttribute("href") || "";
-    const m = direct.match(/wa\.me\/(\d+)/);
-    return m?.[1] || "972546345836";
-  };
-
-  form.addEventListener("submit", (e) => {
-    const submitter = e.submitter;
-    if (submitter?.value === "cancel") return;
-    e.preventDefault();
-
-    if (!form.reportValidity()) return;
-
-    const fd = new FormData(form);
-    const serviceSelect = form.elements.namedItem("service");
-    const name = String(fd.get("name") || "").trim();
-    const phone = String(fd.get("phone") || "").trim();
-    const serviceFromFormData = String(fd.get("service") || "").trim();
-    const serviceFromSelectValue =
-      serviceSelect && "value" in serviceSelect ? String(serviceSelect.value || "").trim() : "";
-    const serviceFromSelectedText =
-      serviceSelect && "selectedOptions" in serviceSelect && serviceSelect.selectedOptions?.[0]
-        ? String(serviceSelect.selectedOptions[0].textContent || "").trim()
-        : "";
-    const service = serviceFromFormData || serviceFromSelectValue || serviceFromSelectedText;
-    const favoriteSong = String(fd.get("favoriteSong") || "").trim();
-    const message = String(fd.get("message") || "").trim();
-
-    if (!service || service.includes("בחר")) {
-      if (serviceSelect && "focus" in serviceSelect) serviceSelect.focus();
-      form.reportValidity();
-      return;
-    }
-
-    const lines = [
-      "הייי! הגעתי מהאתר של LABA RECORDS ואשמח לקבוע איתך סשן באולפן :)",
-      "",
-      "פרטים",
-      `שם: ${name}`,
-      `טלפון: ${phone}`,
-      `מה מעניין אותי: ${service}`,
-      `שיר אהוב כרגע: ${favoriteSong || "-"}`,
-      `הודעה: ${message || "-"}`,
-    ];
-
-    const text = encodeURIComponent(lines.join("\n"));
-    const waUrl = `https://wa.me/${parseWhatsappTarget()}?text=${text}`;
-    const popup = window.open(waUrl, "_blank", "noopener,noreferrer");
-    if (!popup) {
-      window.location.href = waUrl;
-    }
-
-    bookingModal.close("confirm");
-    form.reset();
-  });
-}
-
 function wireFooterSongExperience() {
   const playerRoot = $("[data-footer-spotify-player]");
   const songModal = $("[data-footer-song-modal]");
@@ -309,13 +233,6 @@ function wireFooterSongExperience() {
     songModal.addEventListener("click", (e) => {
       if (e.target === songModal) songModal.close("cancel");
     });
-    const bookingBtn = $("[data-footer-song-booking]", songModal);
-    if (bookingBtn) {
-      bookingBtn.addEventListener("click", () => {
-        songModal.close("booking");
-        openBooking();
-      });
-    }
   }
 
   const renderIframeFallback = () => {
@@ -1276,7 +1193,6 @@ setScrolledHeader();
 setHeroMetaPillsRevealed();
 initHeroTagsMobileRotator();
 wireMenu();
-wireBooking();
 wireFooterSongExperience();
 wireProcessSteps();
 wireAccordionSingleOpen();

@@ -5501,74 +5501,12 @@ a.button-primary:active {
   font-size: 22px;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.field {
-  display: grid;
-  gap: 6px;
-}
-
-.field span {
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 400;
-}
-
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(20, 28, 22, 0.14);
-  background: rgba(255, 255, 255, 0.86);
-  outline: none;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  border-color: rgba(217, 200, 255, 0.9);
-  box-shadow: 0 0 0 4px rgba(217, 200, 255, 0.28);
-}
-
-.field-span-2 {
-  grid-column: span 2;
-}
-
 .modal-actions {
   display: flex;
   justify-content: end;
   gap: 10px;
   margin-top: 14px;
   flex-wrap: wrap;
-}
-
-[data-booking-modal] .modal-actions {
-  justify-content: center;
-}
-
-[data-booking-modal] .button.button-primary {
-  background: rgba(124, 84, 52, 0.96);
-  border: 1px solid rgba(124, 84, 52, 0.96);
-  color: rgba(255, 252, 246, 0.98);
-  border-radius: 999px;
-  padding: 10px 22px;
-  min-height: 42px;
-  font-size: 15px;
-  font-weight: 400;
-  box-shadow: 0 8px 20px rgba(124, 84, 52, 0.2);
-}
-
-[data-booking-modal] .button.button-primary:hover {
-  background: rgba(103, 68, 42, 0.98);
-  border-color: rgba(103, 68, 42, 0.98);
-  color: #fff;
 }
 
 @media (max-width: 980px) {
@@ -5805,12 +5743,6 @@ a.button-primary:active {
   .tile-tall {
     grid-column: auto;
     min-height: 190px;
-  }
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-  .field-span-2 {
-    grid-column: auto;
   }
 }
 
