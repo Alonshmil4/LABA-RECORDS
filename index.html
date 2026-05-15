@@ -12,11 +12,53 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LABA RECORDS – קורל ביסמוט</title>
+    <title>אולפן הקלטות בשרון | LABA RECORDS – קורל ביסמוט</title>
     <meta
       name="description"
-      content="LABA RECORDS – מרחב יצירה והפקה מוזיקלית של קורל ביסמוט. הפקה, עיבוד, הקלטה, עריכה ומיקס."
+      content="אולפן הקלטות במושב אודים בשרון — הפקה מוזיקלית, הקלטת שיר, עריכה ומיקס. נגיש גם ממרכז ונתניה. לקביעת סשן."
     />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:locale" content="he_IL" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="אולפן הקלטות בשרון | LABA RECORDS – קורל ביסמוט" />
+    <meta
+      property="og:description"
+      content="אולפן הקלטות במושב אודים בשרון — הפקה מוזיקלית, הקלטת שיר, עריכה ומיקס. נגיש גם ממרכז ונתניה."
+    />
+    <meta property="og:image" content="./assets/logo-clean.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "LABA RECORDS",
+        "description": "אולפן הקלטות במושב אודים בשרון — הפקה מוזיקלית, הקלטת שיר, עריכה ומיקס.",
+        "image": "./assets/logo-clean.png",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "מושב אודים",
+          "addressRegion": "השרון",
+          "addressCountry": "IL"
+        },
+        "areaServed": [
+          { "@type": "AdministrativeArea", "name": "השרון" },
+          { "@type": "AdministrativeArea", "name": "מרכז" },
+          { "@type": "City", "name": "נתניה" },
+          { "@type": "City", "name": "תל אביב" }
+        ],
+        "founder": {
+          "@type": "Person",
+          "name": "קורל ביסמוט"
+        },
+        "sameAs": [
+          "https://www.instagram.com/coralbismuth/",
+          "https://www.youtube.com/@corali1994",
+          "https://open.spotify.com/artist/4HHSTY3bNxoprZF3vJ8gLE",
+          "https://www.facebook.com/CoralBismuthPage",
+          "https://music.apple.com/il/artist/coral-bismuth/1322500040"
+        ]
+      }
+    </script>
     <meta name="theme-color" content="#f7fbf7" />
     <link rel="icon" href="./assets/logo-clean.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -37,7 +79,7 @@
       };
     </script>
     <!-- After Tailwind so site rules win over utility defaults (same cascade on Vercel + local) -->
-    <link rel="stylesheet" href="./styles.css?v=20260503b" />
+    <link rel="stylesheet" href="./styles.css?v=20260515a" />
   </head>
   <body>
     <a class="skip-link" href="#content">דלג/י לתוכן</a>
@@ -179,6 +221,16 @@
             בידיים של מישהו ולהפוך אותו לשיר.<br>
             באולפן שלי עושים את זה ביחד.
           </p>
+
+          <div class="hero-actions">
+            <button
+              class="button button-primary hero-booking-cta motion-reduce:transition-none"
+              type="button"
+              data-open-booking
+            >
+              לקביעת סשן
+            </button>
+          </div>
 
           <div class="hero-meta" data-hero-meta role="region" aria-label="שירותי האולפן">
             <ul class="hero-tags-source sr-only" data-hero-tags-source>

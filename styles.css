@@ -2521,6 +2521,19 @@ a.button-primary:active {
     margin-bottom: clamp(8px, 2.5vw, 16px);
   }
 
+  .hero-inner .hero-actions {
+    margin-top: clamp(14px, 4vw, 24px);
+    margin-bottom: clamp(10px, 3vw, 18px);
+    flex-shrink: 0;
+  }
+
+  #home .hero-booking-cta.button-primary {
+    padding: 11px 22px;
+    font-size: clamp(14px, 3.8vw, 16px);
+    min-height: 44px;
+    border-radius: 999px;
+  }
+
   .hero-inner .hero-meta {
     margin-top: 0;
     margin-bottom: clamp(10px, 2.8vw, 18px);
@@ -2642,8 +2655,43 @@ a.button-primary:active {
   justify-content: center;
 }
 
+/* Hero CTA — same palette + Fredoka as navbar «לקביעת סשן» */
+#home .hero-booking-cta.button-primary {
+  text-shadow: none;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.15;
+  white-space: nowrap;
+  background: rgba(124, 84, 52, 0.96);
+  border: 1px solid rgba(124, 84, 52, 0.96);
+  color: rgba(255, 252, 246, 0.98);
+  box-shadow: 0 8px 22px rgba(124, 84, 52, 0.32);
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+#home .hero-booking-cta.button-primary:hover {
+  transform: translateY(-2px) scale(1.03);
+  background: rgba(103, 68, 42, 0.98);
+  border-color: rgba(103, 68, 42, 0.98);
+  color: #fff;
+  box-shadow: 0 14px 32px rgba(124, 84, 52, 0.42);
+}
+
+#home .hero-booking-cta.button-primary:active {
+  transform: translateY(0) scale(1);
+}
+
+#home .hero-booking-cta.button-primary:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 3px;
+}
+
 @media (min-width: 761px) {
-  /* DOM: headlines, subtitle, meta, kicker — סדר ויזואלי: קיקר, כותרות, פסקה, תוויות */
+  /* DOM: headlines, subtitle, actions, meta, kicker — סדר ויזואלי: קיקר, כותרות, פסקה, CTA, תוויות */
   .hero-inner .kicker {
     order: 1;
     transform: translateY(-18px);
@@ -2663,16 +2711,29 @@ a.button-primary:active {
     text-align: center;
   }
 
-  /* פסקת «אני מכירה…» — מתחת ללוקיישן, לפני התוויות */
+  /* פסקת «אני מכירה…» — מתחת ללוקיישן, לפני ה-CTA והתוויות */
   .hero-inner .hero-subtitle {
     order: 3;
     margin-top: clamp(40px, 7.5vh, 104px);
     margin-bottom: 0;
   }
 
-  .hero-inner .hero-meta {
+  .hero-inner .hero-actions {
     order: 4;
-    margin-top: calc(40px + 48px);
+    margin-top: clamp(28px, 5vh, 56px);
+    margin-bottom: 0;
+  }
+
+  #home .hero-booking-cta.button-primary {
+    padding: 12px 28px;
+    font-size: clamp(14px, 1.35vw, 16px);
+    min-height: 46px;
+    border-radius: 999px;
+  }
+
+  .hero-inner .hero-meta {
+    order: 5;
+    margin-top: clamp(32px, 4.5vh, 52px);
     transform: translateY(18px);
   }
 

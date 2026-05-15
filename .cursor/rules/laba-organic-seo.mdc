@@ -1,0 +1,15 @@
+---
+description: SEO אורגני ל-LABA RECORDS — מילות מפתח בעברית, מקומי, מטא; בלי שינוי בלי אישור
+globs: index.html,admin.html,site-content.json,vercel.json,styles.css,main.js
+alwaysApply: false
+---
+
+# SEO אורגני — LABA RECORDS
+
+כשעורכים קבצים בטווח הזה, פעל לפי `.cursor/skills/laba-organic-seo/SKILL.md`.
+
+- מילות מפתח: אולפן הקלטות בשרון, במרכז, בנתניה, אולפן הקלטות, הקלטת שיר.
+- מיקום אמיתי: מושב אודים, השרון; מרכז ונתניה כאזורי שירות בלבד.
+- **אל תפגע בשום דבר באתר; אל תוסיף כלום בלי להגיד למשתמש ולקבל אישור.**
+- שמור על קול האתר; בלי keyword stuffing או הבטחות דירוג.
+- אחרי שינוי מטא או JSON-LD: `npm run build` כשיש build רלוונטי.
