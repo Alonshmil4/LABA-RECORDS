@@ -1,6 +1,29 @@
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
+/** Google Ads — פעולת המרה «שליחת טופס לפרטי לידים» (לחיצה על CTA / וואטסאפ) */
+const ADS_LEAD_CONVERSION_SEND_TO = "AW-18139227187/USLxCLDO-awcELPIuslD";
+
+function trackAdsLeadConversion() {
+  if (typeof window.gtag !== "function") return;
+  window.gtag("event", "conversion", {
+    send_to: ADS_LEAD_CONVERSION_SEND_TO,
+  });
+}
+
+function wireGoogleAdsLeadConversion() {
+  const bookingLinks = $$('a[href*="wa.me/972546345836"]');
+  bookingLinks.forEach((link) => {
+    link.addEventListener(
+      "click",
+      () => {
+        trackAdsLeadConversion();
+      },
+      { capture: true }
+    );
+  });
+}
+
 const header = $("[data-header]");
 const nav = $("[data-nav]");
 const menuBtn = $("[data-menu-button]");
@@ -1193,6 +1216,7 @@ setScrolledHeader();
 setHeroMetaPillsRevealed();
 initHeroTagsMobileRotator();
 wireMenu();
+wireGoogleAdsLeadConversion();
 wireFooterSongExperience();
 wireProcessSteps();
 wireAccordionSingleOpen();
