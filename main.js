@@ -569,18 +569,38 @@ function wireTracksCarousel() {
   const next = $("[data-tracks-next]", root);
   if (!track || !prev || !next) return;
 
+  const isDesktopPages = () => window.matchMedia("(min-width: 761px)").matches;
+
+  const getPages = () => Array.from(track.querySelectorAll(":scope > .tracks-page"));
+
   const getGap = () => {
     const raw = getComputedStyle(track).gap || "12px";
     const n = parseFloat(raw);
     return Number.isFinite(n) ? n : 12;
   };
 
-  /* One “page” = full scrollport width + flex gap (matches CSS flex + scroll-snap) */
-  const getStep = () => track.clientWidth + getGap();
+  const getActivePageIndex = (pageEls) => {
+    const x = track.scrollLeft;
+    let idx = 0;
+    pageEls.forEach((page, i) => {
+      if (page.offsetLeft <= x + 4) idx = i;
+    });
+    return idx;
+  };
 
   const scrollByStep = (dir) => {
-    const step = getStep();
-    const target = track.scrollLeft + dir * step;
+    if (isDesktopPages()) {
+      const pageEls = getPages();
+      if (pageEls.length > 1) {
+        const idx = getActivePageIndex(pageEls);
+        const nextIdx = Math.max(0, Math.min(pageEls.length - 1, idx + dir));
+        track.scrollTo({ left: pageEls[nextIdx].offsetLeft, behavior: "smooth" });
+        return;
+      }
+    }
+    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+    const step = track.clientWidth + getGap();
+    const target = Math.max(0, Math.min(maxScroll, track.scrollLeft + dir * step));
     track.scrollTo({ left: target, behavior: "smooth" });
   };
 
@@ -591,9 +611,11 @@ function wireTracksCarousel() {
     const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
     const atStart = track.scrollLeft <= 2;
     const atEnd = track.scrollLeft >= maxScroll - 2;
-    prev.classList.toggle("is-hidden", atStart);
-    prev.disabled = atStart;
-    next.disabled = atEnd;
+    const canScroll = maxScroll > 4;
+    prev.classList.toggle("is-hidden", atStart || !canScroll);
+    prev.disabled = atStart || !canScroll;
+    next.classList.toggle("is-hidden", atEnd || !canScroll);
+    next.disabled = atEnd || !canScroll;
   };
 
   track.addEventListener("scroll", sync, { passive: true });
@@ -1039,6 +1061,20 @@ function applyStoredSiteContent() {
         store[k] = value.replace(/אני בת 31,/g, "אני קורל ביסמוט, בת 31,");
         changed = true;
       });
+
+      if (
+        store["productions:tracks-headline"] === "שירים שיצאו מכאן" ||
+        store["productions:tracks-headline"] === "חלק מהשירים שייצאו מכאן"
+      ) {
+        store["productions:tracks-headline"] = "חלק מהשירים שיצאו מכאן";
+        changed = true;
+      }
+
+      const introKey = "productions:tracks-intro-body";
+      if (typeof store[introKey] === "string" && store[introKey].includes("מה הסגנון הפקה")) {
+        store[introKey] = store[introKey].replace(/מה הסגנון הפקה שלי/g, "מה סגנון ההפקה שלי");
+        changed = true;
+      }
 
       if (changed) localStorage.setItem(storageKey, JSON.stringify(store));
     };

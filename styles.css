@@ -3474,7 +3474,7 @@ a.button-primary:active {
   gap: 10px;
 }
 
-/* Productions: desktop grid; mobile becomes horizontal carousel (see max-width: 760px) */
+/* Productions: desktop paged grid carousel; mobile = single-track scroll (max-width: 760px) */
 #productions.section .tracks-carousel {
   display: block;
   width: 100%;
@@ -3488,19 +3488,172 @@ a.button-primary:active {
   display: none;
 }
 
-/* Wider cells = Spotify shows full title/artist; 2-up on most desktops, 3-up only on very wide screens */
-#productions.section .tracks {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  max-width: 920px;
-  margin-inline: auto;
-  justify-items: center;
+#productions.section .productions-playlist-cta {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+
+#productions.section .productions-playlist-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 16px;
+  font-size: clamp(13px, 1.2vw, 14px);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.94);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: 999px;
+  background: rgba(20, 28, 22, 0.12);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+  transition: transform 140ms ease, background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+#productions.section .productions-playlist-link:hover {
+  transform: translateY(-1px);
+  background: var(--btn-fill);
+  border-color: var(--btn-fill);
+  color: var(--btn-ink);
+  text-shadow: none;
+}
+
+@media (min-width: 761px) {
+  #productions.section .tracks-carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: min(1180px, 100%);
+    margin-inline: auto;
+  }
+
+  #productions.section .tracks-carousel > .tracks-viewport {
+    order: 1;
+    width: 100%;
+  }
+
+  #productions.section .tracks-carousel-foot {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  #productions.section .tracks-carousel-top {
+    display: flex;
+    flex-direction: row;
+    direction: ltr;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  #productions.section .tracks-carousel-nav {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    border: 1px solid var(--btn-outline);
+    background: transparent;
+    color: var(--btn-outline);
+    font-size: 19px;
+    line-height: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0 var(--circle-chevron-pad-bottom) 0;
+    transition: transform 140ms ease, background 160ms ease, border-color 160ms ease, color 160ms ease;
+    box-shadow: 0 6px 14px rgba(0, 43, 73, 0.2);
+  }
+
+  #productions.section .tracks-carousel-nav:hover {
+    background: var(--btn-fill);
+    border-color: var(--btn-fill);
+    color: var(--btn-ink);
+  }
+
+  #productions.section .tracks-carousel-nav.is-hidden {
+    display: none;
+  }
+
+  #productions.section .tracks-carousel-hint {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.94);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  #productions.section .tracks-viewport {
+    overflow: hidden;
+    width: 100%;
+    max-width: 920px;
+    margin-inline: auto;
+  }
+
+  #productions.section .tracks-pages {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    direction: ltr;
+  }
+
+  #productions.section .tracks-pages::-webkit-scrollbar {
+    display: none;
+  }
+
+  #productions.section .tracks-page {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    justify-items: center;
+    box-sizing: border-box;
+  }
+
+  #productions.section .tracks-page--more {
+    align-content: start;
+  }
+
+  #productions.section .tracks-page .track {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  #productions.section .tracks-carousel-foot .productions-playlist-cta {
+    margin: 0;
+  }
 }
 
 @media (min-width: 1320px) {
-  #productions.section .tracks {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  #productions.section .tracks-viewport {
     max-width: 1180px;
+  }
+
+  #productions.section .tracks-page {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 14px;
   }
 }
@@ -3899,23 +4052,47 @@ a.button-primary:active {
     direction: ltr;
   }
 
-  #productions.section .tracks-carousel > .tracks {
+  #productions.section .tracks-carousel-foot .productions-playlist-cta {
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #productions.section .tracks-carousel > .tracks-viewport {
     order: 1;
     width: 100%;
     min-width: 0;
   }
 
-  #productions.section .tracks-carousel-top {
+  #productions.section .tracks-carousel-foot {
     order: 2;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 4px;
+    margin-bottom: 0;
+  }
+
+  #productions.section .tracks-page {
+    display: contents;
+  }
+
+  #productions.section .tracks-viewport {
+    overflow: visible;
+    max-width: none;
+  }
+
+  #productions.section .tracks-carousel-top {
+    display: flex;
     flex-direction: row;
+    direction: ltr;
     align-items: center;
     justify-content: center;
     gap: 10px;
     width: 100%;
     flex-wrap: wrap;
-    margin-top: 4px;
-    margin-bottom: 0;
   }
 
   #productions.section .tracks-carousel-hint {
@@ -3959,9 +4136,7 @@ a.button-primary:active {
   }
 
   #productions.section .tracks-carousel-nav.is-hidden {
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
+    display: none;
   }
 
   #productions.section .tracks {

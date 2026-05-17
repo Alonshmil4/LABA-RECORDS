@@ -80,7 +80,7 @@
       };
     </script>
     <!-- After Tailwind so site rules win over utility defaults (same cascade on Vercel + local) -->
-    <link rel="stylesheet" href="./styles.css?v=20260515d" />
+    <link rel="stylesheet" href="./styles.css?v=20260515i" />
   </head>
   <body>
     <a class="skip-link" href="#content">דלג/י לתוכן</a>
@@ -305,17 +305,14 @@
         </div>
         <div class="container productions-content">
           <div class="section-head">
-            <h2 class="section-title" data-admin-key="tracks-headline">שירים שיצאו מכאן</h2>
+            <h2 class="section-title" data-admin-key="tracks-headline">חלק מהשירים שיצאו מכאן</h2>
           </div>
 
           <div class="split-two">
-            <div class="tracks-carousel" data-tracks-carousel aria-label="שירים שיצאו מכאן">
-              <div class="tracks-carousel-top">
-                <button class="tracks-carousel-nav" type="button" data-tracks-prev aria-label="שיר קודם">‹</button>
-                <span class="tracks-carousel-hint" aria-hidden="true">לשיר הבא</span>
-                <button class="tracks-carousel-nav" type="button" data-tracks-next aria-label="שיר הבא">›</button>
-              </div>
-              <div class="tracks" data-tracks-track>
+            <div class="tracks-carousel" data-tracks-carousel aria-label="חלק מהשירים שיצאו מכאן">
+              <div class="tracks-viewport">
+                <div class="tracks tracks-pages" data-tracks-track>
+                  <div class="tracks-page">
               <article class="track">
                 <div class="track-cover" aria-label="נגן Spotify לשיר לא בשליטתי">
                   <iframe
@@ -355,43 +352,13 @@
                   </a>
                 </div>
               </article>
-              <article class="track">
-                <div class="track-cover" aria-label="נגן Spotify לשיר רגיעה מנטלית">
-                  <iframe
-                    src="https://open.spotify.com/embed/track/4Pc1nn7R95MOtSk7oLXqIY?utm_source=generator&theme=0"
-                    width="100%"
-                    height="260"
-                    frameborder="0"
-                    allowfullscreen=""
-                    loading="lazy"
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    title="עילי כהן - רגיעה מנטלית"
-                  ></iframe>
+                            <article class="track">
+                <div class="track-cover" aria-label="נגן Spotify לשיר אחרת">
+                  <iframe src="https://open.spotify.com/embed/track/1NYav7rgtPdJwvVkqI7TFc?utm_source=generator&theme=0" width="100%" height="260" frameborder="0" allowfullscreen="" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="עילי כהן, Bisley - אחרת"></iframe>
                 </div>
                 <div class="track-actions">
-                  <a
-                    class="track-icon-btn track-icon-btn--youtube"
-                    href="https://www.youtube.com/watch?v=2nS4t2ynwRk&list=RD2nS4t2ynwRk&start_radio=1"
-                    target="_blank"
-                    rel="noopener"
-                    aria-label="YouTube"
-                  >
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.9 3.6 12 3.6 12 3.6s-7.9 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.5.5 9.4.5 9.4.5s7.9 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.5 31.5 0 0 0 .5-5.8 31.5 31.5 0 0 0-.5-5.8zM9.6 15.5v-7l6.4 3.5-6.4 3.5z"/></svg>
-                  </a>
-                  <a
-                    class="track-icon-btn track-icon-btn--apple"
-                    href="https://music.apple.com/il/song/%D7%A8%D7%92%D7%99%D7%A2%D7%94-%D7%9E%D7%A0%D7%98%D7%9C%D7%99%D7%AA/1835704143"
-                    target="_blank"
-                    rel="noopener"
-                    aria-label="Apple Music"
-                  >
-                    <svg class="apple-music-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                      <path
-                        fill="currentColor"
-                        d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258c.762-1.109.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"
-                      />
-                    </svg>
-                  </a>
+                  <a class="track-icon-btn track-icon-btn--youtube" href="https://youtu.be/GCpAtYYkYrc?si=NCqONpCyVmET74-p" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.9 3.6 12 3.6 12 3.6s-7.9 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.5.5 9.4.5 9.4.5s7.9 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.5 31.5 0 0 0 .5-5.8 31.5 31.5 0 0 0-.5-5.8zM9.6 15.5v-7l6.4 3.5-6.4 3.5z"/></svg></a>
+                  <a class="track-icon-btn track-icon-btn--apple" href="https://music.apple.com/il/song/%D7%90%D7%97%D7%A8%D7%AA-feat-bisley/6764195021" target="_blank" rel="noopener noreferrer" aria-label="Apple Music"><svg class="apple-music-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258c.762-1.109.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"/></svg></a>
                 </div>
               </article>
               <article class="track">
@@ -541,8 +508,69 @@
                   </a>
                 </div>
               </article>
+                  </div>
+                  <div class="tracks-page tracks-page--more">
+              <article class="track">
+                <div class="track-cover" aria-label="נגן Spotify לשיר רגיעה מנטלית">
+                  <iframe
+                    src="https://open.spotify.com/embed/track/4Pc1nn7R95MOtSk7oLXqIY?utm_source=generator&theme=0"
+                    width="100%"
+                    height="260"
+                    frameborder="0"
+                    allowfullscreen=""
+                    loading="lazy"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    title="עילי כהן - רגיעה מנטלית"
+                  ></iframe>
+                </div>
+                <div class="track-actions">
+                  <a
+                    class="track-icon-btn track-icon-btn--youtube"
+                    href="https://www.youtube.com/watch?v=2nS4t2ynwRk&list=RD2nS4t2ynwRk&start_radio=1"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="YouTube"
+                  >
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.9 3.6 12 3.6 12 3.6s-7.9 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.5.5 9.4.5 9.4.5s7.9 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.5 31.5 0 0 0 .5-5.8 31.5 31.5 0 0 0-.5-5.8zM9.6 15.5v-7l6.4 3.5-6.4 3.5z"/></svg>
+                  </a>
+                  <a
+                    class="track-icon-btn track-icon-btn--apple"
+                    href="https://music.apple.com/il/song/%D7%A8%D7%92%D7%99%D7%A2%D7%94-%D7%9E%D7%A0%D7%98%D7%9C%D7%99%D7%AA/1835704143"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Apple Music"
+                  >
+                    <svg class="apple-music-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                      <path
+                        fill="currentColor"
+                        d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258c.762-1.109.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+              <article class="track">
+                <div class="track-cover" aria-label="נגן Spotify לשיר קחי לך רגע">
+                  <iframe src="https://open.spotify.com/embed/track/10VGvKh4EkSxStrmV2hZUp?utm_source=generator&theme=0" width="100%" height="260" frameborder="0" allowfullscreen="" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="SHAYA - קחי לך רגע"></iframe>
+                </div>
+                <div class="track-actions">
+                  <a class="track-icon-btn track-icon-btn--youtube" href="https://youtu.be/Leq7_qz1of0?si=920ncun4xu14nVwy" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.9 3.6 12 3.6 12 3.6s-7.9 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.5.5 9.4.5 9.4.5s7.9 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.5 31.5 0 0 0 .5-5.8 31.5 31.5 0 0 0-.5-5.8zM9.6 15.5v-7l6.4 3.5-6.4 3.5z"/></svg></a>
+                  <a class="track-icon-btn track-icon-btn--apple" href="https://music.apple.com/il/song/%D7%A7%D7%97%D7%99-%D7%9C%D7%9A-%D7%A8%D7%92%D7%A2/1849415605" target="_blank" rel="noopener noreferrer" aria-label="Apple Music"><svg class="apple-music-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258c.762-1.109.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"/></svg></a>
+                </div>
+              </article>
+                  </div>
+                </div>
               </div>
-            </div>
+              <div class="tracks-carousel-foot">
+                <div class="tracks-carousel-top">
+                  <button class="tracks-carousel-nav" type="button" data-tracks-prev aria-label="עמוד קודם">‹</button>
+                  <span class="tracks-carousel-hint" aria-hidden="true">עוד שירים</span>
+                  <button class="tracks-carousel-nav" type="button" data-tracks-next aria-label="עמוד הבא">›</button>
+                </div>
+                <p class="productions-playlist-cta">
+                  <a class="productions-playlist-link" href="https://open.spotify.com/playlist/28RD0QLZl3wOxRNyB9o1RW?si=0adbb4c4fb314a04" target="_blank" rel="noopener noreferrer">לכל השירים</a>
+                </p>
+              </div>
           </div>
 
           <div class="section-subtitle-stack">
@@ -551,7 +579,7 @@
               dir="rtl"
               data-admin-key="tracks-intro-body"
             >
-תכלס קשה לי להגדיר מה הסגנון הפקה שלי כששואלים אותי. גם אחרי המון שירים שהפקתי.
+תכלס קשה לי להגדיר מה סגנון ההפקה שלי כששואלים אותי. גם אחרי המון שירים שהפקתי.
 
 כל שיר מאחוריו עולם, מאחוריו לב. ובזה אני מתמקדת. איך אני יכולה לעטוף הכי מדוייק ונכון את הלב הזה בכלים שיש לי.
 
