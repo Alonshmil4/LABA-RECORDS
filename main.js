@@ -423,11 +423,25 @@ function wireStudioStoriesCarousel() {
     return Math.min(slides.length - 1, Math.max(0, Math.round(track.scrollLeft / w)));
   };
 
+  const syncStoryVideos = () => {
+    const i = nearestIndex();
+    slides.forEach((slide, idx) => {
+      const video = slide.querySelector("video");
+      if (!video) return;
+      if (idx === i) {
+        void video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  };
+
   const sync = () => {
     const i = nearestIndex();
     dots.forEach((d, idx) => d.classList.toggle("is-active", idx === i));
     prev.disabled = i <= 0;
     next.disabled = i >= slides.length - 1;
+    syncStoryVideos();
   };
 
   prev.addEventListener("click", () => {

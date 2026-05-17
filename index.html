@@ -83,7 +83,7 @@
     <link rel="preload" as="video" href="/assets/hero.mp4" type="video/mp4" media="(min-width: 761px)" fetchpriority="high" />
     <link rel="preload" as="video" href="/assets/hero-mobile.mp4" type="video/mp4" media="(max-width: 760px)" fetchpriority="high" />
     <link rel="preload" as="image" href="/assets/hero-poster.jpg" fetchpriority="high" />
-    <link rel="stylesheet" href="./styles.css?v=20260515n" />
+    <link rel="stylesheet" href="./styles.css?v=20260515o" />
   </head>
   <body>
     <a class="skip-link" href="#content">דלג/י לתוכן</a>
@@ -1112,25 +1112,48 @@
               <article class="story-slide" dir="rtl">
                 <div class="story-phone">
                   <div class="story-phone__bars" aria-hidden="true">
-                    <span class="is-active"></span><span></span>
+                    <span class="is-active"></span><span></span><span></span>
                   </div>
                   <div class="story-phone__head">
                     <span class="story-phone__avatar">CB</span>
                     <a class="story-phone__name" href="https://www.instagram.com/coralbismuth/" target="_blank" rel="noopener noreferrer">coralbismuth - LABA RECORDS</a>
                   </div>
-                  <img src="./assets/gallery-10.png" alt="אולפן הקלטות בטבע - לבה רקורדס אודים" loading="lazy" />
+                  <video
+                    class="story-phone__media"
+                    src="./assets/gallery-linkedin.mp4"
+                    poster="./assets/gallery-linkedin-poster.jpg"
+                    muted
+                    playsinline
+                    webkit-playsinline
+                    loop
+                    autoplay
+                    preload="auto"
+                    aria-label="סרטון מהאולפן - לבה רקורדס"
+                  ></video>
                 </div>
               </article>
               <article class="story-slide" dir="rtl">
                 <div class="story-phone">
                   <div class="story-phone__bars" aria-hidden="true">
-                    <span></span><span class="is-active"></span>
+                    <span></span><span class="is-active"></span><span></span>
                   </div>
                   <div class="story-phone__head">
                     <span class="story-phone__avatar">CB</span>
                     <a class="story-phone__name" href="https://www.instagram.com/coralbismuth/" target="_blank" rel="noopener noreferrer">coralbismuth - LABA RECORDS</a>
                   </div>
-                  <img src="./assets/gallery-08.png" alt="אולפן הקלטות בטבע - לבה רקורדס אודים" loading="lazy" />
+                  <img class="story-phone__media" src="./assets/gallery-10.png" alt="אולפן הקלטות בטבע - לבה רקורדס אודים" loading="lazy" />
+                </div>
+              </article>
+              <article class="story-slide" dir="rtl">
+                <div class="story-phone">
+                  <div class="story-phone__bars" aria-hidden="true">
+                    <span></span><span></span><span class="is-active"></span>
+                  </div>
+                  <div class="story-phone__head">
+                    <span class="story-phone__avatar">CB</span>
+                    <a class="story-phone__name" href="https://www.instagram.com/coralbismuth/" target="_blank" rel="noopener noreferrer">coralbismuth - LABA RECORDS</a>
+                  </div>
+                  <img class="story-phone__media" src="./assets/gallery-08.png" alt="אולפן הקלטות בטבע - לבה רקורדס אודים" loading="lazy" />
                 </div>
               </article>
             </div>
@@ -1140,6 +1163,19 @@
           <div class="gallery-carousel" data-gallery-carousel aria-label="גלריה">
             <button class="carousel-nav prev" type="button" data-carousel-prev aria-label="תמונה קודמת">‹</button>
             <div class="carousel-track" data-carousel-track>
+              <figure class="carousel-slide carousel-slide--video">
+                <video
+                  src="./assets/gallery-linkedin.mp4"
+                  poster="./assets/gallery-linkedin-poster.jpg"
+                  muted
+                  playsinline
+                  webkit-playsinline
+                  loop
+                  autoplay
+                  preload="metadata"
+                  aria-label="סרטון מהאולפן - לבה רקורדס"
+                ></video>
+              </figure>
               <figure class="carousel-slide">
                 <img src="./assets/gallery-02.png" alt="אולפן הקלטות בטבע - לבה רקורדס אודים" loading="lazy" />
               </figure>
