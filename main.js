@@ -499,6 +499,8 @@ function wireTestimonialsCarousel() {
   const next = $("[data-testimonials-next]", root);
   if (!track || !prev || !next) return;
 
+  const isDesktopPages = () => window.matchMedia("(min-width: 761px)").matches;
+  const getPages = () => Array.from(track.querySelectorAll(":scope > .testimonials-page"));
   const slides = () => $$(".testimonials-slide", track);
 
   const getGap = () => {
@@ -516,6 +518,15 @@ function wireTestimonialsCarousel() {
       left += list[k].offsetWidth + gap;
     }
     return left;
+  };
+
+  const getActivePageIndex = (pageEls) => {
+    const x = track.scrollLeft;
+    let idx = 0;
+    pageEls.forEach((page, i) => {
+      if (page.offsetLeft <= x + 4) idx = i;
+    });
+    return idx;
   };
 
   const nearestIndexFromScroll = () => {
@@ -543,13 +554,34 @@ function wireTestimonialsCarousel() {
     track.scrollTo({ left: scrollLeftForIndex(i), behavior });
   };
 
-  prev.addEventListener("click", () => scrollToIndex(index - 1));
-  next.addEventListener("click", () => scrollToIndex(index + 1));
+  const scrollByStep = (dir) => {
+    if (isDesktopPages()) {
+      const pageEls = getPages();
+      if (pageEls.length > 1) {
+        const idx = getActivePageIndex(pageEls);
+        const nextIdx = Math.max(0, Math.min(pageEls.length - 1, idx + dir));
+        index = nextIdx;
+        track.scrollTo({ left: pageEls[nextIdx].offsetLeft, behavior: "smooth" });
+        return;
+      }
+    }
+    scrollToIndex(index + dir);
+  };
+
+  prev.addEventListener("click", () => scrollByStep(-1));
+  next.addEventListener("click", () => scrollByStep(1));
 
   track.addEventListener(
     "scroll",
     () => {
       window.requestAnimationFrame(() => {
+        if (isDesktopPages()) {
+          const pageEls = getPages();
+          if (pageEls.length > 1) {
+            index = getActivePageIndex(pageEls);
+            return;
+          }
+        }
         index = nearestIndexFromScroll();
       });
     },
@@ -557,6 +589,13 @@ function wireTestimonialsCarousel() {
   );
 
   window.addEventListener("resize", () => {
+    if (isDesktopPages()) {
+      const pageEls = getPages();
+      if (pageEls.length > 1 && pageEls[index]) {
+        track.scrollTo({ left: pageEls[index].offsetLeft, behavior: "auto" });
+        return;
+      }
+    }
     scrollToIndex(index, "auto");
   });
 }
@@ -877,7 +916,12 @@ function tryPlayVideo(v) {
   if (p && typeof p.catch === "function") p.catch(() => {});
 }
 
-/** Hero: metadata preload + programmatic play (HTML autoplay alone is flaky on iOS). */
+function markVideoPlaying(v) {
+  if (!v) return;
+  v.classList.add("is-playing");
+}
+
+/** Hero: preload + programmatic play (HTML autoplay alone is flaky on iOS). */
 function wireHeroBackgroundVideo() {
   const v = document.querySelector(".hero-video");
   if (!v) return;
@@ -886,11 +930,14 @@ function wireHeroBackgroundVideo() {
   try {
     v.load();
   } catch (_) {}
-  const run = () => tryPlayVideo(v);
+  const run = () => {
+    tryPlayVideo(v);
+    if (!v.paused) markVideoPlaying(v);
+  };
   v.addEventListener("loadeddata", run);
   v.addEventListener("canplay", run);
   v.addEventListener("canplaythrough", run);
-  v.addEventListener("playing", run);
+  v.addEventListener("playing", () => markVideoPlaying(v));
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") run();
   });
@@ -908,8 +955,30 @@ function wireGestureUnlockBackgroundVideos() {
   window.addEventListener("touchstart", warm, { capture: true, once: true, passive: true });
 }
 
+/** Buffer all section background clips as soon as the page loads (parallel to hero). */
+function wireWarmBackgroundVideos() {
+  const deferred = $$("video[data-defer-bg-video]");
+  if (!deferred.length) return;
+
+  const warm = () => {
+    deferred.forEach((video) => {
+      if (video.dataset.bgBuffered === "1") return;
+      video.dataset.bgBuffered = "1";
+      ensureMutedBackgroundVideo(video);
+      video.preload = "auto";
+      try {
+        video.load();
+      } catch (_) {}
+    });
+  };
+
+  /* Start immediately — do not wait for hero; posters cover the gap until canplay. */
+  warm();
+  requestAnimationFrame(warm);
+}
+
 /**
- * Sections below the hero: preload="none" until near viewport, then load + play.
+ * Section backgrounds: poster + early buffer; play when near viewport.
  * Pauses when far off-screen to avoid parallel decode on slow mobile.
  */
 function wireDeferredBackgroundVideos() {
@@ -920,13 +989,21 @@ function wireDeferredBackgroundVideos() {
 
   function primeAndPlay(video) {
     ensureMutedBackgroundVideo(video);
-    if (video.preload === "none") video.preload = "metadata";
-    try {
-      video.load();
-    } catch (_) {}
-    tryPlayVideo(video);
-    video.addEventListener("loadeddata", () => tryPlayVideo(video), { once: true });
-    video.addEventListener("canplay", () => tryPlayVideo(video), { once: true });
+    if (video.dataset.bgBuffered !== "1") {
+      video.preload = "auto";
+      try {
+        video.load();
+      } catch (_) {}
+      video.dataset.bgBuffered = "1";
+    }
+    const play = () => {
+      tryPlayVideo(video);
+      if (!video.paused) markVideoPlaying(video);
+    };
+    play();
+    video.addEventListener("loadeddata", play, { once: true });
+    video.addEventListener("canplay", play, { once: true });
+    video.addEventListener("playing", () => markVideoPlaying(video), { once: true });
   }
 
   if (reduceMotion || !("IntersectionObserver" in window)) {
@@ -952,7 +1029,7 @@ function wireDeferredBackgroundVideos() {
           if (v.dataset.bgPrimed === "1" && !v.paused) v.pause();
         });
       },
-      { root: null, rootMargin: "320px 0px 200px 0px", threshold: 0.01 }
+      { root: null, rootMargin: "480px 0px 280px 0px", threshold: 0.01 }
     );
     io.observe(video);
   });
@@ -1268,6 +1345,7 @@ wireAboutMobileMoreToggle();
 wireAboutMobileBook();
 wireHeroBackgroundVideo();
 wireGestureUnlockBackgroundVideos();
+wireWarmBackgroundVideos();
 wireDeferredBackgroundVideos();
 applyStoredSiteContent();
 

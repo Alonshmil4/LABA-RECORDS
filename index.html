@@ -80,7 +80,10 @@
       };
     </script>
     <!-- After Tailwind so site rules win over utility defaults (same cascade on Vercel + local) -->
-    <link rel="stylesheet" href="./styles.css?v=20260515i" />
+    <link rel="preload" as="video" href="/assets/hero.mp4" type="video/mp4" media="(min-width: 761px)" fetchpriority="high" />
+    <link rel="preload" as="video" href="/assets/hero-mobile.mp4" type="video/mp4" media="(max-width: 760px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="/assets/hero-poster.jpg" fetchpriority="high" />
+    <link rel="stylesheet" href="./styles.css?v=20260515n" />
   </head>
   <body>
     <a class="skip-link" href="#content">דלג/י לתוכן</a>
@@ -197,6 +200,7 @@
             playsinline
             webkit-playsinline
             preload="auto"
+            poster="./assets/hero-poster.jpg"
             data-hero-bg-video
             aria-hidden="true"
           >
@@ -290,7 +294,8 @@
             muted
             loop
             playsinline
-            preload="none"
+            preload="metadata"
+            poster="./assets/productions-bg-poster.jpg"
             data-defer-bg-video
             aria-hidden="true"
           >
@@ -613,7 +618,8 @@
               muted
               loop
               playsinline
-              preload="none"
+              preload="metadata"
+              poster="./assets/about-desktop-video-project-20-v2-poster.jpg"
               data-defer-bg-video
               aria-hidden="true"
             >
@@ -761,7 +767,8 @@
             muted
             loop
             playsinline
-            preload="none"
+            preload="metadata"
+            poster="./assets/testimonials-bg-poster.jpg"
             data-defer-bg-video
             aria-hidden="true"
           >
@@ -777,11 +784,11 @@
           <div class="testimonials-carousel" data-testimonials-carousel aria-label="קרוסלת המלצות">
             <button class="carousel-nav-v" type="button" data-testimonials-prev aria-label="המלצה קודמת">‹</button>
             <div class="testimonials-track" data-testimonials-track>
+              <div class="testimonials-page">
               <div class="testimonials-slide">
                 <figure class="planter-card planter-1" dir="rtl">
                   <blockquote class="planter-quote">
-                    קורל מפיקה נדירה יוצרת מדהימה עם מלא נשמה וכישרון מיוחד מנגנת כמעט על כל הכלים הפקה איתה באולפן זו חוויה קוסמית על אמת גם בגלל הבן אדם שהיא ישר מרגישים איתה בבית משרה רוגע ואוירה מיוחדת,<br /><br />
-                    וגם האולפן שלה הוא פיסת גן עדן ואין מקום יותר כיף ליצור בו היא מפיקה בהמון רגישות והקשבה ודיוק ליצירה ויוצרת פלאים
+                    קורל מפיקה נדירה יוצרת מדהימה עם מלא נשמה וכישרון מיוחד מנגנת כמעט על כל הכלים הפקה איתה באולפן זו חוויה קוסמית על אמת גם בגלל הבן אדם שהיא ישר מרגישים איתה בבית משרה רוגע ואוירה מיוחדת, וגם האולפן שלה הוא פיסת גן עדן ואין מקום יותר כיף ליצור בו היא מפיקה בהמון רגישות והקשבה ודיוק ליצירה ויוצרת פלאים
                   </blockquote>
                   <figcaption class="planter-by">— טוהר גדסי</figcaption>
                 </figure>
@@ -799,6 +806,19 @@
                   </blockquote>
                   <figcaption class="planter-by">— יניב הכט, הפיק EP</figcaption>
                 </figure>
+              </div>
+              </div>
+              <div class="testimonials-page testimonials-page--more">
+                <div class="testimonials-slide">
+                  <figure class="planter-card planter-4" dir="rtl">
+                    <blockquote class="planter-quote">
+                      לעבוד באולפן עם יוצרת שהיא מפיקה שתהפוך לחברה הכי טובה של השירים שלכם. שילוב נדיר בין יצירתיות, גמישות ומישהי שיודעת להקשיב לעומק הלב שלך.
+                    </blockquote>
+                    <figcaption class="planter-by">— אסף שנהב, הפיק EP</figcaption>
+                  </figure>
+                </div>
+                <div class="testimonials-slide testimonials-slide--empty" aria-hidden="true"></div>
+                <div class="testimonials-slide testimonials-slide--empty" aria-hidden="true"></div>
               </div>
             </div>
             <button class="carousel-nav-v" type="button" data-testimonials-next aria-label="המלצה הבאה">›</button>
@@ -823,7 +843,8 @@
             muted
             loop
             playsinline
-            preload="none"
+            preload="metadata"
+            poster="./assets/matana-bg-2-poster.jpg"
             data-defer-bg-video
             aria-hidden="true"
           >
@@ -1000,7 +1021,8 @@
             muted
             loop
             playsinline
-            preload="none"
+            preload="metadata"
+            poster="./assets/faq-bg-poster.jpg"
             data-defer-bg-video
             aria-hidden="true"
           >

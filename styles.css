@@ -1457,8 +1457,14 @@ a.button-primary:active {
 }
 
 .hero-video-fallback {
+  opacity: 1;
+  transition: opacity 220ms ease;
+  z-index: 1;
+}
+
+.hero-video.is-playing + .hero-video-fallback {
   opacity: 0;
-  transition: opacity 180ms ease;
+  pointer-events: none;
 }
 
 .hero-video-fallback__img {
@@ -1471,6 +1477,10 @@ a.button-primary:active {
 
 .hero-media.no-video .hero-video-fallback {
   opacity: 1;
+}
+
+.hero-video {
+  z-index: 0;
 }
 
 /* Mobile: single full-bleed hero clip (dedicated vertical asset) */
@@ -2249,6 +2259,8 @@ a.button-primary:active {
   gap: 8px;
   max-width: min(980px, 100%);
   margin-inline: auto;
+  /* LTR: ‹ שמאל = גלילה שמאלה, › ימין = גלילה ימינה (לא להפוך ב-RTL של הדף) */
+  direction: ltr;
 }
 
 #testimonials.section .testimonials-track {
@@ -2268,6 +2280,15 @@ a.button-primary:active {
   /* LTR: סדר פריטי הגלילה + scrollLeft עקביים; התוכן בתוך כל כרטיס — RTL */
   direction: ltr;
   -webkit-overflow-scrolling: touch;
+}
+
+#testimonials.section .testimonials-page {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: inherit;
+  box-sizing: border-box;
 }
 
 #testimonials.section .testimonials-slide {
@@ -2350,9 +2371,20 @@ a.button-primary:active {
     padding: 4px 6px 10px;
   }
 
+  #testimonials.section .testimonials-page {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    gap: 10px;
+  }
+
   #testimonials.section .testimonials-slide {
     flex: 0 0 calc((100% - 20px) / 3);
     max-width: calc((100% - 20px) / 3);
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
   }
 
   #testimonials.section .planter-card {
@@ -2418,6 +2450,14 @@ a.button-primary:active {
   }
 
   /* מובייל: כרטיס אחד ברוחב המסך — בלי עמודות צרות וציטוט ענק */
+  #testimonials.section .testimonials-page {
+    display: contents;
+  }
+
+  #testimonials.section .testimonials-slide--empty {
+    display: none;
+  }
+
   #testimonials.section .testimonials-track {
     max-height: none;
     overflow-y: visible;

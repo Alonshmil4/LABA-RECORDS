@@ -7,6 +7,7 @@
   "scripts": {
     "build": "node scripts/verify-build.mjs",
     "videos:encode-help": "node scripts/encode-bg-videos.mjs",
+    "videos:optimize": "node scripts/optimize-bg-video.mjs hero hero-mobile productions-bg productions-bg-mobile yam-about-mobile about-desktop-video-project-20-v2 testimonials-bg matana-bg-2 faq-bg",
     "admin:extract": "node scripts/extract-site-content.mjs",
     "admin:apply": "node scripts/apply-site-content.mjs",
     "start": "node scripts/dev-server.mjs",
@@ -23,6 +24,7 @@
     "sharp": "^0.34.5"
   },
   "devDependencies": {
-    "cheerio": "^1.0.0-rc.12"
+    "cheerio": "^1.0.0-rc.12",
+    "ffmpeg-static": "^5.3.0"
   }
 }
