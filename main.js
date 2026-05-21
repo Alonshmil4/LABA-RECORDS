@@ -423,15 +423,26 @@ function wireStudioStoriesCarousel() {
     return Math.min(slides.length - 1, Math.max(0, Math.round(track.scrollLeft / w)));
   };
 
+  slides.forEach((slide) => {
+    const video = slide.querySelector("video");
+    if (video && isMobileVideoMode()) video.preload = "metadata";
+  });
+
   const syncStoryVideos = () => {
     const i = nearestIndex();
     slides.forEach((slide, idx) => {
       const video = slide.querySelector("video");
       if (!video) return;
       if (idx === i) {
-        void video.play().catch(() => {});
+        if (isMobileVideoMode() && video.preload === "none") video.preload = "metadata";
+        tryPlayVideo(video);
       } else {
         video.pause();
+        if (isMobileVideoMode()) {
+          try {
+            video.currentTime = 0;
+          } catch (_) {}
+        }
       }
     });
   };
@@ -923,11 +934,68 @@ function ensureMutedBackgroundVideo(v) {
   if (!v.hasAttribute("muted")) v.setAttribute("muted", "");
 }
 
-function tryPlayVideo(v) {
+function isMobileVideoMode() {
+  return window.matchMedia("(max-width: 760px)").matches;
+}
+
+function prefersReducedData() {
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  return conn?.saveData === true;
+}
+
+/** iOS Safari: one decoder at a time — pause every other clip before play(). */
+function pauseOtherVideos(active) {
+  $$("video").forEach((other) => {
+    if (other === active || other.paused) return;
+    other.pause();
+  });
+}
+
+function tryPlayVideo(v, { exclusive = true } = {}) {
   if (!v || v.tagName !== "VIDEO") return;
   ensureMutedBackgroundVideo(v);
+  if (exclusive && isMobileVideoMode()) pauseOtherVideos(v);
   const p = v.play();
   if (p && typeof p.catch === "function") p.catch(() => {});
+}
+
+function recoverStalledVideo(v) {
+  if (!v || v.paused) return;
+  window.setTimeout(() => {
+    if (!v.paused && v.readyState < 3) {
+      try {
+        const t = v.currentTime;
+        v.load();
+        v.currentTime = t;
+      } catch (_) {}
+      tryPlayVideo(v);
+    }
+  }, 400);
+}
+
+function wireVideoStallRecovery() {
+  $$("video").forEach((v) => {
+    v.addEventListener("stalled", () => recoverStalledVideo(v));
+    v.addEventListener("waiting", () => recoverStalledVideo(v));
+  });
+}
+
+function wirePageVisibilityVideos() {
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      $$("video").forEach((v) => {
+        if (!v.paused) v.pause();
+      });
+      return;
+    }
+    const hero = document.querySelector(".hero-video");
+    if (hero && isElementInViewport(hero)) tryPlayVideo(hero);
+  });
+}
+
+function isElementInViewport(el) {
+  const r = el.getBoundingClientRect();
+  return r.bottom > 0 && r.top < window.innerHeight;
 }
 
 function markVideoPlaying(v) {
@@ -963,14 +1031,18 @@ function wireHeroBackgroundVideo() {
 /** First user gesture unblocks Safari autoplay policies for all background clips. */
 function wireGestureUnlockBackgroundVideos() {
   const warm = () => {
-    $$(".hero-video, .section-video, .about-full__bg-video").forEach(tryPlayVideo);
+    $$(".hero-video, .section-video, .about-full__bg-video, .story-phone__media, .carousel-slide video").forEach(
+      (v) => tryPlayVideo(v)
+    );
   };
   window.addEventListener("pointerdown", warm, { capture: true, once: true, passive: true });
   window.addEventListener("touchstart", warm, { capture: true, once: true, passive: true });
 }
 
-/** Buffer all section background clips as soon as the page loads (parallel to hero). */
+/** Buffer section background clips on desktop only (parallel preload overwhelms iOS). */
 function wireWarmBackgroundVideos() {
+  if (isMobileVideoMode() || prefersReducedData()) return;
+
   const deferred = $$("video[data-defer-bg-video]");
   if (!deferred.length) return;
 
@@ -986,7 +1058,6 @@ function wireWarmBackgroundVideos() {
     });
   };
 
-  /* Start immediately — do not wait for hero; posters cover the gap until canplay. */
   warm();
   requestAnimationFrame(warm);
 }
@@ -1004,7 +1075,7 @@ function wireDeferredBackgroundVideos() {
   function primeAndPlay(video) {
     ensureMutedBackgroundVideo(video);
     if (video.dataset.bgBuffered !== "1") {
-      video.preload = "auto";
+      video.preload = isMobileVideoMode() || prefersReducedData() ? "metadata" : "auto";
       try {
         video.load();
       } catch (_) {}
@@ -1043,9 +1114,36 @@ function wireDeferredBackgroundVideos() {
           if (v.dataset.bgPrimed === "1" && !v.paused) v.pause();
         });
       },
-      { root: null, rootMargin: "480px 0px 280px 0px", threshold: 0.01 }
+      {
+        root: null,
+        rootMargin: isMobileVideoMode() ? "48px 0px 48px 0px" : "480px 0px 280px 0px",
+        threshold: 0.01,
+      }
     );
     io.observe(video);
+  });
+}
+
+/** Mobile: pause hero when scrolled away so only one heavy decode runs. */
+function wireHeroVideoViewportPause() {
+  const v = document.querySelector(".hero-video");
+  const hero = document.querySelector(".hero");
+  if (!v || !hero || !("IntersectionObserver" in window)) return;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!isMobileVideoMode()) return;
+        if (e.isIntersecting) tryPlayVideo(v);
+        else v.pause();
+      });
+    },
+    { threshold: 0.12 }
+  );
+  io.observe(hero);
+
+  window.addEventListener("resize", () => {
+    if (!isMobileVideoMode() && v.paused) tryPlayVideo(v);
   });
 }
 
@@ -1358,9 +1456,12 @@ wireAboutMobileStoryExperience();
 wireAboutMobileMoreToggle();
 wireAboutMobileBook();
 wireHeroBackgroundVideo();
+wireHeroVideoViewportPause();
 wireGestureUnlockBackgroundVideos();
 wireWarmBackgroundVideos();
 wireDeferredBackgroundVideos();
+wireVideoStallRecovery();
+wirePageVisibilityVideos();
 applyStoredSiteContent();
 
 if (yearEl) yearEl.textContent = String(new Date().getFullYear());

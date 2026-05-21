@@ -204,6 +204,8 @@
             data-hero-bg-video
             aria-hidden="true"
           >
+            <source src="/assets/hero-mobile.webm" type="video/webm" media="(max-width: 760px)" />
+            <source src="/assets/hero.webm" type="video/webm" media="(min-width: 761px)" />
             <source src="/assets/hero-mobile.mp4" type="video/mp4" media="(max-width: 760px)" />
             <source src="/assets/hero.mp4" type="video/mp4" />
           </video>
@@ -299,6 +301,12 @@
             data-defer-bg-video
             aria-hidden="true"
           >
+            <source
+              src="/assets/productions-bg-mobile.webm"
+              type="video/webm"
+              media="(max-width: 760px)"
+            />
+            <source src="/assets/productions-bg.webm" type="video/webm" media="(min-width: 761px)" />
             <source
               src="/assets/productions-bg-mobile.mp4"
               type="video/mp4"
@@ -624,6 +632,16 @@
               aria-hidden="true"
             >
               <source
+                src="/assets/yam-about-mobile.webm"
+                type="video/webm"
+                media="(max-width: 760px)"
+              />
+              <source
+                src="/assets/about-desktop-video-project-20-v2.webm"
+                type="video/webm"
+                media="(min-width: 761px)"
+              />
+              <source
                 src="/assets/yam-about-mobile.mp4"
                 type="video/mp4"
                 media="(max-width: 760px)"
@@ -772,6 +790,7 @@
             data-defer-bg-video
             aria-hidden="true"
           >
+            <source src="/assets/testimonials-bg.webm" type="video/webm" />
             <source src="/assets/testimonials-bg.mp4" type="video/mp4" />
           </video>
           <div class="section-video-overlay" aria-hidden="true"></div>
@@ -848,6 +867,7 @@
             data-defer-bg-video
             aria-hidden="true"
           >
+            <source src="/assets/matana-bg-2.webm" type="video/webm" />
             <source src="/assets/matana-bg-2.mp4" type="video/mp4" />
           </video>
           <div class="section-video-overlay" aria-hidden="true"></div>
@@ -1026,6 +1046,7 @@
             data-defer-bg-video
             aria-hidden="true"
           >
+            <source src="/assets/faq-bg.webm" type="video/webm" />
             <source src="/assets/faq-bg.mp4" type="video/mp4" />
           </video>
           <div class="section-video-overlay" aria-hidden="true"></div>
@@ -1120,16 +1141,18 @@
                   </div>
                   <video
                     class="story-phone__media"
-                    src="./assets/gallery-linkedin.mp4"
                     poster="./assets/gallery-linkedin-poster.jpg"
                     muted
                     playsinline
                     webkit-playsinline
                     loop
                     autoplay
-                    preload="auto"
+                    preload="metadata"
                     aria-label="סרטון מהאולפן - לבה רקורדס"
-                  ></video>
+                  >
+                    <source src="./assets/gallery-linkedin-mobile.mp4" type="video/mp4" media="(max-width: 760px)" />
+                    <source src="./assets/gallery-linkedin.mp4" type="video/mp4" media="(min-width: 761px)" />
+                  </video>
                 </div>
               </article>
               <article class="story-slide" dir="rtl">
@@ -1165,7 +1188,6 @@
             <div class="carousel-track" data-carousel-track>
               <figure class="carousel-slide carousel-slide--video">
                 <video
-                  src="./assets/gallery-linkedin.mp4"
                   poster="./assets/gallery-linkedin-poster.jpg"
                   muted
                   playsinline
@@ -1174,7 +1196,10 @@
                   autoplay
                   preload="metadata"
                   aria-label="סרטון מהאולפן - לבה רקורדס"
-                ></video>
+                >
+                  <source src="./assets/gallery-linkedin-mobile.mp4" type="video/mp4" media="(max-width: 760px)" />
+                  <source src="./assets/gallery-linkedin.mp4" type="video/mp4" media="(min-width: 761px)" />
+                </video>
               </figure>
               <figure class="carousel-slide">
                 <img src="./assets/gallery-02.png" alt="אולפן הקלטות בטבע - לבה רקורדס אודים" loading="lazy" />
