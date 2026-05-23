@@ -80,10 +80,10 @@
       };
     </script>
     <!-- After Tailwind so site rules win over utility defaults (same cascade on Vercel + local) -->
-    <link rel="preload" as="video" href="/assets/hero.mp4" type="video/mp4" media="(min-width: 761px)" fetchpriority="high" />
+    <link rel="preload" as="video" href="/assets/hero.mp4?v=20260521fill" type="video/mp4" media="(min-width: 761px)" fetchpriority="high" />
     <link rel="preload" as="video" href="/assets/hero-mobile.mp4" type="video/mp4" media="(max-width: 760px)" fetchpriority="high" />
     <link rel="preload" as="image" href="/assets/hero-poster.jpg" fetchpriority="high" />
-    <link rel="stylesheet" href="./styles.css?v=20260515o" />
+    <link rel="stylesheet" href="./styles.css?v=20260521fill" />
   </head>
   <body>
     <a class="skip-link" href="#content">דלג/י לתוכן</a>
@@ -200,14 +200,14 @@
             playsinline
             webkit-playsinline
             preload="auto"
-            poster="./assets/hero-poster.jpg"
+            poster="./assets/hero-poster.jpg?v=20260521fill"
             data-hero-bg-video
             aria-hidden="true"
           >
             <source src="/assets/hero-mobile.mp4" type="video/mp4" media="(max-width: 760px)" />
-            <source src="/assets/hero.mp4" type="video/mp4" media="(min-width: 761px)" />
+            <source src="/assets/hero.mp4?v=20260521fill" type="video/mp4" media="(min-width: 761px)" />
             <source src="/assets/hero-mobile.webm" type="video/webm" media="(max-width: 760px)" />
-            <source src="/assets/hero.webm" type="video/webm" media="(min-width: 761px)" />
+            <source src="/assets/hero.webm?v=20260521fill" type="video/webm" media="(min-width: 761px)" />
           </video>
           <div class="hero-video-fallback">
             <img
@@ -292,11 +292,10 @@
         <div class="section-video-bg" aria-hidden="true">
           <video
             class="section-video"
-            autoplay
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="none"
             poster="./assets/productions-bg-poster.jpg"
             data-defer-bg-video
             aria-hidden="true"
@@ -622,11 +621,10 @@
         <div class="about-full__media" dir="ltr">
             <video
               class="about-full__bg-video"
-              autoplay
               muted
               loop
               playsinline
-              preload="metadata"
+              preload="none"
               poster="./assets/about-desktop-video-project-20-v2-poster.jpg"
               data-defer-bg-video
               aria-hidden="true"
@@ -785,11 +783,10 @@
         <div class="section-video-bg" aria-hidden="true">
           <video
             class="section-video"
-            autoplay
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="none"
             poster="./assets/testimonials-bg-poster.jpg"
             data-defer-bg-video
             aria-hidden="true"
@@ -862,11 +859,10 @@
         <div class="section-video-bg" aria-hidden="true">
           <video
             class="section-video"
-            autoplay
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="none"
             poster="./assets/matana-bg-2-poster.jpg"
             data-defer-bg-video
             aria-hidden="true"
@@ -1041,11 +1037,10 @@
         <div class="section-video-bg" aria-hidden="true">
           <video
             class="section-video"
-            autoplay
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="none"
             poster="./assets/faq-bg-poster.jpg"
             data-defer-bg-video
             aria-hidden="true"

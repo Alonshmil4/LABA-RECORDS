@@ -965,9 +965,9 @@ function pauseOtherVideos(active) {
   });
 }
 
-function pauseOtherDeferredBgVideos(active) {
-  $$("video[data-defer-bg-video]").forEach((other) => {
-    if (other === active || other.paused) return;
+function pauseAllBackgroundVideos(except) {
+  $$(".hero-video, video[data-defer-bg-video]").forEach((other) => {
+    if (other === except || other.paused) return;
     other.pause();
   });
 }
@@ -977,10 +977,80 @@ function tryPlayVideo(v, { exclusive = true } = {}) {
   ensureMutedBackgroundVideo(v);
   if (exclusive) {
     if (isMobileVideoMode()) pauseOtherVideos(v);
-    else if (v.hasAttribute("data-defer-bg-video")) pauseOtherDeferredBgVideos(v);
+    else if (v.classList.contains("hero-video") || v.hasAttribute("data-defer-bg-video")) {
+      pauseAllBackgroundVideos(v);
+    }
   }
   const p = v.play();
   if (p && typeof p.catch === "function") p.catch(() => {});
+}
+
+const sectionVisibility = new Map();
+let pickBackgroundVideoScheduled = false;
+
+function bufferDeferredBackgroundVideo(video) {
+  if (!video || video.dataset.bgBuffered === "1") return;
+  ensureMutedBackgroundVideo(video);
+  video.preload = prefersReducedData() ? "none" : "metadata";
+  try {
+    video.load();
+  } catch (_) {}
+  video.dataset.bgBuffered = "1";
+}
+
+function pickBackgroundVideoWinner() {
+  const hero = document.querySelector(".hero-video");
+  const heroSection = document.querySelector(".hero");
+  const deferred = $$("video[data-defer-bg-video]");
+  const heroRatio = heroSection ? sectionVisibility.get(heroSection) ?? 0 : 0;
+
+  deferred.forEach((video) => {
+    const section = video.closest("section");
+    const ratio = section ? sectionVisibility.get(section) ?? 0 : 0;
+    if (ratio > 0.04) bufferDeferredBackgroundVideo(video);
+  });
+
+  let winner = null;
+  let bestRatio = 0;
+
+  if (hero && heroRatio >= 0.38 && heroRatio >= bestRatio) {
+    winner = hero;
+    bestRatio = heroRatio;
+  }
+
+  deferred.forEach((video) => {
+    const section = video.closest("section");
+    const ratio = section ? sectionVisibility.get(section) ?? 0 : 0;
+    const minPlay = isMobileVideoMode() ? 0.42 : 0.36;
+    if (ratio >= minPlay && ratio > bestRatio) {
+      winner = video;
+      bestRatio = ratio;
+    }
+  });
+
+  pauseAllBackgroundVideos(winner);
+  if (!winner) return;
+
+  if (winner.hasAttribute("data-defer-bg-video")) bufferDeferredBackgroundVideo(winner);
+
+  const play = () => {
+    tryPlayVideo(winner, { exclusive: true });
+    if (!winner.paused) markVideoPlaying(winner);
+  };
+  if (winner.readyState >= 2) play();
+  else {
+    winner.addEventListener("loadeddata", play, { once: true });
+    winner.addEventListener("canplay", play, { once: true });
+  }
+}
+
+function scheduleBackgroundVideoPick() {
+  if (pickBackgroundVideoScheduled) return;
+  pickBackgroundVideoScheduled = true;
+  requestAnimationFrame(() => {
+    pickBackgroundVideoScheduled = false;
+    pickBackgroundVideoWinner();
+  });
 }
 
 const stallRecoveryTimers = new WeakMap();
@@ -1011,8 +1081,7 @@ function wirePageVisibilityVideos() {
       });
       return;
     }
-    const hero = document.querySelector(".hero-video");
-    if (hero && isElementInViewport(hero)) tryPlayVideo(hero);
+    scheduleBackgroundVideoPick();
   });
 }
 
@@ -1026,131 +1095,68 @@ function markVideoPlaying(v) {
   v.classList.add("is-playing");
 }
 
-/** Hero: preload + programmatic play (HTML autoplay alone is flaky on iOS). */
+/** Hero: buffer only; orchestrator picks the single visible background clip. */
 function wireHeroBackgroundVideo() {
   const v = document.querySelector(".hero-video");
   if (!v) return;
   ensureMutedBackgroundVideo(v);
-  if (v.preload !== "auto") v.preload = "auto";
+  if (!prefersReducedData()) v.preload = "auto";
   try {
     v.load();
   } catch (_) {}
-  const run = () => {
-    tryPlayVideo(v);
-    if (!v.paused) markVideoPlaying(v);
-  };
-  v.addEventListener("loadeddata", run);
-  v.addEventListener("canplay", run);
-  v.addEventListener("canplaythrough", run);
   v.addEventListener("playing", () => markVideoPlaying(v));
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") run();
-  });
-  window.addEventListener("pageshow", run);
-  requestAnimationFrame(() => requestAnimationFrame(run));
-  if (v.readyState >= 2) run();
 }
 
-/** First user gesture unblocks Safari autoplay policies for all background clips. */
+/** First user gesture unblocks Safari autoplay policies for background clips. */
 function wireGestureUnlockBackgroundVideos() {
-  const warm = () => {
-    $$(".hero-video, .section-video, .about-full__bg-video, .story-phone__media, .carousel-slide video").forEach(
-      (v) => {
-        if (v.classList.contains("hero-video") || isElementInViewport(v)) tryPlayVideo(v);
-      }
-    );
-  };
+  const warm = () => scheduleBackgroundVideoPick();
   window.addEventListener("pointerdown", warm, { capture: true, once: true, passive: true });
   window.addEventListener("touchstart", warm, { capture: true, once: true, passive: true });
 }
 
 /**
- * Section backgrounds: buffer lightly when approaching; play only when visible.
- * Pauses off-screen clips so the browser decodes one section background at a time.
+ * One background decoder at a time: hero vs section clips by section visibility.
+ * Observes whole sections (not raw video nodes) so a peek of #productions does not start decode.
  */
-function wireDeferredBackgroundVideos() {
-  const nodes = $$("video[data-defer-bg-video]");
-  if (!nodes.length) return;
-
+function wireBackgroundVideoOrchestrator() {
+  const hero = document.querySelector(".hero-video");
+  const heroSection = document.querySelector(".hero");
+  const deferred = $$("video[data-defer-bg-video]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  function bufferVideo(video) {
-    if (video.dataset.bgBuffered === "1") return;
-    ensureMutedBackgroundVideo(video);
-    video.preload = prefersReducedData() ? "none" : "metadata";
-    try {
-      video.load();
-    } catch (_) {}
-    video.dataset.bgBuffered = "1";
-  }
-
-  function playVideo(video) {
-    ensureMutedBackgroundVideo(video);
-    if (video.dataset.bgBuffered !== "1") bufferVideo(video);
-    const play = () => {
-      tryPlayVideo(video);
-      if (!video.paused) markVideoPlaying(video);
-    };
-    play();
-    video.addEventListener("loadeddata", play, { once: true });
-    video.addEventListener("canplay", play, { once: true });
-    video.addEventListener("playing", () => markVideoPlaying(video), { once: true });
-  }
-
   if (reduceMotion || !("IntersectionObserver" in window)) {
-    nodes.forEach((v) => playVideo(v));
+    if (hero) tryPlayVideo(hero, { exclusive: true });
     return;
   }
 
-  const bufferMargin = isMobileVideoMode() ? "120px 0px 120px 0px" : "200px 0px 160px 0px";
-  const playMargin = isMobileVideoMode() ? "0px 0px 0px 0px" : "0px 0px 0px 0px";
-  const playThreshold = isMobileVideoMode() ? 0.08 : 0.12;
-
-  nodes.forEach((video) => {
-    const bufferIo = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) bufferVideo(e.target);
-        });
-      },
-      { root: null, rootMargin: bufferMargin, threshold: 0 }
-    );
-    bufferIo.observe(video);
-
-    const playIo = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          const v = e.target;
-          if (!(v instanceof HTMLVideoElement)) return;
-          if (e.isIntersecting) {
-            playVideo(v);
-            return;
-          }
-          if (!v.paused) v.pause();
-        });
-      },
-      { root: null, rootMargin: playMargin, threshold: playThreshold }
-    );
-    playIo.observe(video);
+  const sections = new Set();
+  if (heroSection) sections.add(heroSection);
+  deferred.forEach((v) => {
+    const section = v.closest("section");
+    if (section) sections.add(section);
   });
-}
-
-/** Pause hero when scrolled away so decoders stay free for the visible section. */
-function wireHeroVideoViewportPause() {
-  const v = document.querySelector(".hero-video");
-  const hero = document.querySelector(".hero");
-  if (!v || !hero || !("IntersectionObserver" in window)) return;
 
   const io = new IntersectionObserver(
     (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) tryPlayVideo(v, { exclusive: isMobileVideoMode() });
-        else v.pause();
-      });
+      entries.forEach((e) => sectionVisibility.set(e.target, e.intersectionRatio));
+      scheduleBackgroundVideoPick();
     },
-    { threshold: 0.12 }
+    { threshold: [0, 0.12, 0.25, 0.38, 0.5, 0.65, 0.85, 1] }
   );
-  io.observe(hero);
+
+  sections.forEach((section) => io.observe(section));
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") scheduleBackgroundVideoPick();
+  });
+  window.addEventListener("pageshow", scheduleBackgroundVideoPick);
+
+  if (hero) {
+    hero.addEventListener("loadeddata", scheduleBackgroundVideoPick, { once: true });
+    hero.addEventListener("canplay", scheduleBackgroundVideoPick, { once: true });
+  }
+
+  scheduleBackgroundVideoPick();
 }
 
 function fetchSiteContentJsonSync() {
@@ -1462,9 +1468,8 @@ wireAboutMobileStoryExperience();
 wireAboutMobileMoreToggle();
 wireAboutMobileBook();
 wireHeroBackgroundVideo();
-wireHeroVideoViewportPause();
 wireGestureUnlockBackgroundVideos();
-wireDeferredBackgroundVideos();
+wireBackgroundVideoOrchestrator();
 wireVideoStallRecovery();
 wirePageVisibilityVideos();
 applyStoredSiteContent();

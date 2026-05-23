@@ -1439,21 +1439,26 @@ a.button-primary:active {
   position: absolute;
   inset: 0;
   z-index: 1;
+  overflow: hidden;
+  background: #0f1411;
 }
 
 .hero-video,
 .hero-video-fallback {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: auto;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate3d(-50%, -50%, 0);
 }
 
 .hero-video {
   object-fit: cover;
+  object-position: center center;
   filter: saturate(1.02) contrast(1.02);
-  transform: scale(1.22);
-  transform-origin: center;
 }
 
 .hero-video-fallback {
@@ -1468,8 +1473,10 @@ a.button-primary:active {
 }
 
 .hero-video-fallback__img {
-  width: 100%;
-  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: cover;
   object-position: center;
   display: block;
@@ -1487,25 +1494,25 @@ a.button-primary:active {
 @media (max-width: 760px) {
   .hero-video,
   .hero-video-fallback {
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
     max-width: none;
     max-height: none;
     border-radius: 0;
     box-shadow: none;
     object-fit: cover;
     object-position: center center;
+    transform: translate3d(-50%, -50%, 0);
   }
 
   .hero-video {
-    transform: scale(1.06);
-    transform-origin: center center;
     filter: saturate(1.02) contrast(1.02);
   }
 
   .hero-video-fallback {
-    transform: none;
     /* בלי תמונת hero ישנה בזמן טעינה / כשאין וידאו — רק מעבר צבע */
     background: linear-gradient(
       165deg,
@@ -1544,18 +1551,20 @@ a.button-primary:active {
 
 .section-video-bg video.section-video {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: auto;
+  width: 108%;
+  height: 108%;
+  left: 50%;
+  top: 50%;
   object-fit: cover;
-  transform: scale(1.08);
-  transform-origin: center;
+  transform: translate(-50%, -50%);
   filter: saturate(1.03) contrast(1.04) brightness(0.92);
 }
 
 /* Testimonials video framing: crop side black bars and show lower area */
 #testimonials.section .section-video-bg video.section-video {
-  transform: scale(1.22);
+  width: 122%;
+  height: 122%;
   object-position: center 60%;
 }
 
@@ -1635,8 +1644,12 @@ a.button-primary:active {
 @media (min-width: 761px) {
   #about.section .about-full__bg-video {
     /* Fill frame without side bars while keeping Coral's head in view */
-    transform: scale(1.2);
-    transform-origin: center center;
+    inset: auto;
+    width: 120%;
+    height: 120%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     object-position: 50% 40%;
   }
 
@@ -4014,8 +4027,11 @@ a.button-primary:active {
 
   /* Mobile: dedicated vertical productions clip — center framing */
   #productions.section .section-video-bg video.section-video {
-    transform: scale(1.08);
-    transform-origin: center center;
+    width: 108%;
+    height: 108%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     object-position: center center;
   }
 
