@@ -437,25 +437,102 @@ function wireStudioStoriesCarousel() {
     return Math.min(slides.length - 1, Math.max(0, Math.round(track.scrollLeft / w)));
   };
 
+  const updateStoryPlayOverlay = (video, phone) => {
+    if (!video || !phone) return;
+    const playing = !video.paused && !video.ended;
+    phone.classList.toggle("is-video-playing", playing);
+    const playBtn = phone.querySelector(".story-phone__play");
+    if (playBtn) {
+      playBtn.hidden = playing;
+      playBtn.setAttribute("aria-hidden", playing ? "true" : "false");
+    }
+  };
+
+  const isStoryControlTarget = (el) =>
+    el instanceof HTMLElement &&
+    Boolean(el.closest(".story-phone__play, .story-phone__head, a, button"));
+
+  const playStoryVideo = (slide) => {
+    const video = slide?.querySelector("video");
+    const phone = slide?.querySelector(".story-phone");
+    if (!video) return false;
+    tryPlayVideo(video);
+    updateStoryPlayOverlay(video, phone);
+    return true;
+  };
+
+  const isStoryCenterTap = (slide, clientX) => {
+    if (!slide?.querySelector("video")) return false;
+    const rect = slide.getBoundingClientRect();
+    if (!rect.width) return false;
+    const relX = (clientX - rect.left) / rect.width;
+    return relX > 0.3 && relX < 0.7;
+  };
+
   slides.forEach((slide) => {
     const video = slide.querySelector("video");
-    if (video && isMobileVideoMode()) video.preload = "metadata";
+    const phone = slide.querySelector(".story-phone");
+    const playBtn = phone?.querySelector(".story-phone__play");
+    if (!video) return;
+
+    if (isMobileVideoMode()) {
+      video.removeAttribute("autoplay");
+      video.preload = "metadata";
+      video.pause();
+      updateStoryPlayOverlay(video, phone);
+    }
+
+    const stopCarouselNav = (e) => e.stopPropagation();
+
+    video.addEventListener("pointerdown", stopCarouselNav);
+    video.addEventListener("pointerup", (e) => {
+      e.stopPropagation();
+      playStoryVideo(slide);
+    });
+    video.addEventListener("click", (e) => {
+      e.stopPropagation();
+      playStoryVideo(slide);
+    });
+
+    if (!playBtn) return;
+
+    playBtn.addEventListener("pointerdown", stopCarouselNav);
+    playBtn.addEventListener("pointerup", (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      playStoryVideo(slide);
+    });
+    playBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      playStoryVideo(slide);
+    });
+
+    ["playing", "pause", "ended"].forEach((ev) => {
+      video.addEventListener(ev, () => updateStoryPlayOverlay(video, phone));
+    });
   });
 
   const syncStoryVideos = () => {
     const i = nearestIndex();
     slides.forEach((slide, idx) => {
       const video = slide.querySelector("video");
+      const phone = slide.querySelector(".story-phone");
       if (!video) return;
       if (idx === i) {
         if (isMobileVideoMode() && video.preload === "none") video.preload = "metadata";
-        tryPlayVideo(video);
+        if (isMobileVideoMode()) {
+          updateStoryPlayOverlay(video, phone);
+        } else {
+          tryPlayVideo(video);
+        }
       } else {
         video.pause();
         if (isMobileVideoMode()) {
           try {
             video.currentTime = 0;
           } catch (_) {}
+          updateStoryPlayOverlay(video, phone);
         }
       }
     });
@@ -507,6 +584,21 @@ function wireStudioStoriesCarousel() {
     const dy = Math.abs(e.clientY - tapStartY);
     // Treat as tap only if finger didn't drag significantly.
     if (dx > 12 || dy > 12) return;
+
+    const target = e.target;
+    if (target instanceof HTMLElement) {
+      if (isStoryControlTarget(target)) return;
+      const slide = target.closest(".story-slide");
+      if (slide && target.closest("video")) {
+        playStoryVideo(slide);
+        return;
+      }
+      if (slide && isStoryCenterTap(slide, e.clientX)) {
+        playStoryVideo(slide);
+        return;
+      }
+    }
+
     const rect = track.getBoundingClientRect();
     const isRightHalf = e.clientX - rect.left > rect.width / 2;
     const i = nearestIndex();
@@ -517,7 +609,11 @@ function wireStudioStoriesCarousel() {
   slides.forEach((slide) => {
     slide.addEventListener("click", (e) => {
       const target = e.target;
-      if (target instanceof HTMLElement && target.closest("a, button")) return;
+      if (target instanceof HTMLElement && isStoryControlTarget(target)) return;
+      if (isStoryCenterTap(slide, e.clientX)) {
+        playStoryVideo(slide);
+        return;
+      }
       const rect = slide.getBoundingClientRect();
       const isRightHalf = e.clientX - rect.left > rect.width / 2;
       const i = nearestIndex();
@@ -761,27 +857,37 @@ function wireAboutMobileMoreToggle() {
   const panel = document.querySelector("#about [data-about-mobile-more]");
   if (!btn || !panel) return;
 
-  btn.addEventListener("click", () => {
-    if (btn.hidden) return;
+  let expanded = false;
 
-    panel.removeAttribute("hidden");
-    btn.setAttribute("aria-expanded", "true");
-
-    panel.querySelectorAll(".about-mobile-card").forEach((card) => card.classList.add("is-visible"));
+  const setExpanded = (open) => {
+    expanded = open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.textContent = open ? "פחות" : "עוד";
 
     const teaser = btn.closest(".about-mobile-card--teaser");
-    if (teaser) teaser.classList.add("about-mobile-card--more-revealed");
-
     const scrollEl = teaser?.querySelector(".about-mobile-card__teaser-scroll");
-    if (scrollEl) {
-      scrollEl.setAttribute("tabindex", "-1");
-      requestAnimationFrame(() => {
-        scrollEl.focus({ preventScroll: true });
-      });
+
+    if (open) {
+      panel.removeAttribute("hidden");
+      panel
+        .querySelectorAll(".about-mobile-card")
+        .forEach((card) => card.classList.add("is-visible"));
+      teaser?.classList.add("about-mobile-card--more-revealed");
+      if (scrollEl) {
+        scrollEl.setAttribute("tabindex", "-1");
+        requestAnimationFrame(() => {
+          scrollEl.focus({ preventScroll: true });
+        });
+      }
+      return;
     }
 
-    btn.hidden = true;
-    btn.setAttribute("aria-hidden", "true");
+    panel.setAttribute("hidden", "");
+    teaser?.classList.remove("about-mobile-card--more-revealed");
+  };
+
+  btn.addEventListener("click", () => {
+    setExpanded(!expanded);
   });
 }
 

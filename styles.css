@@ -1657,6 +1657,10 @@ a.button-primary:active {
   display: none;
 }
 
+.about-spotify-anchor {
+  display: none;
+}
+
 @media (min-width: 761px) {
   #about.section .about-full__bg-video {
     /* Fill frame without side bars while keeping Coral's head in view */
@@ -1729,6 +1733,54 @@ a.button-primary:active {
   #about.section .about-text-only .hero-actions {
     justify-content: flex-start;
     margin-top: 14px;
+  }
+
+  /* Spotify CTA — bottom-left of about section (desktop) */
+  #about.section .about-spotify-anchor {
+    display: flex;
+    position: absolute;
+    left: clamp(22px, 3.2vw, 56px);
+    right: auto;
+    bottom: clamp(28px, 5vh, 52px);
+    z-index: 4;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    max-width: min(42vw, 420px);
+    pointer-events: none;
+    justify-content: flex-start;
+  }
+
+  #about.section .about-spotify-cta {
+    pointer-events: auto;
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px 22px;
+    border-radius: 999px;
+    border: 1px solid rgba(244, 227, 161, 0.55);
+    background: rgba(8, 10, 9, 0.42);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #f4e3a1;
+    font-family: inherit;
+    font-size: clamp(14px, 1.05vw, 16px);
+    font-weight: 500;
+    line-height: 1.25;
+    text-decoration: none;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+    transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+  }
+
+  #about.section .about-spotify-cta:hover {
+    background: rgba(244, 227, 161, 0.22);
+    border-color: rgba(244, 227, 161, 0.72);
+  }
+
+  #about.section .about-spotify-cta:active {
+    transform: scale(0.98);
   }
 }
 
@@ -4263,6 +4315,39 @@ a.button-primary:active {
     scroll-snap-stop: always;
   }
 
+  /* Mobile carousel order (desktop grid unchanged) */
+  #productions.section .track[data-track-id="regia-mentalit"] {
+    order: 1;
+  }
+
+  #productions.section .track[data-track-id="lo-beshlitati"] {
+    order: 2;
+  }
+
+  #productions.section .track[data-track-id="neshav-undaber"] {
+    order: 3;
+  }
+
+  #productions.section .track[data-track-id="acheret"] {
+    order: 4;
+  }
+
+  #productions.section .track[data-track-id="al-halev"] {
+    order: 5;
+  }
+
+  #productions.section .track[data-track-id="kama-hergelim"] {
+    order: 6;
+  }
+
+  #productions.section .track[data-track-id="krakiyat"] {
+    order: 7;
+  }
+
+  #productions.section .track[data-track-id="kchi-rega"] {
+    order: 8;
+  }
+
   /* Spotify preview במובייל: גדול ובולט יותר */
   #productions.section .track-cover {
     width: 100%;
@@ -5106,6 +5191,52 @@ a.button-primary:active {
   background: rgba(255, 255, 255, 0.94);
 }
 
+.story-phone__play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  transform: translate(-50%, -50%);
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  margin: 0;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+  transition: opacity 180ms ease, transform 120ms ease, background 160ms ease;
+}
+
+.story-phone__play-icon {
+  display: block;
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-style: solid;
+  border-width: 7px 0 7px 12px;
+  border-color: transparent transparent transparent rgba(255, 255, 255, 0.96);
+}
+
+.story-phone__play:hover {
+  background: rgba(0, 0, 0, 0.52);
+}
+
+.story-phone__play:active {
+  transform: translate(-50%, -50%) scale(0.96);
+}
+
+.story-phone.is-video-playing .story-phone__play {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .story-phone__head {
   position: absolute;
   top: 20px;
@@ -5255,6 +5386,7 @@ a.button-primary:active {
 
   #about.section.about-mobile-story .about-full__media {
     display: block;
+    position: relative;
     min-height: 100vh;
     min-height: 100svh;
     min-height: 100dvh;
@@ -5308,6 +5440,7 @@ a.button-primary:active {
     margin-top: -100dvh;
     /* טקסט צמוד יותר מתחת לכותרת האתר */
     padding-top: calc(48px + env(safe-area-inset-top, 0px));
+    padding-bottom: 10px;
   }
 
   #about.section.about-mobile-story .about-mobile-book {
@@ -5494,6 +5627,67 @@ a.button-primary:active {
     transform: scale(0.98);
   }
 
+  #about.section.about-mobile-story a.about-maroon-mention {
+    color: #f4e3a1;
+    text-decoration: underline;
+    text-decoration-color: rgba(244, 227, 161, 0.92);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.12em;
+  }
+
+  #about.section.about-mobile-story a.about-maroon-mention:hover {
+    color: #fff0c4;
+    text-decoration-color: rgba(255, 240, 196, 1);
+  }
+
+  /* Spotify CTA — בתוך #about בלבד, פינה שמאל תחתון (לא fixed על המסך) */
+  #about.section.about-mobile-story .about-spotify-anchor {
+    display: flex;
+    position: absolute;
+    left: clamp(12px, 3.5vw, 22px);
+    right: auto;
+    bottom: clamp(20px, 4vh, 36px);
+    z-index: 42;
+    justify-content: flex-start;
+    width: auto;
+    max-width: min(78vw, 340px);
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  #about.section.about-mobile-story .about-spotify-cta {
+    pointer-events: auto;
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(244, 227, 161, 0.5);
+    background: rgba(8, 10, 9, 0.42);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #f4e3a1;
+    font-family: inherit;
+    font-size: 0.9em;
+    font-weight: 500;
+    line-height: 1.25;
+    text-decoration: none;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+    transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+  }
+
+  #about.section.about-mobile-story .about-spotify-cta:hover {
+    background: rgba(244, 227, 161, 0.26);
+    border-color: rgba(244, 227, 161, 0.72);
+  }
+
+  #about.section.about-mobile-story .about-spotify-cta:active {
+    transform: scale(0.98);
+  }
+
   #about.section.about-mobile-story .about-mobile-more-panel {
     display: flex;
     flex-direction: column;
@@ -5576,6 +5770,10 @@ a.button-primary:active {
 
   .story-phone {
     border-radius: 24px;
+  }
+
+  .story-phone__play {
+    display: flex;
   }
 
   .carousel-nav {
