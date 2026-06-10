@@ -3260,6 +3260,19 @@ a.button-primary:active {
   color: var(--btn-ink);
 }
 
+#gallery.section .section-foot .button.button-primary {
+  background: rgba(124, 84, 52, 0.96);
+  border: 1px solid rgba(124, 84, 52, 0.96);
+  color: rgba(255, 252, 246, 0.98);
+  box-shadow: 0 8px 20px rgba(124, 84, 52, 0.22);
+}
+
+#gallery.section .section-foot .button.button-primary:hover {
+  background: rgba(103, 68, 42, 0.98);
+  border-color: rgba(103, 68, 42, 0.98);
+  color: #fff;
+}
+
 /* FAQ: minimalist cream accordion (RTL, chevron left, hairline dividers) */
 #faq.section .container {
   position: relative;
